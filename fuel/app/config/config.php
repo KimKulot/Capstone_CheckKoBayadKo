@@ -177,10 +177,10 @@ return array(
 		 * throw exceptions unless they are instances of the classes in this array.
 		 */
 		'whitelisted_classes' => array(
-			'Fuel\\Core\\Response',
-			'Fuel\\Core\\View',
-			'Fuel\\Core\\viewModel',
-			'Fuel\\Core\\Validation',
+			 'Fuel\\Core\\Response',
+		    'Fuel\\Core\\View',
+		    'Fuel\\Core\\ViewModel',
+		    'Fuel\Core\Validation',
 			'Closure',
 		),
 	),
@@ -259,11 +259,23 @@ return array(
 	/**************************************************************************/
 	/* Always Load                                                            */
 	/**************************************************************************/
-	 'always_load' => array(
-    'packages' => array(
-        'auth', 'orm',
-    ),
-),
+	'always_load'  => array(
+
+		/**
+		 * These packages are loaded on Fuel's startup.
+		 * You can specify them in the following manner:
+		 *
+		 * array('auth'); // This will assume the packages are in PKGPATH
+		 *
+		 * // Use this format to specify the path to the package explicitly
+		 * array(
+		 *     array('auth'	=> PKGPATH.'auth/')
+		 * );
+		 */
+		'packages'  => array(
+			'auth',
+			'orm',
+		),
 
 		/**
 		 * These modules are always loaded on Fuel's startup. You can specify them
@@ -299,6 +311,6 @@ return array(
 		 * If you don't want the lang in a group use null as groupname.
 		 */
 		// 'language'  => array(),
-	// ),
+	),
 
 );

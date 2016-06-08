@@ -1,8 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
 	<title><?php echo $title; ?></title>
+
+	<?php echo Asset::css('bootstrap.min.css'); ?>
+	<?php echo Asset::css('business-casual.css'); ?>
+    <!-- Fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
 	<?php echo Asset::css('bootstrap.css'); ?>
 	<style>
 		body { margin: 50px; }
@@ -17,8 +29,13 @@
 </head>
 <body>
 
+ <div class="brand">CheckKoBayadKo</div>
+    <div class="address-bar">Web Based Application | Cron Job | 123.456.7890</div>
+
+   
+
 	<?php if ($current_user): ?>
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-default" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -60,7 +77,8 @@
 		</div>
 	</div>
 	<?php endif; ?>
-
+ 
+            <div class="box">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -88,13 +106,7 @@
 			</div>
 		</div>
 		<hr/>
-		<footer>
-			<p class="pull-right">Page rendered in {exec_time}s using {mem_usage}mb of memory.</p>
-			<p>
-				<a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.<br>
-				<small>Version: <?php echo e(Fuel::VERSION); ?></small>
-			</p>
-		</footer>
+		</div>
 	</div>
 </body>
 </html>

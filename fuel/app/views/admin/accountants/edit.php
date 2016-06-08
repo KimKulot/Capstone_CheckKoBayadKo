@@ -1,0 +1,7 @@
+<h2>Editing user</h2>
+<br>
+
+<?php echo render('admin/accountants/_form'); ?>
+<p>
+	<?php echo Html::anchor('admin/accountants/view/'.$accountant->id, 'View'); ?> |
+	<?php echo Html::anchor('admin/accountants', 'Back'); ?></p>

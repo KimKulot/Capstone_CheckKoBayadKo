@@ -6,7 +6,7 @@
 return array(
 	'default' => array(
 		'connection'  => array(
-			'dsn'        => 'mysql:host=localhost;dbname=checkkobayadko_db',
+			'dsn'        => 'mysql:host=localhost;dbname=fp_db',
 			'username'   => 'root',
 			'password'   => '',
 		),
