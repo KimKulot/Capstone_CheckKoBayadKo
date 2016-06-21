@@ -177,7 +177,7 @@ return array(
 		 * throw exceptions unless they are instances of the classes in this array.
 		 */
 		'whitelisted_classes' => array(
-			 'Fuel\\Core\\Response',
+			'Fuel\\Core\\Response',
 		    'Fuel\\Core\\View',
 		    'Fuel\\Core\\ViewModel',
 		    'Fuel\Core\Validation',
@@ -259,7 +259,7 @@ return array(
 	/**************************************************************************/
 	/* Always Load                                                            */
 	/**************************************************************************/
-	'always_load'  => array(
+	 'always_load'  => array(
 
 		/**
 		 * These packages are loaded on Fuel's startup.

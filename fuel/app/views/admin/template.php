@@ -29,13 +29,8 @@
 </head>
 <body>
 
- <div class="brand">CheckKoBayadKo</div>
-    <div class="address-bar">Web Based Application | Cron Job | 123.456.7890</div>
-
-   
-
 	<?php if ($current_user): ?>
-	<div class="navbar navbar-default" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -77,12 +72,12 @@
 		</div>
 	</div>
 	<?php endif; ?>
- 
-            <div class="box">
+	<div class="box">
 	<div class="container">
-		<div class="row">
+		
+		  <div class="row">
 			<div class="col-md-12">
-				<h1><?php echo $title; ?></h1>
+				<!-- <h1><?php echo $title; ?></h1> -->
 				<hr>
 <?php if (Session::get_flash('success')): ?>
 				<div class="alert alert-success alert-dismissable">
@@ -104,9 +99,26 @@
 			<div class="col-md-12">
 <?php echo $content; ?>
 			</div>
-		</div>
+			</div>
+		
 		<hr/>
 		</div>
+		<!-- <footer>
+			<p class="pull-right">Page rendered in {exec_time}s using {mem_usage}mb of memory.</p>
+			<p>
+				<a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.<br>
+				<small>Version: <?php echo e(Fuel::VERSION); ?></small>
+			</p>
+		</footer> -->
 	</div>
+	<footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; CheckKoBayadKo 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

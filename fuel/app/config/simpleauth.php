@@ -82,7 +82,6 @@ return array(
 	 */
 	'groups' => array(
 		
-		 
 		  -1   => array('name' => 'Banned', 'roles' => array('banned')),
 		  0    => array('name' => 'Guests', 'roles' => array()),
 		  1    => array('name' => 'Users', 'roles' => array('user')),
