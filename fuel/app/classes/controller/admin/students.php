@@ -11,16 +11,34 @@ class Controller_Admin_Students extends Controller_Admin
 		$this->template->title = "Students";
 		$this->template->content = $view;
 
+
 		// $view->set_global('users', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'username'));
 	}
 
 	public function action_view($id = null)
 	{
+		// $data['student'] = Model_Student::find('first', array(
+		//     'related' => array(
+		//         'articles' => array(
+		//             'join_type' => 'inner',
+		//             'where' => array(
+		//                 array('publish_date', '>', DB::expr(time())),
+		//                 array('published', '=', DB::expr(1)),
+		//             ),
+		//             'order_by' => array('id' => 'desc'),
+		//         ),
+		//     ),
+		// ));
+
+		//$data['student'] = Model_User::find('all', array('related' => array('users')));
 		$data['student'] = Model_Student::find($id);
-
+		//$data = Model_Student::find($id);
+		// $data['user'] = get_full_name();
+		$data['user'] = Model_User::find($id);
 		$this->template->title = "User";
-		$this->template->content = View::forge('admin/students/view', $data);
 
+		$this->template->content = View::forge('admin/students/view', $data);
+ 		
 	}
 
 	public function action_create()
@@ -34,7 +52,7 @@ class Controller_Admin_Students extends Controller_Admin
 			
 				$student = Model_Student::forge(array(
 					'course'      => Input::post('course'),
-					'student_id'  => Input::post('student_id'),
+					'user_id'  => Input::post('user_id'),
 				));
 
 				if ($student->save())
@@ -51,7 +69,7 @@ class Controller_Admin_Students extends Controller_Admin
 		}
 
 		$this->template->title = "Students";
-		$this->template->content = View::forge('admin/students/create');
+		$this->template->content = View::forge('admin/students/create_student');
 
 	}
 
@@ -63,7 +81,7 @@ class Controller_Admin_Students extends Controller_Admin
 		if ($val->run())
 		{
 			$student->course = Input::post('course');
-			$student->student_id = Input::post('student_id');
+			$student->user_id = Input::post('user_id');
 			
 
 			if ($student->save())
@@ -84,7 +102,7 @@ class Controller_Admin_Students extends Controller_Admin
 			if (Input::method() == 'POST')
 			{
 				$student->course = Input::post('course');
-				$student->student_id = Input::post('student_id');
+				$student->user_id = Input::post('user_id');
 
 				Session::set_flash('error', $val->error());
 			}

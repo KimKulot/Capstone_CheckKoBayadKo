@@ -4,16 +4,18 @@ class Controller_Admin_Users extends Controller_Admin
 
 	public function action_index()
 	{
+		
 		$data['users'] = Model_User::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 
 	}
 
+	
 	public function action_view($id = null)
 	{
-		$data['user'] = Model_User::find($id);
-
+		
+		$data['user'] = Model_User::find($id); 
 		$this->template->title = "User";
 		$this->template->content = View::forge('admin/users/view', $data);
 
@@ -54,6 +56,8 @@ class Controller_Admin_Users extends Controller_Admin
 					'email' => Input::post('email'),
 				));
 
+				
+
 				if ($user->save())
 				{
 					Session::set_flash('success', e('Added user'));
@@ -85,11 +89,41 @@ class Controller_Admin_Users extends Controller_Admin
 		$view = View::forge('admin/users/create_student');
  		
 		if (Input::method() == 'POST')
-		{
+		{  	
 			$val = Model_User::validate('create');
 
+			//$val = Model_Student::validate('create');
+			// try{
+			// 	$user = Auth::username_checker(
+			// 		Input::post('username'),
+			// 	    Input::post('email'),
+			// 	    array(	
+			// 	    	)
+			// );
 			if ($val->run())
 			{
+				$newuser = Model_User::forge(array(
+					'username'=> Input::post('username'),
+					'firstname' =>Input::post('firstname'),
+					'middlename'=> Input::post('middlename'),
+					'lastname'=> Input::post('lastname'),
+					'password'=> Auth::instance()->hash_password(Input::post('password')),
+					'phone_number'=> Input::post('phone_number'),
+					'group'=> Input::post('group'),
+					'email'=> Input::post('email'),
+					'course' =>Input::post('course'),
+				));
+				$newuser->student = Model_Student::forge(array(
+					'course' =>Input::post('course'),
+				));
+				
+				if($newuser->save()){
+					Session::set_flash('success', e('Added user'));
+				 	Response::redirect('admin/users');
+				}
+				// }catch(Exception $e){
+				// 	Session::set_flash('error', e('Username or Email is already exist'));
+				// }
 			// try{		
 				// $user = Auth::create_user(
 				// 	    'Student',
@@ -107,35 +141,57 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	        'password' => Input::post('password'),
 				// 	    )
 				// 	);
-				$user = Model_User::forge(array(
-					//'username' => field('username')->set_value('Student') ,
-					'username' => Input::post('username'),
-					'firstname' => Input::post('firstname'),
-					'middlename' => Input::post('middlename'),
-					'lastname' => Input::post('lastname'),
-					'password' => Auth::instance()->hash_password(Input::post('password')),
-					'phone_number' => Input::post('phone_number'),
-					'group' => Input::post('group'),
-					'email' => Input::post('email'),
-				));
+				// try{
+				// 	$user = Auth::username_checker(
+				// 		Input::post('username'),
+				// 	    Input::post('email'),
+				// 	    array(	
+				// 	    	)
+				// 	);
+				
 
-				if ($user->save())
-				{
-					Session::set_flash('success', e('Added user'));
+				// $user = Model_User::forge(array(
+				// 	//'username' => field('username')->set_value('Student') ,
+				// 	'username' => Input::post('username'),
+				// 	'firstname' => Input::post('firstname'),
+				// 	'middlename' => Input::post('middlename'),
+				// 	'lastname' => Input::post('lastname'),
+				// 	'password' => Auth::instance()->hash_password(Input::post('password')),
+				// 	'phone_number' => Input::post('phone_number'),
+				// 	'group' => Input::post('group'),
+				// 	'email' => Input::post('email'),
+				// 	'course' => Input::post('course'),
+				// 	'user_id' => Input::post('user_id'),
+					// $user->comments[] = new Model_Student();
+				// ));
+				// $student = Model_Student::forge(array(
+				// 	'course' => Input::post('course'),
+				// 	'user_id' => Input::post('user_id'),
+				// ));
 
-					Response::redirect('admin/users');
-				}
+				// if($student->save()){
+				// 	if ($user->save())
+				// 	{
+				// 		Session::set_flash('success', e('Added user'));
+
+				// 		Response::redirect('admin/users');
+				// 	}
+				// }
 
 			// }catch(Exception $e){
 
 			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
 			// }
-
+				// }catch(Exception $e){
+				// 	Session::set_flash('error', e('Username or Email is already exist'));
+				// }
 			}
 			else
 			{
 				Session::set_flash('error', $val->error());
 			}
+
+			
 		}
 		$view->set_global('students', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'course'));
 		$this->template->title = "Users";
@@ -226,6 +282,7 @@ class Controller_Admin_Users extends Controller_Admin
 			$user->phone_number = Input::post('phone_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
+			$user->user_id = Input::post('user_id');
 
 			if ($user->save())
 			{

@@ -7,9 +7,9 @@
 				<?php echo Form::input('course', Input::post('course', isset($student) ? $student->course : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Course')); ?>
 		</div>
 		<div class="form-group">
-			<?php echo Form::label('Student ID', 'student_id', array('class'=>'control-label')); ?>
+			<?php echo Form::label('Student ID', 'user_id', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('student_id', Input::post('student_id', isset($student) ? $student->student_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Student ID')); ?>
+				<?php echo Form::input('user_id', Input::post('user_id', isset($student) ? $student->user_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Student ID')); ?>
 		</div>
 		<div class="form-group">
 			<label class='control-label'>&nbsp;</label>

@@ -1,6 +1,7 @@
 <?php
 class Model_User extends \Orm\Model
 {
+	
 	protected static $_properties = array(
 		'id',
 		'username',
@@ -13,8 +14,23 @@ class Model_User extends \Orm\Model
 		'email',
 		'created_at',
 		'updated_at',
-	);
 
+	);
+	protected static $_has_one = array(
+		'student' => array(
+			'model_to' => 'Model_Student',
+			'key_from' => 'id',
+			'key_to' => 'user_id',
+			'cascade_delete' => true,
+			'cascade_save' => true,
+		),
+	);
+	
+
+	// public function get_full_name () {
+	// 	return $this->'firstname' . ' ' . $this->'lastname';
+	// 	static::method_exists(object, method_name());
+	// }
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -25,6 +41,7 @@ class Model_User extends \Orm\Model
 			'mysql_timestamp' => false,
 		),
 	);
+
 
 	public static function validate($factory)
 	{
@@ -37,7 +54,6 @@ class Model_User extends \Orm\Model
 		$val->add_field('phone_number', 'Phone Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-
 		return $val;
 	}
 

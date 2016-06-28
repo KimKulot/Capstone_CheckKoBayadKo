@@ -1,7 +1,7 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 
 	<fieldset>
-		
+
 		<div class="form-group">
 			<?php echo Form::label('Username', 'username', array('class'=>'control-label')); ?>
 				
@@ -46,33 +46,37 @@
 
 		</div>
 		
+		<!-- <div class="form-group">
+			<?php echo Form::label('User ID', 'user_id', array('class'=>'control-label')); ?>
 
+				<?php echo Form::input('user_id', Input::post('user_id', isset($student) ? $user->user_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'user ID')); ?>
+		</div> -->
 		<div class="form-group">
-		    <?php echo Form::label('Rank', 'student_id'); ?>
+		    <?php echo Form::label('Rank', 'course', array('class'=>'control-label')); ?>
 		 	<?php 
-			 	echo Form::select('course', 'none', array(
+			 	echo Form::select('course', Input::post('course', isset($student) ? $user->course : 'BSIT'), array(
 				    'College' => array(
-				        'bsit' => 'BSIT',
-				        'bscs' => 'BSCS',
-				        'bsba' => 'BSBA',
+				        'BSIT' => 'BSIT',
+				        'BSCS' => 'BSCS',
+				        'BSBA' => 'BSBA',
 				    ),
 				    'Highschool' => array(
-				    	'first' => '1st Year',
-				    	'second' => '2nd Year',
-				    	'third' => '3th Year',
-				    	'fourth' => '4th Year',
+				    	'1st Year' => '1st Year',
+				    	'2nd Year' => '2nd Year',
+				    	'3th Year' => '3th Year',
+				    	'4th Year' => '4th Year',
 				    ),
 				    'Gradeschool' => array(
-				    	'G1' => 'Grade 1',
-				    	'G2' => 'Grade 2',
-				    	'G3' => 'Grade 3',
-				    	'G4' => 'Grade 4',
-				    	'G4' => 'Grade 5',
-				    	'G4' => 'Grade 6',
+				    	'Grade 1' => 'Grade 1',
+				    	'Grade 2' => 'Grade 2',
+				    	'Grade 3' => 'Grade 3',
+				    	'Grade 4' => 'Grade 4',
+				    	'Grade 5' => 'Grade 5',
+				    	'Grade 6' => 'Grade 6',
 				    ),
-				   	'prep' => 'Preschool',
-				   	'k1'   => 'Kinder 1',
-				   	'k2'   => 'Kinder 2',
+				   	'Preschool' => 'Preschool',
+				   	'Kinder 1'   => 'Kinder 1',
+				   	'Kinder 2'   => 'Kinder 2',
 				));
 			?>
 		    <!-- <div class="input">

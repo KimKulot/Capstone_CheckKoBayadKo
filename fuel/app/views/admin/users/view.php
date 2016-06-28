@@ -21,6 +21,7 @@
 <p>
 	<strong>Group:</strong>
 	<?php echo $user->group; ?></p>
+
 <p>
 	<strong>Email:</strong>
 	<?php echo $user->email; ?></p>

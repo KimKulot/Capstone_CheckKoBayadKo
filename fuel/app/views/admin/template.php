@@ -28,7 +28,6 @@
 	</script>
 </head>
 <body>
-
 	<?php if ($current_user): ?>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
