@@ -9,7 +9,7 @@
     <meta name="author" content="">
 
 	<title><?php echo $title; ?></title>
-
+	
 	<?php echo Asset::css('bootstrap.min.css'); ?>
 	<?php echo Asset::css('business-casual.css'); ?>
     <!-- Fonts -->
@@ -95,6 +95,7 @@
 				</div>
 <?php endif; ?>
 			</div>
+			
 			<div class="col-md-12">
 <?php echo $content; ?>
 			</div>
@@ -110,6 +111,7 @@
 			</p>
 		</footer> -->
 	</div>
+
 	<footer>
         <div class="container">
             <div class="row">

@@ -31,14 +31,20 @@ class Controller_Admin_Students extends Controller_Admin
 		// ));
 
 		//$data['student'] = Model_User::find('all', array('related' => array('users')));
-		$data['student'] = Model_Student::find($id);
+		//$data['student'] = Model_Student::find($id);
+		//$data['student'] = Model_Student::find($id);
 		//$data = Model_Student::find($id);
-		// $data['user'] = get_full_name();
-		$data['user'] = Model_User::find($id);
-		$this->template->title = "User";
+		// // $data['user'] = get_full_name();
+		// $data['user'] = Model_User::find($id);
+		// $this->template->title = "User";
 
+		// $this->template->content = View::forge('admin/students/view', $data);
+
+ 		$data['student'] = Model_Student::find($id); 
+ 		$data['user'] = Model_User::find('all'); 
+		$this->template->title = "User";
 		$this->template->content = View::forge('admin/students/view', $data);
- 		
+
 	}
 
 	public function action_create()
@@ -52,7 +58,8 @@ class Controller_Admin_Students extends Controller_Admin
 			
 				$student = Model_Student::forge(array(
 					'course'      => Input::post('course'),
-					'user_id'  => Input::post('user_id'),
+					'student_id'  => Input::post('student_id'),
+					'parent_id'  => Input::post('parent_id'),
 				));
 
 				if ($student->save())
@@ -81,7 +88,7 @@ class Controller_Admin_Students extends Controller_Admin
 		if ($val->run())
 		{
 			$student->course = Input::post('course');
-			$student->user_id = Input::post('user_id');
+			$student->student_id = Input::post('student_id');
 			
 
 			if ($student->save())
@@ -102,7 +109,7 @@ class Controller_Admin_Students extends Controller_Admin
 			if (Input::method() == 'POST')
 			{
 				$student->course = Input::post('course');
-				$student->user_id = Input::post('user_id');
+				$student->student_id = Input::post('student_id');
 
 				Session::set_flash('error', $val->error());
 			}

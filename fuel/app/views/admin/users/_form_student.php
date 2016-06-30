@@ -51,11 +51,12 @@
 
 				<?php echo Form::input('user_id', Input::post('user_id', isset($student) ? $user->user_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'user ID')); ?>
 		</div> -->
+
 		<div class="form-group">
-		    <?php echo Form::label('Rank', 'course', array('class'=>'control-label')); ?>
+		    <?php echo Form::label('Program', 'course', array('class'=>'control-label')); ?>
 		 	<?php 
 			 	echo Form::select('course', Input::post('course', isset($student) ? $user->course : 'BSIT'), array(
-				    'College' => array(
+				    'College' => array( 
 				        'BSIT' => 'BSIT',
 				        'BSCS' => 'BSCS',
 				        'BSBA' => 'BSBA',
@@ -98,4 +99,19 @@
 
 		</div>
 	</fieldset>
+
 <?php echo Form::close(); ?>
+
+
+<!-- 	<div class="btn-group">
+	  <button type="button" class="btn btn-primary">Apple</button>
+	  <button type="button" class="btn btn-primary">Samsung</button>
+	  <div class="btn-group">
+	    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+	    Sony <span class="caret"></span></button>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><a href="#">Tablet</a></li>
+	      <li><a href="#">Smartphone</a></li>
+	    </ul>
+	  </div>
+	</div> -->

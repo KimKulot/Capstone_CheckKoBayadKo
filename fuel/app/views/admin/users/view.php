@@ -1,3 +1,6 @@
+
+
+
 <h2>Viewing #<?php echo $user->id; ?></h2>
 
 <p>

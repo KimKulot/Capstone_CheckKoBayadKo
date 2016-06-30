@@ -4,13 +4,19 @@ class Controller_Admin_Users extends Controller_Admin
 
 	public function action_index()
 	{
-		
+
 		$data['users'] = Model_User::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
-
 	}
 
+	public function action_index_search($search = null)
+	{
+		$data ['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
+		$this->template->title = "Users";
+		$this->template->content = View::forge('admin/users/index_search', $data);
+
+	}
 	
 	public function action_view($id = null)
 	{
@@ -45,30 +51,30 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	        'password' => Input::post('password'),
 				// 	    )
 				// 	);
-				$user = Model_User::forge(array(
-					'username'     => Input::post('username'),
-					'password'     => Auth::instance()->hash_password(Input::post('password')),
-					'firstname'    => Input::post('firstname'),
-					'middlename'   => Input::post('middlename'),
-					'lastname'     => Input::post('lastname'),
-					'phone_number' => Input::post('phone_number'),
-					'group' => Input::post('group'),
-					'email' => Input::post('email'),
-				));
-
-				
-
-				if ($user->save())
+				if ($val->run())
 				{
-					Session::set_flash('success', e('Added user'));
-
-					Response::redirect('admin/users');
+					$newuser = Model_User::forge(array(
+						'username'=> Input::post('username'),
+						'firstname' =>Input::post('firstname'),
+						'middlename'=> Input::post('middlename'),
+						'lastname'=> Input::post('lastname'),
+						'password'=> Auth::instance()->hash_password(Input::post('password')),
+						'phone_number'=> Input::post('phone_number'),
+						'group'=> Input::post('group'),
+						'email'=> Input::post('email'),
+					));
+					$newuser->parent_student = Model_Student::forge(array(
+						'parent_id'=> Input::post('parent_id'),
+					));
+					if($newuser->save()){
+						Session::set_flash('success', e('Added user'));
+					 	Response::redirect('admin/users');
 				}
 
 			// }catch(Exception $e){
 
 			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
-			// }
+			 }
 
 			}
 			else
@@ -111,7 +117,6 @@ class Controller_Admin_Users extends Controller_Admin
 					'phone_number'=> Input::post('phone_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
-					'course' =>Input::post('course'),
 				));
 				$newuser->student = Model_Student::forge(array(
 					'course' =>Input::post('course'),
@@ -262,6 +267,64 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/create');
 
 	}
+
+
+	//START CREATE PROGRAM
+
+	public function action_create_program()
+	{
+		if (Input::method() == 'POST')
+		{
+			$val = Model_Program::validate('create');
+
+			if ($val->run())
+			{
+				
+				
+				$program = Model_Program::forge(array(
+					'program_description' => Input::post('program_description'),
+				));
+				$check_program = DB::select('program_description')->from('programs')->where('program_description','=', $program->program_description)->as_object()->execute();
+
+				// if(count($check_program) > 0){
+
+				// 	Session::set_flash('error', e('Program description already exists.'));
+				// }else{
+				// 	var_dump($check_program);die();
+				// }
+
+				if (count($check_program) > 0) {
+					Session::set_flash('error', e('Program description already exists .'));
+				}else{
+					
+				if ($program->save())
+					{
+						Session::set_flash('success', e('Added program'.$program->id.'.'));
+
+						Response::redirect('admin/users');
+					}
+					
+					else
+					{
+						Session::set_flash('error', e('Could not save program.'));
+					}
+				}
+			}
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+
+		$this->template->title = "Program";
+		$this->template->content = View::forge('admin/users/create_program');
+
+	}
+
+	//END CREATE PROGRAM
+
+
+
 
 	public function action_edit($id = null)
 	{

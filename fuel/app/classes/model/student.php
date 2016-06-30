@@ -5,7 +5,13 @@ class Model_Student extends \Orm\Model
 	protected static $_properties = array(
 		'id',
 		'course',
-		'user_id',
+		'student_id',
+		//'parent_id',
+		'tuition_fee',
+		'misc',
+		'down_payment',
+		'breakdown',
+		'balance',
 		'created_at',
 		'updated_at',
 	);
@@ -16,11 +22,19 @@ class Model_Student extends \Orm\Model
 	protected static $_belongs_to = array(
 		'user' => array(
 			'model_to' => 'Model_User',
-			'key_from' => 'user_id',
+			'key_from' => 'student_id',
 			'key_to'   => 'id',
 			'cascade_delete' => false,
 		),
+		// 'parent_user' => array(
+		// 	'model_to' => 'Model_User',
+		// 	'key_from' => 'parent_id',
+		// 	'key_to'   => 'id',
+		// 	'cascade_delete' => false,
+		// ),
 	);
+
+	
 
 
 	protected static $_observers = array(
@@ -38,7 +52,13 @@ class Model_Student extends \Orm\Model
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('course', 'Course', 'required|max_length[50]');
-		$val->add_field('user_id', 'User_id',  'required|valid_string[numeric]');
+		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
+		//$val->add_field('parent_id', 'Parent_id',  'required|valid_string[numeric]');
+		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
+		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
+		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
+		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
+		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');
 		return $val;
 	}
 }

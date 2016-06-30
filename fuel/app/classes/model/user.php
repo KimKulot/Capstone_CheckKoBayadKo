@@ -1,7 +1,6 @@
 <?php
 class Model_User extends \Orm\Model
 {
-	
 	protected static $_properties = array(
 		'id',
 		'username',
@@ -16,15 +15,27 @@ class Model_User extends \Orm\Model
 		'updated_at',
 
 	);
+
 	protected static $_has_one = array(
 		'student' => array(
 			'model_to' => 'Model_Student',
 			'key_from' => 'id',
-			'key_to' => 'user_id',
+			'key_to' => 'student_id',
 			'cascade_delete' => true,
 			'cascade_save' => true,
 		),
+		// 'parent_student' => array(
+		// 	'model_to' => 'Model_Student',
+		// 	'key_from' => 'id',
+		// 	'key_to' => 'parent_id',
+		// 	'cascade_delete' => true,
+		// 	'cascade_save' => true,
+		// ),
 	);
+
+	
+	
+	
 	
 
 	// public function get_full_name () {

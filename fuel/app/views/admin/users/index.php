@@ -1,21 +1,44 @@
+                                                                                                              
+	<div class="pull-right">
+		<div class="col-md-12">
+		<p>
+
+			<?php echo Html::anchor('admin/users/create_student', '+ Student', array('class' => 'btn btn-primary')); ?>
+		</p>
+		</div>
+	</div>
 
 	<div class="pull-right">
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/users/create_student', '+ Student', array('class' => 'btn btn-success')); ?>
+			<?php echo Html::anchor('admin/users/create_program', '+ program', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 	</div>
-	<div class="pull-right">
-		<p>
-			<?php echo Html::anchor('admin/users/create_parent', '+ Parents', array('class' => 'btn btn-success')); ?>
-		</p>
-	</div>
+
+
 <h2>Listing Users</h2>
 <br>
 <?php if ($users): ?>
 
+<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+		<fieldset>
+			<div class="form-group">
+			<?php echo Form::label('', 'search', array('class'=>'control-label')); ?>
+				
+				<?php echo Form::input('search', Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'search' )); ?>
+
+
+				<?php echo Html::anchor('admin/users/index_search/', 'Search', array('class' => 'btn btn-primary')); ?>
+
+			</div>	
+		</fieldset>
+<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+	
+<!-- <input type="submit" name="submit" value="submit" /> -->
+	
+				
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -29,18 +52,23 @@
 		</tr>
 	</thead>
 	<tbody>
-	<div class="form-group">
-			<?php echo Form::label('', 'search', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('search', Input::post('search', isset($user) ? $user->search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'search')); ?>
-
-	</div>
 	
-<!-- <input type="submit" name="submit" value="submit" /> -->
-	<div class="form-group">
-		<label class='control-label'>&nbsp;</label>
-		<?php echo Form::submit('submit', 'Submit', array('class' => 'btn btn-primary')); ?>		
-	</div>
+	<!-- 
+	<form class="form-inline">
+		<div class="form-group">
+			<label class="sr-only">Email</label>
+			<p class="form-control-static">email@example.com</p>
+		</div>
+		<div class="form-group">
+			<label for="inputPassword2" class="sr-only">Password</label>
+			<input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+		</div>
+		<button type="submit" class="btn btn-default">Confirm identity</button>
+	</form> -->
+
+			<!-- <input type="text" class="form-control" placeholder=".col-xs-3"> -->
+	
+	
 
 <?php foreach ($users as $item): ?>		<tr>
 			<td><?php echo $item->username; ?></td>
