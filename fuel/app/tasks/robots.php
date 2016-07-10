@@ -39,6 +39,10 @@ class Robots
 	 *
 	 * @return string
 	 */
+	public function current_date()
+	{
+		echo date('Y-m-d');
+	}
 	public static function run($speech = null)
 	{
 		if ( ! isset($speech))

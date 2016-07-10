@@ -1,22 +1,21 @@
 <?php
 
-class Controller_Admin extends Controller_Base
+class Controller_Site extends Controller_Base
 {
-	public $template = 'admin/template';
+	public $template = 'site/template';
 
 	public function before()
 	{
 		parent::before();
 
-		if (Request::active()->controller !== 'Controller_Admin' or ! in_array(Request::active()->action, array('login', 'logout')))
+		if (Request::active()->controller !== 'Controller_Site' or ! in_array(Request::active()->action, array('login', 'logout')))
 		{
 			if (Auth::check())
 			{
-				$admin_group_id = Config::get('auth.driver', 'Simpleauth') == 'Ormauth' ? 6 : 100;
-				if ( ! Auth::member($admin_group_id))
+				if ( ! Auth::member(1))
 				{
-					Session::set_flash('error', e('You don\'t have access to the admin panel'));
-					Response::redirect('/');
+					Session::set_flash('error', e('You don\'t have access to the site panel'));
+					Response::redirect('/admin');
 				}
 			}
 			else
@@ -29,7 +28,7 @@ class Controller_Admin extends Controller_Base
 	public function action_login()
 	{
 		// Already logged in
-		Auth::check() and Response::redirect('admin');
+		Auth::check() and Response::redirect('site');
 
 		$val = Validation::forge();
 
@@ -53,9 +52,10 @@ class Controller_Admin extends Controller_Base
 							{
 								// credentials ok, go right in
 								$current_user = Model\Auth_User::find($id[1]);
-								Session::set_flash('success', e('Welcome, '.$current_user->username));
-								Response::redirect('admin');
-							}
+								Session::set_flash('success', e('Welcome, '.$current_user->username . " " . $current_user->id));
+								Response::redirect('site');
+								
+							} 
 						}
 					}
 					else
@@ -71,7 +71,7 @@ class Controller_Admin extends Controller_Base
 		}
 
 		$this->template->title = 'Login';
-		$this->template->content = View::forge('site/login', array('val' => $val), false);
+		$this->template->content = View::forge('site/login',  array('val' => $val), false);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Controller_Admin extends Controller_Base
 	public function action_logout()
 	{
 		Auth::logout();
-		Response::redirect('admin');
+		Response::redirect('site');
 	}
 
 	/**
@@ -92,10 +92,12 @@ class Controller_Admin extends Controller_Base
 	 * @access  public
 	 * @return  void
 	 */
-	public function action_index()
+	public function action_index($id = null)
 	{
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
 		$this->template->title = 'Dashboard';
-		$this->template->content = View::forge('admin/dashboard');
+		$this->template->content = View::forge('site/dashboard', $view);
 	}
 
 }

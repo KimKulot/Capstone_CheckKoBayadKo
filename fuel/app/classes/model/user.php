@@ -11,6 +11,7 @@ class Model_User extends \Orm\Model
 		'phone_number',
 		'group',
 		'email',
+		'role',
 		'created_at',
 		'updated_at',
 
@@ -24,13 +25,13 @@ class Model_User extends \Orm\Model
 			'cascade_delete' => true,
 			'cascade_save' => true,
 		),
-		// 'parent_student' => array(
-		// 	'model_to' => 'Model_Student',
-		// 	'key_from' => 'id',
-		// 	'key_to' => 'parent_id',
-		// 	'cascade_delete' => true,
-		// 	'cascade_save' => true,
-		// ),
+		'parent_student' => array(
+			'model_to' => 'Model_Studparent',
+			'key_from' => 'id',
+			'key_to' => 'parent_id',
+			'cascade_delete' => true,
+			'cascade_save' => true,
+		),
 	);
 
 	
@@ -65,6 +66,7 @@ class Model_User extends \Orm\Model
 		$val->add_field('phone_number', 'Phone Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
+		$val->add_field('role', 'Role', 'required|max_length[50]');
 		return $val;
 	}
 

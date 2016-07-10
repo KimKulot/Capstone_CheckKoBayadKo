@@ -1,4 +1,11 @@
-                                                                                                              
+    <div class="pull-right">
+		<div class="col-md-12">
+		<p>
+
+			<?php echo Html::anchor('admin/users/setcron', 'Setting Cron', array('class' => 'btn btn-primary')); ?>
+		</p>
+		</div>
+	</div>                                                                                                          
 	<div class="pull-right">
 		<div class="col-md-12">
 		<p>
@@ -12,10 +19,21 @@
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/users/create_program', '+ program', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/users/create_program', '+ College Program', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 	</div>
+	<div class="pull-right">
+		<div class="col-md-12">
+		<p>
+
+			<?php echo Html::anchor('admin/users/create_basic_program', '+ Basic Education Program', array('class' => 'btn btn-primary')); ?>
+		</p>
+		</div>
+	</div>
+
+	
+
 
 
 <h2>Listing Users</h2>
@@ -25,19 +43,19 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 		<fieldset>
 			<div class="form-group">
-			<?php echo Form::label('', 'search', array('class'=>'control-label')); ?>
+				<?php $search = ""?>
+					<?php echo Form::input('search',  $search, array('class' => 'col-md-4 form-control', 'placeholder'=>'search' )); ?>
+					
+					<?php echo Html::anchor('admin/users/index_search/'. $search, 'Search', array('class' => 'btn btn-primary')); ?> 
 				
-				<?php echo Form::input('search', Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'search' )); ?>
 
-
-				<?php echo Html::anchor('admin/users/index_search/', 'Search', array('class' => 'btn btn-primary')); ?>
-
+			</div>
 			</div>	
+			
 		</fieldset>
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 	
 <!-- <input type="submit" name="submit" value="submit" /> -->
-	
 				
 <table class="table table-striped">
 	<thead>
@@ -45,7 +63,6 @@
 			<th>Username</th>
 			<th>Full Name</th>
 			<th>Phone number</th>
-			
 			<th>Email</th>
 			<th>Role</th>
 			<th></th>
@@ -74,17 +91,11 @@
 			<td><?php echo $item->username; ?></td>
 			<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
 			<td><?php echo $item->phone_number; ?></td>
-
 			<td><?php echo $item->email; ?></td>
-
 			<?php if($item->group == 100){ ?>
 				<td><?php echo "Admin"; ?></td>
-			<?php }elseif ($item->group == 1){ ?>
-				<td><?php echo "Student"; ?></td>
-			<?php }elseif ($item->group == 50){ ?>
-				<td><?php echo "Parent"; ?></td>
 			<?php } ?>
-	
+			<td><?php echo $item->role; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/users/view/'.$item->id, 'View'); ?> |
 				<?php echo Html::anchor('admin/users/edit/'.$item->id, 'Edit'); ?> |

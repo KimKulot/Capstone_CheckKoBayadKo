@@ -5,6 +5,7 @@ class Controller_Admin_Students extends Controller_Admin
 	public function action_index()
 	{
 		//$view->users = Model_User::find('all');
+		
 		$view = View::forge('admin/students/index');
 		$view->users = Model_User::find('all');
 		$view->students = Model_Student::find('all');

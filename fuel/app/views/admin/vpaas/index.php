@@ -1,3 +1,8 @@
+<div class="pull-right">
+		<p>
+			<?php echo Html::anchor('admin/vpaas/index', 'course', array('class' => 'btn btn-success')); ?>
+		</p>
+</div>
 <h2>Listing Students</h2>
 <br>
 <?php if ($students): ?>
@@ -15,7 +20,7 @@
 		</tr>
 	</thead>
 	<tbody>
-<h2>Recent Posts</h2>
+
 <?php foreach ($students as $item): ?>
 
 		<tr>
@@ -30,12 +35,10 @@
 			<td><?php echo $item->down_payment; ?></td>
 			<td><?php echo $item->breakdown; ?></td>
 			<td><?php echo $item->balance; ?></td>
-			<td>
-				<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode'); ?> |
-			</td>
 		</tr>
-			
-<?php endforeach; ?>	</tbody>
+	
+<?php endforeach; ?>	
+	 </tbody>
 </table>
 
 <?php else: ?>

@@ -21,12 +21,13 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 		if ($val->run())
 		{
+			$student->student_id = Input::post('student_id');
 			$student->course = Input::post('course');
 			$student->tuition_fee = Input::post('tuition_fee');
 			$student->misc = Input::post('misc');
 			$student->down_payment = Input::post('down_payment');
-			$student->breakdown = Input::post('breakdown');
-			$student->balance = Input::post('balance');
+			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
+			$student->balance = ($student->tuition_fee + $student->misc) - $student->down_payment;
 
 			if ($student->save())
 			{
@@ -45,6 +46,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		{
 			if (Input::method() == 'POST')
 			{
+				$student->student_id = Input::post('student_id');
 				$student->course = Input::post('course');
 				$student->tuition_fee = Input::post('tuition_fee');
 				$student->misc = Input::post('misc');

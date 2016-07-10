@@ -1,7 +1,11 @@
 <h2>Listing Students</h2>
 <br>
 <?php if ($students): ?>
-
+<div class="pull-right">
+		<p>
+			<?php echo Html::anchor('admin/admins/index_student', 'Student', array('class' => 'btn btn-success')); ?>
+		</p>
+</div>
 
 <table class="table table-striped">
 	<thead>
@@ -22,9 +26,9 @@
 					$unpaid = 0;
 					$partial = 0;
 				 ?>
-			<td><?php echo $program->program_description; ?></td>
+			<td><?php echo $program->basic_program_description; ?></td>
 			<?php foreach ($students as $student): ?>
-			<?php if($program->program_description == $student->course){ ?>
+			<?php if($program->basic_program_description == $student->course){ ?>
 				<?php 
 				if($student->down_payment == ($student->tuition_fee + $student->misc)){
 					$paid++; 
@@ -34,21 +38,15 @@
 					$partial++;
 				}
 				?>
-			<?php } 
-				?>
-			
-			<?php endforeach ?>
-			<?php $total = $paid + $unpaid + $partial; ?>
+			<?php } ?>
+				<?php $total = $paid + $unpaid + $partial; ?>
+				<?php endforeach ?>
 				<?php if($total != 0){ ?>
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program'); ?></td>
-					<?php date_default_timezone_set("America/New_York"); ?>
-					<td><?php echo date('Y-m-d') . " " . "The time is " . date("h:i:sa");?></td>
-						
 				<?php } ?>
-		</tr>
+			</tr>
 		<?php endforeach; ?>
 	 </tbody>
 </table>

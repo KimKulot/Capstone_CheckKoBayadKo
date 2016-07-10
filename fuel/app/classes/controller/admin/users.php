@@ -10,12 +10,27 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
 
-	public function action_index_search($search = null)
-	{
-		$data ['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
-		$this->template->title = "Users";
-		$this->template->content = View::forge('admin/users/index_search', $data);
+	public function action_index_search()
+	{	
+		 $data['thevalue'] = "";
+		if($this->input->post('btnsubmit') == 'submit')
+		{
+			$firstname = $_POST['search'];
+			$data['thevalue'] = $firstname ;
 
+		}
+		$this->template->content = View::forge('admin/users/index_search', $data);
+			$data ['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
+			$this->template->title = "Users";
+			$this->template->content = View::forge('admin/users/index_search', $data);
+
+	}
+
+	public function action_notification()
+	{
+		$data ['phone_number'] = DB::select('phone_number')->from('users')->as_object()->execute();
+		$this->template->title = "SMS Notification";
+		$this->template->content = View::forge('admin/users/notification', $data);
 	}
 	
 	public function action_view($id = null)
@@ -26,8 +41,22 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/view', $data);
 
 	}
+
+
+	//START SETTING CRON
+	public function action_setcron()
+	{
+		$view = View::forge('admin/users/setcron');
+		$this->template->title = "Setting up Cron Job";
+		$this->template->content = $view;
+	}
+	//END SETTING CRON
+	
+
+
 	//START PARENT CREATION
-	public function action_create_parent(){
+	public function action_create_parent($id = null){
+		$data['student'] = Model_User::find($id); 
 		if (Input::method() == 'POST')
 		{
 			$val = Model_User::validate('create');
@@ -62,9 +91,10 @@ class Controller_Admin_Users extends Controller_Admin
 						'phone_number'=> Input::post('phone_number'),
 						'group'=> Input::post('group'),
 						'email'=> Input::post('email'),
+						'role'=> Input::post('role'),
 					));
-					$newuser->parent_student = Model_Student::forge(array(
-						'parent_id'=> Input::post('parent_id'),
+					$newuser->parent_student = Model_Studparent::forge(array(
+						'student_id'=> $id,
 					));
 					if($newuser->save()){
 						Session::set_flash('success', e('Added user'));
@@ -84,7 +114,7 @@ class Controller_Admin_Users extends Controller_Admin
 		}
 
 		$this->template->title = "Users";
-		$this->template->content = View::forge('admin/users/create_parent');
+		$this->template->content = View::forge('admin/users/create_parent', $data);
 
 	}
 	//END PARENT CREATION
@@ -93,7 +123,7 @@ class Controller_Admin_Users extends Controller_Admin
 	public function action_create_student(){
 
 		$view = View::forge('admin/users/create_student');
- 		
+ 		$view->programs = Model_Program::find('all');
 		if (Input::method() == 'POST')
 		{  	
 			$val = Model_User::validate('create');
@@ -117,11 +147,16 @@ class Controller_Admin_Users extends Controller_Admin
 					'phone_number'=> Input::post('phone_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
+					'role'=> Input::post('role'),
 				));
 				$newuser->student = Model_Student::forge(array(
 					'course' =>Input::post('course'),
+					'tuition_fee' => 0,
+					'misc' => 0,
+					'down_payment' => 0,
+					'breakdown' => 0,
+					'balance' => 0,
 				));
-				
 				if($newuser->save()){
 					Session::set_flash('success', e('Added user'));
 				 	Response::redirect('admin/users');
@@ -230,6 +265,7 @@ class Controller_Admin_Users extends Controller_Admin
 			// 		        'password' => Input::post('password'),
 			// 		    )
 			// 		);
+
 				$user = Model_User::forge(array(
 					'username' => Input::post('username'),
 					'password' => Auth::instance()->hash_password(Input::post('password')),
@@ -239,8 +275,15 @@ class Controller_Admin_Users extends Controller_Admin
 					'phone_number' => Input::post('phone_number'),
 					'group' => Input::post('group'),
 					'email' => Input::post('email'),
+					'role'=> Input::post('role'),
 				));
 
+				$check_user= DB::select('username')->from('users')->where('username','=', $user->username)->as_object()->execute();
+
+				if (count($check_user) > 0) {
+					Session::set_flash('error', e('Username already exists .'));
+				}else{
+					
 				if ($user->save())
 				{
 					Session::set_flash('success', e('Added user'.$user->id.'.'));
@@ -252,10 +295,11 @@ class Controller_Admin_Users extends Controller_Admin
 
 			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
 			// }
-				else
-				{
-					Session::set_flash('error', e('Could not save user.'));
-				}
+					else
+					{
+						Session::set_flash('error', e('Could not save user.'));
+					}
+			    }
 			}
 			else
 			{
@@ -268,11 +312,74 @@ class Controller_Admin_Users extends Controller_Admin
 
 	}
 
+	//START CREATE BASIC PROGRAM
+
+public function action_create_basic_program()
+	{
+		$data['basicprograms'] = Model_Basicprogram::find('all');
+		
+		if (Input::method() == 'POST')
+		{
+			$val = Model_Basicprogram::validate('create');
+
+			if ($val->run())
+			{
+				
+				
+				$basicprogram = Model_Basicprogram::forge(array(
+					'basic_program_description' => Input::post('basic_program_description'),
+				));
+				$check_program = DB::select('basic_program_description')->from('basicprograms')->where('basic_program_description','=', $basicprogram->basic_program_description)->as_object()->execute();
+
+				// if(count($check_program) > 0){
+
+				// 	Session::set_flash('error', e('Program description already exists.'));
+				// }else{
+				// 	var_dump($check_program);die();
+				// }
+
+				if (count($check_program) > 0) {
+					Session::set_flash('error', e('basic Program description already exists .'));
+				}else{
+					
+				if ($basicprogram->save())
+					{
+						Session::set_flash('success', e('Added program'.$basicprogram->id.'.'));
+
+						Response::redirect('admin/users');
+					}
+					
+					else
+					{
+						Session::set_flash('error', e('Could not save program.'));
+					}
+				}
+			}
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+
+		$this->template->title = "Program";
+		$this->template->content = View::forge('admin/users/create_basic_program', $data);
+
+	}
+
+	//END CREATE BASIC PROGRAM
+
+
+
+
+
+
 
 	//START CREATE PROGRAM
 
 	public function action_create_program()
 	{
+		$data['programs'] = Model_Program::find('all');
+		
 		if (Input::method() == 'POST')
 		{
 			$val = Model_Program::validate('create');
@@ -317,7 +424,7 @@ class Controller_Admin_Users extends Controller_Admin
 		}
 
 		$this->template->title = "Program";
-		$this->template->content = View::forge('admin/users/create_program');
+		$this->template->content = View::forge('admin/users/create_program', $data);
 
 	}
 

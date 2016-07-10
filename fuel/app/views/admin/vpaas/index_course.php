@@ -2,7 +2,6 @@
 <br>
 <?php if ($students): ?>
 
-
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -15,7 +14,6 @@
 	</thead>
 	<tbody>
 		<tr>
-
 			<?php foreach ($programs as $program): ?>
 				<?php 
 					$paid = 0;
@@ -36,24 +34,18 @@
 				?>
 			<?php } 
 				?>
-			
-			<?php endforeach ?>
+				<?php endforeach ?>
 			<?php $total = $paid + $unpaid + $partial; ?>
 				<?php if($total != 0){ ?>
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program'); ?></td>
-					<?php date_default_timezone_set("America/New_York"); ?>
-					<td><?php echo date('Y-m-d') . " " . "The time is " . date("h:i:sa");?></td>
-						
+					<td> <?php echo Html::anchor('admin/vpaas/view/'.$program->program_description, 'Program'); ?></td>
 				<?php } ?>
-		</tr>
+			</tr>
 		<?php endforeach; ?>
 	 </tbody>
 </table>
-
-	
 
 <?php else: ?>
 <p>No Students.</p>

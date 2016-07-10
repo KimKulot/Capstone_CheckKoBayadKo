@@ -1,6 +1,8 @@
 <div class="pull-right">
 		<p>
-			<?php echo Html::anchor('admin/users/create_parent', '+ Parents', array('class' => 'btn btn-success')); ?>
+
+			<?php echo Html::anchor('admin/users/create_parent/'. $student->id, '+ Parents'); ?>
+
 		</p>
 </div>
 

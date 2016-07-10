@@ -10,7 +10,7 @@
 		<div class="form-group">
 			<?php echo Form::label('', 'group', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('group', Input::post('group', isset($user) ? $user->group : '50'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Group' ,'readonly'=>'readonly', 'type'=>'hidden')); ?>
+				<?php echo Form::input('group', Input::post('group', isset($user) ? $user->group : '1'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Group' ,'readonly'=>'readonly', 'type'=>'hidden')); ?>
 
 		</div>
 		<div class="form-group">
@@ -48,6 +48,12 @@
 			<?php echo Form::label('Email', 'email', array('class'=>'control-label')); ?>
 
 				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email')); ?>
+
+		</div>
+		<div class="form-group">
+			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
+
+				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : 'Parent'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
 
 		</div>
 		

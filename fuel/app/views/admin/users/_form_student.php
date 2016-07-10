@@ -45,6 +45,13 @@
 				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email')); ?>
 
 		</div>
+
+		<div class="form-group">
+			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
+
+				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : 'Student'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
+
+		</div>
 		
 		<!-- <div class="form-group">
 			<?php echo Form::label('User ID', 'user_id', array('class'=>'control-label')); ?>
@@ -62,22 +69,22 @@
 				        'BSBA' => 'BSBA',
 				    ),
 				    'Highschool' => array(
-				    	'1st Year' => '1st Year',
-				    	'2nd Year' => '2nd Year',
-				    	'3th Year' => '3th Year',
-				    	'4th Year' => '4th Year',
+				    	'First Year' => 'First Year',
+				    	'Second Year' => 'Second Year',
+				    	'Third Year' => 'Third Year',
+				    	'Fourth Year' => 'Fourth Year',
 				    ),
 				    'Gradeschool' => array(
-				    	'Grade 1' => 'Grade 1',
-				    	'Grade 2' => 'Grade 2',
-				    	'Grade 3' => 'Grade 3',
-				    	'Grade 4' => 'Grade 4',
-				    	'Grade 5' => 'Grade 5',
-				    	'Grade 6' => 'Grade 6',
+				    	'Grade one' => 'Grade one',
+				    	'Grade two' => 'Grade two',
+				    	'Grade three' => 'Grade three',
+				    	'Grade four' => 'Grade four',
+				    	'Grade five' => 'Grade five',
+				    	'Grade six' => 'Grade six',
 				    ),
 				   	'Preschool' => 'Preschool',
-				   	'Kinder 1'   => 'Kinder 1',
-				   	'Kinder 2'   => 'Kinder 2',
+				   	'Kinder one'   => 'Kinder one',
+				   	'Kinder two'   => 'Kinder two',
 				));
 			?>
 		    <!-- <div class="input">
