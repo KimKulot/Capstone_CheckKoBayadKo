@@ -53,7 +53,16 @@ class Controller_Site extends Controller_Base
 								// credentials ok, go right in
 								$current_user = Model\Auth_User::find($id[1]);
 								Session::set_flash('success', e('Welcome, '.$current_user->username . " " . $current_user->id));
-								Response::redirect('site');
+								if($current_user->role == "Student")
+								{
+									Response::redirect('site');
+								}elseif($current_user->role == "Parent")
+								{
+									Response::redirect('site/index_parent');
+								} else {
+									Response::redirect('admin');
+								}
+								
 								
 							} 
 						}
@@ -94,10 +103,19 @@ class Controller_Site extends Controller_Base
 	 */
 	public function action_index($id = null)
 	{
+		$view['histories'] = Model_Studhistorie::find('all');
 		$view['users'] = Model_User::find('all');
 		$view['students'] = Model_Student::find('all');
 		$this->template->title = 'Dashboard';
 		$this->template->content = View::forge('site/dashboard', $view);
+	}
+	public function action_index_parent($id = null)
+	{
+		$view['studparents'] = Model_Studparent::find('all');
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('site/index_parent', $view);
 	}
 
 }

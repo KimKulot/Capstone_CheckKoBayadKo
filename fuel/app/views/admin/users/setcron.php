@@ -19,7 +19,7 @@ try {
 	));
 
 	// And set the body.
-	$email->body('This is my message');
+	$email->body('Butod ka, ( love you)');
 	Session::set_flash('success', e('Email sent successfully'));
 } catch (Exception $e) {
 	echo $e.Message();

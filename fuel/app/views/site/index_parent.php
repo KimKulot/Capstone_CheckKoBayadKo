@@ -1,7 +1,7 @@
-                                                                                                             
-<h2>Student</h2>
+<h2>Parent</h2>
 <br>
-<?php if ($current_user): ?>	
+<?php if ($current_user): ?>
+	
 <!-- <input type="submit" name="submit" value="submit" /> -->				
 <table class="table table-striped">
 <thead>
@@ -12,36 +12,32 @@
 			<th>Down Payment</th>
 			<th>Amount per Exam</th>
 			<th>Balance</th>
-			<th>Date and Time</th>
 			
 		</tr>
 	</thead>
 <!-- //START STUDENT PROFILE -->
 
-<?php foreach ($students as $student): ?>
-	<?php foreach ($users as $user): ?>
+<?php foreach ($studparents as $studparent): ?>
 
-		<?php foreach ($histories as $history): ?>
-			<?php if ($student->id == $history->studenthistory_id): ?>
+	<?php if ($current_user->id == $studparent->parent_id): ?>
+		<?php foreach ($students as $student): ?>
+			<?php foreach ($users as $user): ?>
 				<?php if ($user->id == $student->student_id): ?>
-					<?php if ($current_user->id == $student->student_id): ?>
+					<?php if ($studparent->student_id == $student->id): ?>
 					  <tr>
-					  
 					  	<td><?php echo $user->lastname . ", " . $user->firstname . " " . $user->middlename; ?></td>
-						<td><?php echo $history->tuition_fee ?></td>
-						<td><?php echo $history->misc; ?></td>
-						<td><?php echo $history->down_payment; ?></td>
-						<td><?php echo $history->breakdown; ?></td>
-						<td><?php echo $history->balance; ?></td>
-						<td><?php echo $history->date_time; ?></td>
-				
+						<td><?php echo $student->tuition_fee ?></td>
+						<td><?php echo $student->misc; ?></td>
+						<td><?php echo $student->down_payment; ?></td>
+						<td><?php echo $student->breakdown; ?></td>
+						<td><?php echo $student->balance; ?></td>
 					 </tr>
 					<?php endif ?>
 				<?php endif ?>
-			<?php endif ?>
+			<?php endforeach ?>
+			
 		<?php endforeach ?>
-		
-	<?php endforeach ?>	
+	<?php endif ?>
 <?php endforeach ?>
 <!-- //END STUDENT PROFILE -->
 

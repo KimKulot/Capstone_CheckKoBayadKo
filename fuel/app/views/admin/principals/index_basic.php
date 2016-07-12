@@ -1,11 +1,7 @@
-<h2>Listing Students</h2>
+<h2>Basic Education Programs</h2>
 <br>
 <?php if ($students): ?>
-<div class="pull-right">
-		<p>
-			<?php echo Html::anchor('admin/admins/index_student', 'Student', array('class' => 'btn btn-success')); ?>
-		</p>
-</div>
+
 
 <table class="table table-striped">
 	<thead>

@@ -1,4 +1,4 @@
-<h2>Listing Students</h2>
+<h2>List of Students who paid and not paid</h2>
 <br>
 <?php if ($students): ?>
 <table class="table table-striped">
@@ -15,7 +15,6 @@
 		</tr>
 	</thead>
 	<tbody>
-<h2>Recent Posts</h2>
 <?php foreach ($students as $item): ?>
 
 		<tr>

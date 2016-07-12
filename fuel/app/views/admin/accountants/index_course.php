@@ -2,7 +2,7 @@
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/admins/index_student', 'Basic Education', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/accountants/index_student', 'Basic Education', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 </div>
@@ -14,7 +14,7 @@
 
 <td>
 <?php date_default_timezone_set("America/New_York"); ?>
-<h3><?php echo  "The time and date is " . date('Y-m-d') . " " . date("h:i:s");?></td></h3>
+<h3><?php echo  "The time and date is " . date('Y-m-d') . " " . date("h:i:sa");?></td></h3>
 <table class="table table-striped">
 	<thead>
 		<tr>

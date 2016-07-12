@@ -1,53 +1,38 @@
-<?php 	
-class Model_Student extends \Orm\Model
+<?php
+class Model_Studhistorie extends \Orm\Model
 {
-
 	protected static $_properties = array(
 		'id',
-		'course',
-		'student_id',
-		//'parent_id',
+		'studenthistory_id',
 		'tuition_fee',
 		'misc',
 		'down_payment',
 		'breakdown',
 		'balance',
+		'date_time',
 		'created_at',
 		'updated_at',
+
 	);
 
-	/**
-	 * @var array	belongs_to relationships
-	 */
 	protected static $_belongs_to = array(
 		'user' => array(
-			'model_to' => 'Model_User',
-			'key_from' => 'student_id',
+			'model_to' => 'Model_Student',
+			'key_from' => 'studenthistory_id',
 			'key_to'   => 'id',
 			'cascade_delete' => false,
 		),
-		// 'parent_user' => array(
-		// 	'model_to' => 'Model_User',
-		// 	'key_from' => 'parent_id',
-		// 	'key_to'   => 'id',
-		// 	'cascade_delete' => false,
-		// ),
-	);
-	protected static $_has_many = array(
-
-		'history' => array(
-			'model_to' => 'Model_Studhistorie',
-			'key_from' => 'id',
-			'key_to' => 'studenthistory_id',
-			'cascade_delete' => true,
-			'cascade_save' => true,
-		),
-
 	);
 
 	
+	
+	
+	
 
-
+	// public function get_full_name () {
+	// 	return $this->'firstname' . ' ' . $this->'lastname';
+	// 	static::method_exists(object, method_name());
+	// }
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -59,17 +44,18 @@ class Model_Student extends \Orm\Model
 		),
 	);
 
+
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('course', 'Course', 'required|max_length[50]');
-		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
-		//$val->add_field('parent_id', 'Parent_id',  'required|valid_string[numeric]');
+		$val->add_field('studenthistory_id', 'Studenthistory_id',  'required|valid_string[numeric]');
 		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
 		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
 		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
 		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
 		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');
+		$val->add_field('date_time', 'Date Time', 'required|max_length[255]');
 		return $val;
 	}
+
 }

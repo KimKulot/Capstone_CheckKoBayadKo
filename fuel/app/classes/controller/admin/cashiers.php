@@ -1,7 +1,13 @@
 <?php
 class Controller_Admin_Cashiers extends Controller_Admin
 {
+	public function before()
+	{
+		parent::before();
 
+		// kung dili cashiers
+		Response::redirect('/');
+	}
 	public function action_index()
 	{
 		//$view->users = Model_User::find('all');
@@ -18,9 +24,10 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	{
 		$student = Model_Student::find($id);
 		$val = Model_Student::validate('edit');
-
+		date_default_timezone_set("America/New_York");
 		if ($val->run())
 		{
+
 			$student->student_id = Input::post('student_id');
 			$student->course = Input::post('course');
 			$student->tuition_fee = Input::post('tuition_fee');
@@ -29,6 +36,16 @@ class Controller_Admin_Cashiers extends Controller_Admin
 			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
 			$student->balance = ($student->tuition_fee + $student->misc) - $student->down_payment;
 
+			$student->history[] = Model_Studhistorie::forge(array(
+					'studenthistory_id'=> $id,
+					'tuition_fee' => Input::post('tuition_fee'),
+					'misc' => Input::post('misc'),
+					'down_payment' => Input::post('down_payment'),
+					'breakdown' => ($student->tuition_fee + $student->misc) / 4,
+					'balance' => ($student->tuition_fee + $student->misc) - $student->down_payment,
+					'date_time' => date('Y-m-d') . " " . date("h:i:s"),
+                    
+			));
 			if ($student->save())
 			{
 				Session::set_flash('success', e('Updated student #' . $id));

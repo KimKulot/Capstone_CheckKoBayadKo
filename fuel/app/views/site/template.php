@@ -42,7 +42,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-						<?php echo Html::anchor('site', 'Student') ?>
+						<?php echo Html::anchor('site', 'Home') ?>
 					</li>
 
 					<?php

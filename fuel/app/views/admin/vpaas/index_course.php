@@ -1,4 +1,4 @@
-<h2>Listing Students</h2>
+<h2>College Statistical Report</h2>
 <br>
 <?php if ($students): ?>
 
@@ -40,7 +40,7 @@
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					<td> <?php echo Html::anchor('admin/vpaas/view/'.$program->program_description, 'Program'); ?></td>
+					
 				<?php } ?>
 			</tr>
 		<?php endforeach; ?>

@@ -2,7 +2,7 @@
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/admins/index', 'College Education', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/accountants/index', 'College Education', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 </div>

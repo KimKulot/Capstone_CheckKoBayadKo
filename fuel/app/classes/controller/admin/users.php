@@ -61,25 +61,7 @@ class Controller_Admin_Users extends Controller_Admin
 		{
 			$val = Model_User::validate('create');
 
-			if ($val->run())
-			{
-			// try{
-				// $user = Auth::create_user(
-				// 	    'Parent',
-				// 	    Input::post('password'),
-				// 	    Input::post('firstname'),
-				// 	    Input::post('middlename'),
-				// 	    Input::post('lastname'),
-				// 	    Input::post('phone_number'),
-				// 	    Input::post('email'),
-				// 	    100,
-				// 	    array(
-				// 	        'firstname' => Input::post('firstname'),
-				// 	        'middlename' => Input::post('middlename'),
-				// 	        'lastname' => Input::post('lastname'),
-				// 	        'password' => Input::post('password'),
-				// 	    )
-				// 	);
+			
 				if ($val->run())
 				{
 					$newuser = Model_User::forge(array(
@@ -105,8 +87,6 @@ class Controller_Admin_Users extends Controller_Admin
 
 			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
 			 }
-
-			}
 			else
 			{
 				Session::set_flash('error', $val->error());

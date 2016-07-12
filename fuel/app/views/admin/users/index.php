@@ -23,16 +23,6 @@
 		</p>
 		</div>
 	</div>
-	<div class="pull-right">
-		<div class="col-md-12">
-		<p>
-
-			<?php echo Html::anchor('admin/users/create_basic_program', '+ Basic Education Program', array('class' => 'btn btn-primary')); ?>
-		</p>
-		</div>
-	</div>
-
-	
 
 
 
@@ -109,9 +99,9 @@
 <?php else: ?>
 <p>No Users.</p>
 
-<?php endif; ?><!-- <p>
-	<?php echo Html::anchor('admin/users/create', 'Add new User', array('class' => 'btn btn-success')); ?>
+<?php endif; ?> 
+<p>
+	<?php echo Html::anchor('admin/users/create', 'Add new User', array('class' => 'btn btn-primary')); ?>
 
 </p>
- -->
  

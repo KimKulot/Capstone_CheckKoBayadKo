@@ -67,6 +67,14 @@
 				        'BSIT' => 'BSIT',
 				        'BSCS' => 'BSCS',
 				        'BSBA' => 'BSBA',
+				        'BSCE' => 'BSCE',
+				        'BSW' => 'BSW',
+				        'BSA' => 'BSA',
+				        'BSED' => 'BSED',
+				        'BSCRIM' => 'BSCRIM',
+				        'BAMC' => 'BAMC',
+				        'BSSE' => 'BSSE',
+
 				    ),
 				    'Highschool' => array(
 				    	'First Year' => 'First Year',
