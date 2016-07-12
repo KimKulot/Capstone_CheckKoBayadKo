@@ -51,12 +51,28 @@
 
 		</div>
 
+		
 		<div class="form-group">
-			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
+		    <?php echo Form::label('Role', 'role', array('class'=>'control-label')); ?>
+		 	<?php 
+			 	echo Form::select('role', Input::post('role', isset($student) ? $user->role : 'BSIT'), array(
+				    'role' => array( 
+				        '1' => 'Dean',
+				        '2' => 'Program Head',
+				        '3' => 'Accountant',
+				        '4' => 'Cashier',
+				        '5' => 'Principal',
+				        '6' => 'Admin',
+				        '7' => 'VPAA',
 
-				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
-
+				    ),
+				    
+				));
+			?>
+		   
 		</div>
+		
+
 		<div class="form-group">
 			<label class='control-label'>&nbsp;</label>
 			<?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>		</div>

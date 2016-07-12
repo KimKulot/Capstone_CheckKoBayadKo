@@ -1,3 +1,8 @@
+<?php 
+	if ($current_user->role != 3) {
+		Response::redirect('/');
+	}
+?>
     <div class="pull-right">
 		<div class="col-md-12">
 		<p>
@@ -82,10 +87,14 @@
 			<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
 			<td><?php echo $item->phone_number; ?></td>
 			<td><?php echo $item->email; ?></td>
-			<?php if($item->group == 100){ ?>
-				<td><?php echo "Admin"; ?></td>
-			<?php } ?>
-			<td><?php echo $item->role; ?></td>
+			<?php foreach ($roles as $role): ?>
+				<?php 
+					if ($item->role == $role->id) 
+					{
+						echo "<td>$role->role_description</td>"; 
+					} 
+				?>
+			<?php endforeach ?>
 			<td>
 				<?php echo Html::anchor('admin/users/view/'.$item->id, 'View'); ?> |
 				<?php echo Html::anchor('admin/users/edit/'.$item->id, 'Edit'); ?> |

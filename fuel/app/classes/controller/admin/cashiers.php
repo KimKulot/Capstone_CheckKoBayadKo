@@ -1,13 +1,13 @@
 <?php
 class Controller_Admin_Cashiers extends Controller_Admin
 {
-	public function before()
-	{
-		parent::before();
+	// public function before()
+	// {
+	// 	parent::before();
 
-		// kung dili cashiers
-		Response::redirect('/');
-	}
+	// 	// kung dili cashiers
+	// 	Response::redirect('/');
+	// }
 	public function action_index()
 	{
 		//$view->users = Model_User::find('all');

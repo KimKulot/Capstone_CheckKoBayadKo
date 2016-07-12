@@ -66,7 +66,7 @@ class Model_User extends \Orm\Model
 		$val->add_field('phone_number', 'Phone Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-		$val->add_field('role', 'Role', 'required|max_length[50]');
+		$val->add_field('role', 'Role', 'required|valid_string[numeric]');
 		return $val;
 	}
 

@@ -49,7 +49,7 @@
 		<div class="form-group">
 			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : 'Student'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
+				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : '8'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
 
 		</div>
 		

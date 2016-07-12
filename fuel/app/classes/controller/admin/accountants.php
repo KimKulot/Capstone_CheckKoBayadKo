@@ -2,8 +2,10 @@
 class Controller_Admin_Accountants extends Controller_Admin
 {
 
+	
 	public function action_index()
-	{
+	{	
+
 		$view = View::forge('admin/accountants/index_course');
 		$view->programs = Model_Program::find('all');
 		// $data['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();

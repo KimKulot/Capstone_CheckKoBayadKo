@@ -1,3 +1,8 @@
+<?php 
+		if ($current_user->role != 7) {
+			Response::redirect('/');
+		}
+ ?>
 <h2>College Statistical Report</h2>
 <br>
 <?php if ($students): ?>

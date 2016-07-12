@@ -48,13 +48,14 @@
 
 					<?php
 						$files = new GlobIterator(APPPATH.'classes/controller/admin/*.php');
+						
 						foreach($files as $file)
 						{
 							$section_segment = $file->getBasename('.php');
 							$section_title = Inflector::humanize($section_segment);
 							?>
 							<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-								<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
+								<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
 							</li>
 							<?php
 						}
@@ -62,7 +63,7 @@
 				</ul>
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown">
-						<a data-toggle="dropdown" class="dropdown-toggle" href="#"><?php echo $current_user->username ?> <b class="caret"></b></a>
+						<a data-toggle="dropdown" class="dropdown-toggle" href="#"><?php echo $current_user->username?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><?php echo Html::anchor('admin/logout', 'Logout') ?></li>
 						</ul>

@@ -1,3 +1,8 @@
+<?php 
+		if ($current_user->role != 3) {
+			Response::redirect('/');
+		}
+ ?>
 <h2>Listing Students</h2>
 <br>
 <?php if ($students): ?>

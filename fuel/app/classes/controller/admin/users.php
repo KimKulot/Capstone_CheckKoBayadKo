@@ -6,6 +6,7 @@ class Controller_Admin_Users extends Controller_Admin
 	{
 
 		$data['users'] = Model_User::find('all');
+		$data['roles'] = Model_Role::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 	}

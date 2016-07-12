@@ -1,4 +1,4 @@
-<?php
+8<?php
 class Controller_Admin_Admins extends Controller_Admin
 {
 

@@ -1,3 +1,8 @@
+<?php 
+		if ($current_user->role != 6) {
+			Response::redirect('/');
+		}
+ ?>
 <div class="pull-right">
 		<div class="col-md-12">
 		<p>

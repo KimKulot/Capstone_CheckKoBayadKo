@@ -1,3 +1,8 @@
+<?php 
+		if ($current_user->role != 4) {
+			Response::redirect('/');
+		}
+ ?>
 <h2>List of Students who paid and not paid</h2>
 <br>
 <?php if ($students): ?>

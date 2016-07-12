@@ -1,3 +1,8 @@
+<?php 
+		if ($current_user->role != 5) {
+			Response::redirect('/');
+		}
+ ?>
 <h2>Basic Education Programs</h2>
 <br>
 <?php if ($students): ?>
