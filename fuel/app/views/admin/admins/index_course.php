@@ -1,5 +1,5 @@
 <?php 
-		if ($current_user->role != 6) {
+		if ($current_user->role != 6 && $current_user->role != 10) {
 			Response::redirect('/');
 		}
  ?>

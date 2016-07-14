@@ -1,7 +1,9 @@
 <h2>Parent</h2>
 <br>
 <?php if ($current_user): ?>
-	
+	<!-- START STUDENT NAME -->
+<h3><?php echo $current_user->lastname . ", " . $current_user->firstname . " " . $current_user->middlename; ?></h3>
+<!-- END STUDENT NAME -->
 <!-- <input type="submit" name="submit" value="submit" /> -->				
 <table class="table table-striped">
 <thead>

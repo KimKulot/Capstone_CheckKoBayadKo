@@ -53,10 +53,10 @@ class Controller_Site extends Controller_Base
 								// credentials ok, go right in
 								$current_user = Model\Auth_User::find($id[1]);
 								Session::set_flash('success', e('Welcome, '.$current_user->username . " " . $current_user->id));
-								if($current_user->role == "Student")
+								if($current_user->role == 8)
 								{
 									Response::redirect('site');
-								}elseif($current_user->role == "Parent")
+								}elseif($current_user->role == 9)
 								{
 									Response::redirect('site/index_parent');
 								} else {

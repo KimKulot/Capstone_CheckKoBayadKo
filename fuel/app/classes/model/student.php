@@ -5,10 +5,12 @@ class Model_Student extends \Orm\Model
 	protected static $_properties = array(
 		'id',
 		'course',
+		'year',
 		'student_id',
 		//'parent_id',
 		'tuition_fee',
 		'misc',
+		'other_fees',
 		'down_payment',
 		'breakdown',
 		'balance',
@@ -63,10 +65,12 @@ class Model_Student extends \Orm\Model
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('course', 'Course', 'required|max_length[50]');
+		$val->add_field('year', 'Year', 'required|max_length[255]');
 		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
 		//$val->add_field('parent_id', 'Parent_id',  'required|valid_string[numeric]');
 		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
 		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
+		$val->add_field('other_fees', 'Other Fees',  'required|valid_string[numeric]');
 		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
 		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
 		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');

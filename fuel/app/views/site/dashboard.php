@@ -7,10 +7,13 @@
 <!-- START STUDENT NAME -->
 <h3><?php echo $current_user->lastname . ", " . $current_user->firstname . " " . $current_user->middlename; ?></h3>
 <!-- END STUDENT NAME -->
+
 <thead>
-		<tr>		
+		<tr>
+			<th>Total Assessment</th>	
 			<th>Tuition fee</th>
 			<th>Miscellaneous</th>
+			<th>Other Fees</th>
 			<th>Down Payment</th>
 			<th>Amount per Exam</th>
 			<th>Balance</th>
@@ -28,9 +31,10 @@
 				<?php if ($user->id == $student->student_id): ?>
 					<?php if ($current_user->id == $student->student_id): ?>
 					  <tr>
-					 
+					 	<td><?php echo $history->tuition_fee + $history->misc + $history->other_fees ?></td>
 						<td><?php echo $history->tuition_fee ?></td>
 						<td><?php echo $history->misc; ?></td>
+						<td><?php echo $history->other_fees; ?></td>
 						<td><?php echo $history->down_payment; ?></td>
 						<td><?php echo $history->breakdown; ?></td>
 						<td><?php echo $history->balance; ?></td>

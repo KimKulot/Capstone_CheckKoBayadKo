@@ -56,15 +56,13 @@
 		    <?php echo Form::label('Role', 'role', array('class'=>'control-label')); ?>
 		 	<?php 
 			 	echo Form::select('role', Input::post('role', isset($student) ? $user->role : 'BSIT'), array(
-				    'role' => array( 
-				        '1' => 'Dean',
+				    'Role' => array( 
 				        '2' => 'Program Head',
 				        '3' => 'Accountant',
 				        '4' => 'Cashier',
 				        '5' => 'Principal',
 				        '6' => 'Admin',
 				        '7' => 'VPAA',
-
 				    ),
 				    
 				));

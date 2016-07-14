@@ -1,7 +1,7 @@
 <div class="pull-right">
 		<p>
 
-			<?php echo Html::anchor('admin/users/create_parent/'. $student->id, '+ Parents'); ?>
+			<?php echo Html::anchor('admin/users/create_parent/'. $student->id, '<span class="glyphicon glyphicon-plus"></span> Parents', array('class' => 'btn btn-primary')); ?>
 
 		</p>
 </div>

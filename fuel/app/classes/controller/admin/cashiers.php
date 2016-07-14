@@ -30,19 +30,22 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 			$student->student_id = Input::post('student_id');
 			$student->course = Input::post('course');
+			$student->year = Input::post('year');
 			$student->tuition_fee = Input::post('tuition_fee');
 			$student->misc = Input::post('misc');
+			$student->other_fees = Input::post('other_fees');
 			$student->down_payment = Input::post('down_payment');
-			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
-			$student->balance = ($student->tuition_fee + $student->misc) - $student->down_payment;
+			$student->breakdown = ($student->tuition_fee + $student->misc + $student->other_fees) / 4;
+			$student->balance = ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment;
 
 			$student->history[] = Model_Studhistorie::forge(array(
 					'studenthistory_id'=> $id,
 					'tuition_fee' => Input::post('tuition_fee'),
 					'misc' => Input::post('misc'),
+					'other_fees' => Input::post('other_fees'),
 					'down_payment' => Input::post('down_payment'),
-					'breakdown' => ($student->tuition_fee + $student->misc) / 4,
-					'balance' => ($student->tuition_fee + $student->misc) - $student->down_payment,
+					'breakdown' => ($student->tuition_fee + $student->misc + $student->other_fees) / 4,
+					'balance' => ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment,
 					'date_time' => date('Y-m-d') . " " . date("h:i:s"),
                     
 			));

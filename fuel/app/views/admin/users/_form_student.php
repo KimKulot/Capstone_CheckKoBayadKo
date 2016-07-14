@@ -101,6 +101,28 @@
 		    </div> -->
 		</div>
 		
+		<div class="form-group">
+		    <?php echo Form::label('Year', 'year', array('class'=>'control-label')); ?>
+		 	<?php 
+			 	echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''), array(
+				    'Year' => array( 
+				        'I Year' => 'I Year',
+				        'II Year' => 'II Year',
+				        'III Year' => 'III Year',
+				        'IV Year' => 'IV Yea',
+				        'V Year' => 'V Year',
+				    ),
+				));
+			?>
+		    <!-- <div class="input">
+		        <?php echo Form::select('student_id', Input::post('student_id', isset($student) ? $student->student_id : $current_user->id), $students, array('class' => 'span6')); ?>
+		 
+		    </div> -->
+		</div>
+		
+
+
+
 
 		<div class="form-group">
 			<label class='control-label'>&nbsp;</label>

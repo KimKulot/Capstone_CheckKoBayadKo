@@ -55,6 +55,55 @@ class Controller_Admin_Users extends Controller_Admin
 	
 
 
+	//START DEAN CREATION
+	public function action_create_dean($id = null){
+		$data['dean'] = Model_User::find($id); 
+		if (Input::method() == 'POST')
+		{
+			$val = Model_User::validate('create');
+
+			
+				if ($val->run())
+				{
+					$newuser = Model_User::forge(array(
+						'username'=> Input::post('username'),
+						'firstname' =>Input::post('firstname'),
+						'middlename'=> Input::post('middlename'),
+						'lastname'=> Input::post('lastname'),
+						'password'=> Auth::instance()->hash_password(Input::post('password')),
+						'phone_number'=> Input::post('phone_number'),
+						'group'=> Input::post('group'),
+						'email'=> Input::post('email'),
+						'role'=> Input::post('role'),
+					));
+					$newuser->dean_program = Model_Progdean::forge(array(
+						'program_id'=> Input::post('program_id'),
+						'dean_id' => $id,
+
+					));
+					if($newuser->save()){
+						Session::set_flash('success', e('Added user'));
+					 	Response::redirect('admin/users');
+				}
+
+			// }catch(Exception $e){
+
+			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
+			 }
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+
+		$this->template->title = "Users";
+		$this->template->content = View::forge('admin/users/create_dean', $data);
+
+	}
+	//END DEAN CREATION
+
+
+
 	//START PARENT CREATION
 	public function action_create_parent($id = null){
 		$data['student'] = Model_User::find($id); 
@@ -132,7 +181,9 @@ class Controller_Admin_Users extends Controller_Admin
 				));
 				$newuser->student = Model_Student::forge(array(
 					'course' =>Input::post('course'),
+					'year' =>Input::post('year'),
 					'tuition_fee' => 0,
+					'other_fees' => 0,
 					'misc' => 0,
 					'down_payment' => 0,
 					'breakdown' => 0,

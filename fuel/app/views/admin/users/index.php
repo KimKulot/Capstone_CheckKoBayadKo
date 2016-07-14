@@ -1,5 +1,5 @@
 <?php 
-	if ($current_user->role != 3) {
+	if ($current_user->role != 3 && $current_user->role != 10) {
 		Response::redirect('/');
 	}
 ?>
@@ -7,7 +7,7 @@
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/users/setcron', 'Setting Cron', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/users/setcron', '<span class="glyphicon glyphicon-cog"></span> Setting Cron', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 	</div>                                                                                                          
@@ -15,7 +15,16 @@
 		<div class="col-md-12">
 		<p>
 
-			<?php echo Html::anchor('admin/users/create_student', '+ Student', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/users/create_student', '<span class="glyphicon glyphicon-plus"></span> Student', array('class' => 'btn btn-primary')); ?>
+		</p>
+		</div>
+	</div>
+	
+	<div class="pull-right">
+		<div class="col-md-12">
+		<p>
+
+			<?php echo Html::anchor('admin/users/create_program', '<span class="glyphicon glyphicon-plus"></span> College Program', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 	</div>
@@ -23,8 +32,8 @@
 	<div class="pull-right">
 		<div class="col-md-12">
 		<p>
-
-			<?php echo Html::anchor('admin/users/create_program', '+ College Program', array('class' => 'btn btn-primary')); ?>
+			
+			<?php echo Html::anchor('admin/users/create_dean', '<span class="glyphicon glyphicon-plus"></span> Dean', array('class' => 'btn btn-primary')); ?>
 		</p>
 		</div>
 	</div>
@@ -41,7 +50,7 @@
 				<?php $search = ""?>
 					<?php echo Form::input('search',  $search, array('class' => 'col-md-4 form-control', 'placeholder'=>'search' )); ?>
 					
-					<?php echo Html::anchor('admin/users/index_search/'. $search, 'Search', array('class' => 'btn btn-primary')); ?> 
+					<?php echo Html::anchor('admin/users/index_search/'. $search, '<span class="glyphicon glyphicon-search"></span> Search', array('class' => 'btn btn-primary')); ?> 
 				
 
 			</div>
@@ -110,7 +119,7 @@
 
 <?php endif; ?> 
 <p>
-	<?php echo Html::anchor('admin/users/create', 'Add new User', array('class' => 'btn btn-primary')); ?>
+	<?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary')); ?>
 
 </p>
  

@@ -32,6 +32,14 @@ class Model_User extends \Orm\Model
 			'cascade_delete' => true,
 			'cascade_save' => true,
 		),
+		'dean_program' => array(
+			'model_to' => 'Model_Progdean',
+			'key_from' => 'id',
+			'key_to' => 'dean_id',
+			'cascade_delete' => true,
+			'cascade_save' => true,
+		),
+
 	);
 
 	

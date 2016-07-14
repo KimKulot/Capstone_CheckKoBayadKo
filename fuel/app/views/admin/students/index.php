@@ -1,5 +1,5 @@
 <?php 
-		if ($current_user->role != 3) {
+		if ($current_user->role != 3 && $current_user->role != 10) {
 			Response::redirect('/');
 		}
  ?>
@@ -10,8 +10,8 @@
 	<thead>
 		<tr>
 			<th>Program</th>
+			<th>Year</th>
 			<th>Student ID</th>
-			
 			<th>Full Name</th>
 			<th>Parent Name</th>
 			<th></th>
@@ -29,6 +29,7 @@
 
 		<tr>
 			<td><?php echo $item->course; ?></td>
+			<td><?php echo $item->year; ?></td>
 			<td><?php echo $item->student_id; ?></td>
 			
 			<?php foreach ($users as $key): ?>

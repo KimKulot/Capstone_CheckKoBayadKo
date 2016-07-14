@@ -11,6 +11,14 @@
 
 				<?php echo Form::input('course', Input::post('course', isset($student) ? $student->course : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Course', 'type'=>'hidden')); ?>
 		</div>
+
+		<div class="form-group">
+			<?php echo Form::label('', 'year', array('class'=>'control-label')); ?>
+
+				<?php echo Form::input('year', Input::post('year', isset($student) ? $student->year : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Year', 'type'=>'hidden')); ?>
+		</div>
+
+
 		<div class="form-group">
 			<?php echo Form::label('Tuition Fee', 'tuition_fee', array('class'=>'control-label')); ?>
 
@@ -21,6 +29,12 @@
 			<?php echo Form::label('Miscellaneous', 'misc', array('class'=>'control-label')); ?>
 
 				<?php echo Form::input('misc', Input::post('misc', isset($student) ? $student->misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous')); ?>
+		</div>
+
+		<div class="form-group">
+			<?php echo Form::label('Other Fees', 'other_fees', array('class'=>'control-label')); ?>
+
+				<?php echo Form::input('other_fees', Input::post('other_fees', isset($student) ? $student->other_fees : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Other Fees')); ?>
 		</div>
 
 		<div class="form-group">
