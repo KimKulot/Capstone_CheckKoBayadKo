@@ -30,12 +30,12 @@
 				<?php } ?>
 			<?php endforeach ?>
 			<td><?php echo $item->course; ?></td>
-			<td><?php echo $item->tuition_fee; ?></td>
-			<td><?php echo $item->misc; ?></td>
-			<td><?php echo $item->other_fees; ?></td>
-			<td><?php echo $item->down_payment; ?></td>
-			<td><?php echo $item->breakdown; ?></td>
-			<td><?php echo $item->balance; ?></td>
+			<td><?php echo number_format($item->tuition_fee); ?></td>
+			<td><?php echo number_format($item->misc); ?></td>
+			<td><?php echo number_format($item->other_fees); ?></td>
+			<td><?php echo number_format($item->down_payment); ?></td>
+			<td><?php echo number_format($item->breakdown); ?></td>
+			<td><?php echo number_format($item->balance); ?></td>
 			<td>
 				<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode'); ?> |
 			</td>

@@ -3,11 +3,13 @@ class Model_Studhistorie extends \Orm\Model
 {
 	protected static $_properties = array(
 		'id',
+		'program_description',
 		'studenthistory_id',
 		'tuition_fee',
 		'misc',
 		'other_fees',
 		'down_payment',
+		'payment',
 		'breakdown',
 		'balance',
 		'date_time',
@@ -49,11 +51,13 @@ class Model_Studhistorie extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
+		$val->add_field('program_description', 'Program Description', 'required|max_length[255]');
 		$val->add_field('studenthistory_id', 'Studenthistory_id',  'required|valid_string[numeric]');
 		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
 		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
 		$val->add_field('other_fees', 'Other Fees',  'required|valid_string[numeric]');
 		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
+		$val->add_field('payment', 'Payment',  'required|valid_string[numeric]');
 		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
 		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');
 		$val->add_field('date_time', 'Date Time', 'required|max_length[255]');

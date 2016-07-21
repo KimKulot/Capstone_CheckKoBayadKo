@@ -13,7 +13,7 @@
 			<div class="form-group <?php echo ! $val->error('email') ?: 'has-error' ?>">
 				<label for="email">Email or Username:</label>
 				<?php echo Form::input('email', Input::post('email'), array('class' => 'form-control', 'placeholder' => 'Email or Username', 'autofocus')); ?>
-
+		
 				<?php if ($val->error('email')): ?>
 					<span class="control-label"><?php echo $val->error('email')->get_message('You must provide a username or email'); ?></span>
 				<?php endif; ?>

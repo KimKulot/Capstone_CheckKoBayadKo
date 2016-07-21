@@ -10,6 +10,14 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
+	public function action_cron_message()
+	{
+		$data['studparents'] = Model_Studparent::find('all');
+		$data['users'] = Model_User::find('all');
+		$data['students'] = Model_Student::find('all');
+		$this->template->title = "Users";
+		$this->template->content = View::forge('admin/users/cron_message', $data);
+	}
 
 	public function action_index_search()
 	{	
@@ -197,7 +205,7 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	Session::set_flash('error', e('Username or Email is already exist'));
 				// }
 			// try{		
-				// $user = Auth::create_user(
+				//c bv aa $user = Auth::create_user(
 				// 	    'Student',
 				// 	    Input::post('password'),
 				// 	    Input::post('firstname'),

@@ -3,44 +3,49 @@
 		Response::redirect('/');
 	}
 ?>
-    <div class="pull-right">
-		<div class="col-md-12">
-		<p>
-
-			<?php echo Html::anchor('admin/users/setcron', '<span class="glyphicon glyphicon-cog"></span> Setting Cron', array('class' => 'btn btn-primary')); ?>
-		</p>
-		</div>
-	</div>                                                                                                          
-	<div class="pull-right">
-		<div class="col-md-12">
-		<p>
-
-			<?php echo Html::anchor('admin/users/create_student', '<span class="glyphicon glyphicon-plus"></span> Student', array('class' => 'btn btn-primary')); ?>
-		</p>
-		</div>
-	</div>
 	
-	<div class="pull-right">
-		<div class="col-md-12">
-		<p>
-
-			<?php echo Html::anchor('admin/users/create_program', '<span class="glyphicon glyphicon-plus"></span> College Program', array('class' => 'btn btn-primary')); ?>
-		</p>
+        <div class="pull-right">
+			<div class="col-md-12">
+				<p>
+					<?php echo Html::anchor('admin/users/setcron', '<span class="glyphicon glyphicon-cog"></span> Setting Cron', array('class' => 'btn btn-primary')); ?>
+				</p>
+			</div>
 		</div>
-	</div>
+    <div class="animated bounceInRight"> 
+	    <div class="pull-right">
+			<div class="col-md-12">
+			<p>
 
-	<div class="pull-right">
-		<div class="col-md-12">
-		<p>
-			
-			<?php echo Html::anchor('admin/users/create_dean', '<span class="glyphicon glyphicon-plus"></span> Dean', array('class' => 'btn btn-primary')); ?>
-		</p>
+				<?php echo Html::anchor('admin/users/create_student', '<span class="glyphicon glyphicon-plus"></span> Student', array('class' => 'btn btn-primary')); ?>
+			</p>
+			</div>
 		</div>
-	</div>
+    </div>                                                                                             
+	
+	    <div class="pull-right">
+			<div class="col-md-12">
+			<p>
+
+				<?php echo Html::anchor('admin/users/create_program', '<span class="glyphicon glyphicon-plus"></span> College Program', array('class' => 'btn btn-primary')); ?>
+			</p>
+			</div>
+		</div>
+	
+	<div class=" animated bounceInRight"> 
+	    <div class="pull-right">
+			<div class="col-md-12">
+			<p>
+				
+				<?php echo Html::anchor('admin/users/create_dean', '<span class="glyphicon glyphicon-plus"></span> Dean', array('class' => 'btn btn-primary')); ?>
+			</p>
+			</div>
+		</div>
+    </div>
+	
 
 
 
-<h2>Listing Users</h2>
+<h2>Listing of Users</h2>
 <br>
 <?php if ($users): ?>
 

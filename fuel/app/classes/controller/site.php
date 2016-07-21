@@ -103,7 +103,8 @@ class Controller_Site extends Controller_Base
 	 */
 	public function action_index($id = null)
 	{
-		$view['histories'] = Model_Studhistorie::find('all');
+		// $view['histories'] = Model_Studhistorie::find('all');
+		$view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
 		$view['users'] = Model_User::find('all');
 		$view['students'] = Model_Student::find('all');
 		$this->template->title = 'Dashboard';

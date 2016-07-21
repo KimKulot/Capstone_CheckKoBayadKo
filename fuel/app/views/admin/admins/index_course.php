@@ -17,6 +17,7 @@
 <br>
 <?php if ($students): ?>
 
+
 <td>
 <?php date_default_timezone_set("America/New_York"); ?>
 <h3><?php echo  "The time and date is " . date('Y-m-d') . " " . date("h:i:s");?></td></h3>
@@ -27,6 +28,7 @@
 			<th>Paid</th>
 			<th>Unpaid</th>
 			<th>Partially paid</th>
+			<th>Date Time</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -40,19 +42,21 @@
 					$partial = 0;
 				 ?>
 			<td><?php echo $program->program_description; ?></td>
+			
+			
 			<?php foreach ($students as $student): ?>
-			<?php if($program->program_description == $student->course){ ?>
-				<?php 
-				if($student->down_payment == ($student->tuition_fee + $student->misc)){
-					$paid++; 
-				}elseif ($student->down_payment == 0) {
-					$unpaid++;
-				}else{
-					$partial++;
-				}
-				?>
-			<?php } 
-				?>
+				<?php if($program->program_description == $student->course){ ?>
+					<?php 
+					if($student->down_payment == ($student->tuition_fee + $student->misc)){
+						$paid++; 
+					}elseif ($student->down_payment == 0) {
+						$unpaid++;
+					}else{
+						$partial++;
+					}
+					?>
+				<?php } 
+					?>
 			
 			<?php endforeach ?>
 			<?php $total = $paid + $unpaid + $partial; ?>
@@ -60,10 +64,13 @@
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					<!--<td> <?php //echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program'); ?> <!--</td>-->
-					
-					
-						
+
+						<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
+					<?php foreach ($view ['pros'] as $pro): ?>
+						<td><?php echo  $pro->lastdate; ?></td>
+					<?php endforeach; ?>
+
+					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program'); ?> </td>
 				<?php } ?>
 		</tr>
 		<?php endforeach; ?>

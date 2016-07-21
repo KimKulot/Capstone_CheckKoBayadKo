@@ -24,7 +24,7 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody>	
 <?php foreach ($progdeans as $progdean): ?>
 	<?php if ($current_user->id == $progdean->dean_id): ?>
 			<?php foreach ($students as $item): ?>

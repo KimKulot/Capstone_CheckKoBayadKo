@@ -17,6 +17,7 @@
 			
 		</tr>
 	</thead>
+	
 <!-- //START STUDENT PROFILE -->
 
 <?php foreach ($studparents as $studparent): ?>

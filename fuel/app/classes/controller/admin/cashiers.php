@@ -20,6 +20,15 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		// $view->set_global('users', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'username'));
 	}
 
+	public function action_pay_message()
+	{
+		$data['studparents'] = Model_Studparent::find('all');
+		$data['users'] = Model_User::find('all');
+		$data['students'] = Model_Student::find('all');
+		$this->template->title = "Users";
+		$this->template->content = View::forge('admin/cashiers/pay_message', $data);
+	}
+
 	public function action_edit($id = null)
 	{
 		$student = Model_Student::find($id);
@@ -34,16 +43,18 @@ class Controller_Admin_Cashiers extends Controller_Admin
 			$student->tuition_fee = Input::post('tuition_fee');
 			$student->misc = Input::post('misc');
 			$student->other_fees = Input::post('other_fees');
-			$student->down_payment = Input::post('down_payment');
+			$student->down_payment = $student->down_payment + Input::post('down_payment');
 			$student->breakdown = ($student->tuition_fee + $student->misc + $student->other_fees) / 4;
 			$student->balance = ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment;
 
 			$student->history[] = Model_Studhistorie::forge(array(
 					'studenthistory_id'=> $id,
+					'program_description' => $student->course,
 					'tuition_fee' => Input::post('tuition_fee'),
 					'misc' => Input::post('misc'),
-					'other_fees' => Input::post('other_fees'),
+					'other_fees' => Input::post('other_fees'), 
 					'down_payment' => Input::post('down_payment'),
+					'payment' => $student->down_payment,
 					'breakdown' => ($student->tuition_fee + $student->misc + $student->other_fees) / 4,
 					'balance' => ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment,
 					'date_time' => date('Y-m-d') . " " . date("h:i:s"),

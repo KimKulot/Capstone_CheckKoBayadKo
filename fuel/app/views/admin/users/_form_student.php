@@ -5,7 +5,7 @@
 		<div class="form-group">
 			<?php echo Form::label('Username', 'username', array('class'=>'control-label')); ?>
 				
-				<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username' )); ?>
+				<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username', 'required' )); ?>
 
 		</div>
 		<div class="form-group">

@@ -9,13 +9,12 @@
     <meta name="author" content="">
 
 	<title><?php echo $title; ?></title>
-	
+    <?php echo Asset::css('plugins.css'); ?>
 	<?php echo Asset::css('bootstrap.min.css'); ?>
 	<?php echo Asset::css('business-casual.css'); ?>
     <!-- Fonts -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
 	<?php echo Asset::css('bootstrap.css'); ?>
 	<style>
 		body { margin: 50px; }
@@ -201,7 +200,8 @@
 			</p>
 		</footer> -->
 	</div>
-
+    <!-- START SIGNUP BOX -->
+   
 	<footer>
         <div class="container">
             <div class="row">
