@@ -42,7 +42,7 @@
 				 ?>
 			<td><?php echo $program->program_description; ?></td>
 			<?php foreach ($students as $student): ?>
-			<?php if($program->program_description == $student->course){ ?>
+			<?php if($program->program_description == $student->program){ ?>
 				<?php 
 				if($student->down_payment == ($student->tuition_fee + $student->misc)){
 					$paid++; 
@@ -61,7 +61,7 @@
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					<td> <?php echo Html::anchor('admin/accountants/view/'.$program->program_description, 'Program'); ?> </td>
+					<td> <?php echo Html::anchor('admin/accountants/view/'.$program->program_description, 'Program', array('class' => 'btn ink-reaction btn-primary btn-raised')); ?> </td>
 					
 					
 						

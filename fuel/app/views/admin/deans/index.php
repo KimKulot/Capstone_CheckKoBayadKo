@@ -13,8 +13,8 @@
 	<thead>
 		<tr>
 			<th>Full Name</th>
-			<th>Program</th>
-			<th>Year</th>
+			<th>Year Level</th>
+			<th>Total Payment</th>
 			<th>Tuition Fee</th>
 			<th>Misc</th>
 			<th>Other Fees</th>
@@ -37,9 +37,17 @@
 										<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
 									<?php } ?>
 								<?php endforeach ?>
-
-								<td><?php echo $item->course; ?></td>
+								<?php $count = 0; ?>
+								<?php if ($count ==0): ?>
+									<?php 
+										echo $item->course;
+										$count++; 
+									?>
+									
+								<?php endif ?>
+								
 								<td><?php echo $item->year; ?></td>
+								<td><?php echo number_format(($item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
 								<td><?php echo $item->tuition_fee; ?></td>
 								<td><?php echo $item->misc; ?></td>
 								<td><?php echo $item->other_fees; ?></td>

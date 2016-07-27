@@ -18,6 +18,7 @@ class Controller_Admin_Accountants extends Controller_Admin
 		$this->template->content = $view;
 	}
 
+	
 	public function action_view_basic($basic_program_description = null)
 	{	
 
@@ -25,7 +26,7 @@ class Controller_Admin_Accountants extends Controller_Admin
 			$data ['users'] = Model_User::find('all');
 			$data ['students'] = Model_Student::find('all');
 			$this->template->title = "Basic Education Programs";
-			$this->template->content = View::forge('admin/admins/view_basic', $data);
+			$this->template->content = View::forge('admin/accountants/view_basic', $data);
 	}
 	public function action_view($program_description = null)
 	{	

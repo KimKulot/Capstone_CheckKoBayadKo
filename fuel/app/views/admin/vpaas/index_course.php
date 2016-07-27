@@ -14,6 +14,7 @@
 			<th>Paid</th>
 			<th>Unpaid</th>
 			<th>Partially paid</th>
+			<th>Date And Time</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -27,7 +28,7 @@
 				 ?>
 			<td><?php echo $program->program_description; ?></td>
 			<?php foreach ($students as $student): ?>
-			<?php if($program->program_description == $student->course){ ?>
+			<?php if($program->program_description == $student->program){ ?>
 				<?php 
 				if($student->down_payment == ($student->tuition_fee + $student->misc)){
 					$paid++; 
@@ -45,7 +46,10 @@
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
-					
+					<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
+					<?php foreach ($view ['pros'] as $pro): ?>
+						<td><?php echo  $pro->lastdate; ?></td>
+					<?php endforeach; ?>
 				<?php } ?>
 			</tr>
 		<?php endforeach; ?>

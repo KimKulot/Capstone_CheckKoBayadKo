@@ -60,61 +60,51 @@
 		</div> -->
 
 
+		
+
 		<div class="form-group">
-		     <?php echo Form::label('Program', 'program', array('class'=>'control-label')); ?>
+		     <?php echo Form::label('Basic Program', 'year', array('class'=>'control-label')); ?>
 		 
-		     <?php echo Form::select('program', Input::post('program', isset($student) ? $user->program : ''),$programs, array('class' => 'span6')); ?>
+		     <?php echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''),$basicprograms, array('class' => 'span6')); ?>
 		 
 		</div>
 
 
 		<!-- <div class="form-group">
-		    <?php //echo Form::label('Program', 'course', array('class'=>'control-label')); ?>
+		    // <?php //echo Form::label('Program', 'year', array('class'=>'control-label')); ?>
 		 	<?php 
-			 	echo Form::select('course', Input::post('course', isset($student) ? $user->course : 'BSIT'), array(
-				    'Highschool' => array(
-				    	'First Year' => 'First Year',
-				    	'Second Year' => 'Second Year',
-				    	'Third Year' => 'Third Year',
-				    	'Fourth Year' => 'Fourth Year',
-				    ),
-				    'Gradeschool' => array(
-				    	'Grade one' => 'Grade one',
-				    	'Grade two' => 'Grade two',
-				    	'Grade three' => 'Grade three',
-				    	'Grade four' => 'Grade four',
-				    	'Grade five' => 'Grade five',
-				    	'Grade six' => 'Grade six',
-				    ),
-				   	'Preschool' => 'Preschool',
-				   	'Kinder one'   => 'Kinder one',
-				   	'Kinder two'   => 'Kinder two',
-				));
+			 	// echo Form::select('year', Input::post('year', isset($student) ? $user->year : 'First Year'), array(
+				 //    'Highschool' => array(
+				 //    	'First Year' => 'First Year',
+				 //    	'Second Year' => 'Second Year',
+				 //    	'Third Year' => 'Third Year',
+				 //    	'Fourth Year' => 'Fourth Year',
+				 //    ),
+				 //    'Gradeschool' => array(
+				 //    	'Grade one' => 'Grade one',
+				 //    	'Grade two' => 'Grade two',
+				 //    	'Grade three' => 'Grade three',
+				 //    	'Grade four' => 'Grade four',
+				 //    	'Grade five' => 'Grade five',
+				 //    	'Grade six' => 'Grade six',
+				 //    ),
+				 //   	'Preschool' => 'Preschool',
+				 //   	'Kinder one'   => 'Kinder one',
+				 //   	'Kinder two'   => 'Kinder two',
+				//));
 			?>
 		    <!-- <div class="input">
 		        <?php //echo Form::select('student_id', Input::post('student_id', isset($student) ? $student->student_id : $current_user->id), $students, array('class' => 'span6')); ?>
 		 
 		    </div> -->
 		<!-- </div> --> 		
-		<div class="form-group">
-		    <?php echo Form::label('Year', 'year', array('class'=>'control-label')); ?>
-		 	<?php 
-			 	echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''), array(
-				    'Year' => array( 
-				        'I Year' => 'I Year',
-				        'II Year' => 'II Year',
-				        'III Year' => 'III Year',
-				        'IV Year' => 'IV Year',
-				        'V Year' => 'V Year',
-				    ),
-				));
-			?>
+		
 		    <!-- <div class="input">
 		        <?php //echo Form::select('student_id', Input::post('student_id', isset($student) ? $student->student_id : $current_user->id), $students, array('class' => 'span6')); ?>
 		 
 		    </div> -->
-		</div>
-		
+		<!-- </div>
+		 -->
 
 
 

@@ -7,7 +7,6 @@
 		</div>
 </div>
 
-
 <h2>Basic Education Statistical Report</h2>
 <br>
 <?php if ($students): ?>
@@ -36,7 +35,7 @@
 				 ?>
 			<td><?php echo $program->basic_program_description; ?></td>
 			<?php foreach ($students as $student): ?>
-			<?php if($program->basic_program_description == $student->course){ ?>
+			<?php if($program->basic_program_description == $student->program){ ?>
 				<?php 
 				if($student->down_payment == ($student->tuition_fee + $student->misc)){
 					$paid++; 
@@ -55,6 +54,12 @@
 					<td><?php echo 100 * $paid / $total . "%"; ?></td>
 					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
 					<td><?php echo 100 * $partial / $total . "%"; ?></td>
+
+					<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->basic_program_description)->as_object()->execute(); ?>
+					<?php foreach ($view ['pros'] as $pro): ?>
+						<td><?php echo  $pro->lastdate; ?></td>
+					<?php endforeach; ?>
+					
 					<td> <?php echo Html::anchor('admin/admins/view_basic/'.$program->basic_program_description, 'Program'); ?> </td>
 					
 					

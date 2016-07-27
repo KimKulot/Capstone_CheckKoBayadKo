@@ -11,7 +11,8 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
 	public function action_cron_message()
-	{
+	{ 
+		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$data['studparents'] = Model_Studparent::find('all');
 		$data['users'] = Model_User::find('all');
 		$data['students'] = Model_Student::find('all');
@@ -19,16 +20,9 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/cron_message', $data);
 	}
 
-	public function action_index_search()
+	public function action_index_search($search)
 	{	
-		 $data['thevalue'] = "";
-		if($this->input->post('btnsubmit') == 'submit')
-		{
-			$firstname = $_POST['search'];
-			$data['thevalue'] = $firstname ;
-
-		}
-		$this->template->content = View::forge('admin/users/index_search', $data);
+		
 			$data ['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
 			$this->template->title = "Users";
 			$this->template->content = View::forge('admin/users/index_search', $data);
@@ -53,11 +47,34 @@ class Controller_Admin_Users extends Controller_Admin
 
 
 	//START SETTING CRON
-	public function action_setcron()
-	{
-		$view = View::forge('admin/users/setcron');
+	
+	public function action_setcron(){
+
+ 		$view['dates'] = Model_Accountantcron::find('all');
+		if (Input::method() == 'POST')
+		{  	
+			$val = Model_Accountantcron::validate('create');
+
+			
+			if ($val->run())
+			{
+				$newuser = Model_Accountantcron::forge(array(
+					'date_time'=> Input::post('date_time'),
+				));
+				if($newuser->save()){
+					Session::set_flash('success', e('Set exam schedule'));
+				 	Response::redirect('admin/users');
+				}
+			}
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+
+			
+		}
 		$this->template->title = "Setting up Cron Job";
-		$this->template->content = $view;
+		$this->template->content = View::forge('admin/users/setcron', $view);
 	}
 	//END SETTING CRON
 	
@@ -157,9 +174,58 @@ class Controller_Admin_Users extends Controller_Admin
 	}
 	//END PARENT CREATION
 
+//BEGIN BASIC EDUCATION STUDENT CREATION
+	public function action_create_basic_student(){
+		$view = View::forge('admin/users/create_basic_student');
+ 		$view->programs = Model_Program::find('all');
+		if (Input::method() == 'POST')
+		{  	
+			$val = Model_User::validate('create');
+
+			if ($val->run())
+			{
+				$newuser = Model_User::forge(array(
+					'username'=> Input::post('username'),
+					'firstname' =>Input::post('firstname'),
+					'middlename'=> Input::post('middlename'),
+					'lastname'=> Input::post('lastname'),
+					'password'=> Auth::instance()->hash_password(Input::post('password')),
+					'phone_number'=> Input::post('phone_number'),
+					'group'=> Input::post('group'),
+					'email'=> Input::post('email'),
+					'role'=> Input::post('role'),
+				));
+				$newuser->student = Model_Student::forge(array(
+					'program' =>Input::post('year'),
+					'year' =>Input::post('year'),
+					'tuition_fee' => 0,
+					'other_fees' => 0,
+					'misc' => 0,
+					'down_payment' => 0,
+					'breakdown' => 0,
+					'balance' => 0,
+				));
+				if($newuser->save()){
+					Session::set_flash('success', e('Added user'));
+				 	Response::redirect('admin/users');
+				}
+			}
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+
+			
+		}
+		$view->set_global('basicprograms', Arr::assoc_to_keyval(Model_Basicprogram::find('all'), 'id', 'basic_program_description'));
+		$this->template->title= "Users";
+		$this->template->content = $view ;
+
+	}
+	//END BASIC EDUCATION STUDENT CREATION
+
 	//START STUDENT CREATION
 	public function action_create_student(){
-
 		$view = View::forge('admin/users/create_student');
  		$view->programs = Model_Program::find('all');
 		if (Input::method() == 'POST')
@@ -188,7 +254,7 @@ class Controller_Admin_Users extends Controller_Admin
 					'role'=> Input::post('role'),
 				));
 				$newuser->student = Model_Student::forge(array(
-					'course' =>Input::post('course'),
+					'program' =>Input::post('program'),
 					'year' =>Input::post('year'),
 					'tuition_fee' => 0,
 					'other_fees' => 0,
@@ -240,12 +306,12 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	'phone_number' => Input::post('phone_number'),
 				// 	'group' => Input::post('group'),
 				// 	'email' => Input::post('email'),
-				// 	'course' => Input::post('course'),
+				// 	'program' => Input::post('program'),
 				// 	'user_id' => Input::post('user_id'),
 					// $user->comments[] = new Model_Student();
 				// ));
 				// $student = Model_Student::forge(array(
-				// 	'course' => Input::post('course'),
+				// 	'program' => Input::post('program'),
 				// 	'user_id' => Input::post('user_id'),
 				// ));
 
@@ -273,7 +339,7 @@ class Controller_Admin_Users extends Controller_Admin
 
 			
 		}
-		$view->set_global('students', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'course'));
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 
@@ -512,7 +578,10 @@ public function action_create_basic_program()
 			if (Input::method() == 'POST')
 			{
 				$user->username = $val->validated('username');
-				$user->password = $val->validated('password');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				}
 				$user->firstname = $val->validated('firstname');
 				$user->middlename = $val->validated('middlename');
 				$user->lastname = $val->validated('lastname');
@@ -530,6 +599,195 @@ public function action_create_basic_program()
 		$this->template->content = $view;
 
 	}
+
+	// BEGIN EDIT DEAN
+	public function action_edit_dean($id = null)
+	{
+		$view = View::forge('admin/users/edit_dean');
+		$user = Model_User::find($id);
+		$val = Model_User::validate('edit');
+
+		if ($val->run())
+		{
+			if ($user->password != Input::post('password')) {
+				$user->password = Auth::instance()->hash_password(Input::post('password'));
+			}
+			$user->username = Input::post('username');
+			// $user->password = Input::post('password');
+			$user->firstname = Input::post('firstname');
+			$user->middlename = Input::post('middlename');
+			$user->lastname = Input::post('lastname');
+			$user->phone_number = Input::post('phone_number');
+			$user->group = Input::post('group');
+			$user->email = Input::post('email');
+			$user->user_id = Input::post('user_id');
+
+			if ($user->save())
+			{
+				Session::set_flash('success', e('Updated user #' . $id));
+
+				Response::redirect('admin/users');
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update user #' . $id));
+			}
+		}
+
+		else
+		{
+			if (Input::method() == 'POST')
+			{
+				$user->username = $val->validated('username');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				}
+				$user->firstname = $val->validated('firstname');
+				$user->middlename = $val->validated('middlename');
+				$user->lastname = $val->validated('lastname');
+				$user->phone_number = $val->validated('phone_number');
+				$user->group = $val->validated('group');
+				$user->email = $val->validated('email');
+
+				Session::set_flash('error', $val->error());
+			}
+
+			$this->template->set_global('user', $user, false);
+		}
+
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+	//END EDIT DEAN
+
+	// BEGIN EDIT STUDENT
+	public function action_edit_student($id = null)
+	{
+		$view = View::forge('admin/users/edit_student');
+		$user = Model_User::find($id);
+		$val = Model_User::validate('edit');
+
+		if ($val->run())
+		{
+			if ($user->password != Input::post('password')) {
+				$user->password = Auth::instance()->hash_password(Input::post('password'));
+			}
+			$user->username = Input::post('username');
+			// $user->password = Input::post('password');
+			$user->firstname = Input::post('firstname');
+			$user->middlename = Input::post('middlename');
+			$user->lastname = Input::post('lastname');
+			$user->phone_number = Input::post('phone_number');
+			$user->group = Input::post('group');
+			$user->email = Input::post('email');
+			$user->user_id = Input::post('user_id');
+
+			if ($user->save())
+			{
+				Session::set_flash('success', e('Updated user #' . $id));
+
+				Response::redirect('admin/users');
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update user #' . $id));
+			}
+		}
+
+		else
+		{
+			if (Input::method() == 'POST')
+			{
+				$user->username = $val->validated('username');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				}
+				$user->firstname = $val->validated('firstname');
+				$user->middlename = $val->validated('middlename');
+				$user->lastname = $val->validated('lastname');
+				$user->phone_number = $val->validated('phone_number');
+				$user->group = $val->validated('group');
+				$user->email = $val->validated('email');
+
+				Session::set_flash('error', $val->error());
+			}
+
+			$this->template->set_global('user', $user, false);
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+	//END EDIT STUDENT
+
+	// BEGIN EDIT PARENT
+	public function action_edit_parent($id = null)
+	{
+		$view = View::forge('admin/users/edit_parent');
+		$user = Model_User::find($id);
+		$val = Model_User::validate('edit');
+
+		if ($val->run())
+		{
+			if ($user->password != Input::post('password')) {
+				$user->password = Auth::instance()->hash_password(Input::post('password'));
+			}
+			$user->username = Input::post('username');
+			// $user->password = Input::post('password');
+			$user->firstname = Input::post('firstname');
+			$user->middlename = Input::post('middlename');
+			$user->lastname = Input::post('lastname');
+			$user->phone_number = Input::post('phone_number');
+			$user->group = Input::post('group');
+			$user->email = Input::post('email');
+			$user->user_id = Input::post('user_id');
+
+			if ($user->save())
+			{
+				Session::set_flash('success', e('Updated user #' . $id));
+
+				Response::redirect('admin/users');
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update user #' . $id));
+			}
+		}
+
+		else
+		{
+			if (Input::method() == 'POST')
+			{
+				$user->username = $val->validated('username');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				}
+				$user->firstname = $val->validated('firstname');
+				$user->middlename = $val->validated('middlename');
+				$user->lastname = $val->validated('lastname');
+				$user->phone_number = $val->validated('phone_number');
+				$user->group = $val->validated('group');
+				$user->email = $val->validated('email');
+
+				Session::set_flash('error', $val->error());
+			}
+
+			$this->template->set_global('user', $user, false);
+		}
+
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+	//END EDIT PARENT
 
 	public function action_delete($id = null)
 	{

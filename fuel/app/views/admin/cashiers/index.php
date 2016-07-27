@@ -3,7 +3,7 @@
 			Response::redirect('/');
 		}
  ?>
-<h2>List of Students who paid and not paid</h2>
+<h2>Cashier</h2>
 <br>
 <?php if ($students): ?>
 <table class="table table-striped">
@@ -11,6 +11,7 @@
 		<tr>
 			<th>Full Name</th>
 			<th>Program</th>
+			<th>Total Amount</th>
 			<th>Tuition Fee</th>
 			<th>Misc</th>
 			<th>Other Fees</th>
@@ -29,7 +30,8 @@
 					<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
 				<?php } ?>
 			<?php endforeach ?>
-			<td><?php echo $item->course; ?></td>
+			<td><?php echo $item->program; ?></td>
+			<td><?php echo number_format(($item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
 			<td><?php echo number_format($item->tuition_fee); ?></td>
 			<td><?php echo number_format($item->misc); ?></td>
 			<td><?php echo number_format($item->other_fees); ?></td>
@@ -37,7 +39,7 @@
 			<td><?php echo number_format($item->breakdown); ?></td>
 			<td><?php echo number_format($item->balance); ?></td>
 			<td>
-				<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode'); ?> |
+				<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode', array('class' => 'btn btn-primary btn-sm')); ?> 
 			</td>
 		</tr>
 			

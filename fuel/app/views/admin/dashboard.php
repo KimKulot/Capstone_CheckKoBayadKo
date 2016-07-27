@@ -2,17 +2,17 @@
 	<center><h1>Welcome!</h1>
 	<h2>CheckKoBayadKo</h2>
 	<p>A Web-based Application for Tracking Students' Financial Transaction with SMS Notification using Cronjob</p></center>
-	<p><a class="btn btn-primary btn-lg" href="http://docs.fuelphp.com">Read the Docs</a></p>
+	
 </div>
 <div class="row">
 	<div class="col-md-4">
-		<h2>Get Started</h2>
+		<h2>SMS Notification</h2>
 		<p>The controller generating this page is found at <code>APPPATH/classes/controller/admin.php</code>.</p>
 		<p>This view can be found at <code>APPPATH/views/admin/dashboard.php</code>.</p>
 		<p>You can modify these files to get your application started quickly.</p>
 	</div>
 	<div class="col-md-4">
-		<h2>Learn</h2>
+		<h2>Statistical Report</h2>
 		<p>The best way to learn FuelPHP is reading through the <a href="http://docs.fuelphp.com">Documentation</a>.</p>
 		<p>Another good resource is the <a href="http://fuelphp.com/forums">Forums</a>.  They are fairly active, and you can usually get a response quickly.</p>
 	</div>

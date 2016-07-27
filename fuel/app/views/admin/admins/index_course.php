@@ -45,7 +45,7 @@
 			
 			
 			<?php foreach ($students as $student): ?>
-				<?php if($program->program_description == $student->course){ ?>
+				<?php if($program->program_description == $student->program){ ?>
 					<?php 
 					if($student->down_payment == ($student->tuition_fee + $student->misc)){
 						$paid++; 
@@ -70,7 +70,7 @@
 						<td><?php echo  $pro->lastdate; ?></td>
 					<?php endforeach; ?>
 
-					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program'); ?> </td>
+					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program', array('class' => 'btn ink-reaction btn-primary btn-raised')); ?> </td>
 				<?php } ?>
 		</tr>
 		<?php endforeach; ?>

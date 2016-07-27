@@ -4,7 +4,7 @@ class Model_Student extends \Orm\Model
 
 	protected static $_properties = array(
 		'id',
-		'course',
+		'program',
 		'year',
 		'student_id',
 		//'parent_id',
@@ -64,16 +64,16 @@ class Model_Student extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('course', 'Course', 'required|max_length[50]');
+		$val->add_field('program', 'Program', 'required|max_length[50]');
 		$val->add_field('year', 'Year', 'required|max_length[255]');
 		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
 		//$val->add_field('parent_id', 'Parent_id',  'required|valid_string[numeric]');
-		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
-		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
-		$val->add_field('other_fees', 'Other Fees',  'required|valid_string[numeric]');
-		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
-		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
-		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');
+		$val->add_field('tuition_fee', 'Tuition Fee',  'valid_string[numeric]');
+		$val->add_field('misc', 'Miscellaneous',  'valid_string[numeric]');
+		$val->add_field('other_fees', 'Other Fees',  'valid_string[numeric]');
+		$val->add_field('down_payment', 'Down Payment',  'valid_string[numeric]');
+		$val->add_field('breakdown', 'Breakdown',  'valid_string[numeric]');
+		$val->add_field('balance', 'Balance',  'valid_string[numeric]');
 		return $val;
 	}
 }

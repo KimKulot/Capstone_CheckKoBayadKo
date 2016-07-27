@@ -14,7 +14,7 @@
 			<th>Program</th>
 			<th>Paid</th>
 			<th>Unpaid</th>
-			<th>Partially paid</th>
+			<th>Partial payment</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -29,7 +29,7 @@
 				 ?>
 			<td><?php echo $program->basic_program_description; ?></td>
 			<?php foreach ($students as $student): ?>
-			<?php if($program->basic_program_description == $student->course){ ?>
+			<?php if($program->basic_program_description == $student->program){ ?>
 				<?php 
 				if($student->down_payment == ($student->tuition_fee + $student->misc)){
 					$paid++; 

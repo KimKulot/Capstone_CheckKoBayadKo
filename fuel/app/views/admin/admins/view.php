@@ -23,14 +23,14 @@
 	<tbody>
 <?php foreach ($students as $item): ?>
 	<?php foreach ($programs as $program): ?>
-		<?php if ($program->program_description == $item->course): ?>
+		<?php if ($program->program_description == $item->program): ?>
 			<tr>
 				<?php foreach ($users as $key): ?>
 					<?php if($item->student_id == $key->id){ ?>
 						<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
 					<?php } ?>
 				<?php endforeach ?>
-				<td><?php echo $item->course; ?></td>
+				<td><?php echo $item->program; ?></td>
 				<td><?php echo $item->year; ?></td>
 				<td><?php echo $item->tuition_fee; ?></td>
 				<td><?php echo $item->misc; ?></td>

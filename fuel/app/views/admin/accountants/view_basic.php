@@ -1,6 +1,6 @@
 <div class="pull-right">
 		<p>
-			<?php echo Html::anchor('admin/admins/index_student', 'Basic Education', array('class' => 'btn btn-primary')); ?>
+			<?php echo Html::anchor('admin/accountants/index_student', 'Basic Education', array('class' => 'btn btn-primary')); ?>
 		</p>
 </div>
 <h2>Listing of Students</h2>
@@ -23,14 +23,14 @@
 	<tbody>
 <?php foreach ($students as $item): ?>
 	<?php foreach ($basicprograms as $program): ?>
-		<?php if ($program->basic_program_description == $item->course): ?>
+		<?php if ($program->basic_program_description == $item->program): ?>
 			<tr>
 				<?php foreach ($users as $key): ?>
 					<?php if($item->student_id == $key->id){ ?>
 						<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
 					<?php } ?>
 				<?php endforeach ?>
-				<td><?php echo $item->course; ?></td>
+				<td><?php echo $item->program; ?></td>
 				<td><?php echo $item->year; ?></td>
 				<td><?php echo $item->tuition_fee; ?></td>
 				<td><?php echo $item->misc; ?></td>

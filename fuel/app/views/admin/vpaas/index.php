@@ -29,7 +29,7 @@
 					<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
 				<?php } ?>
 			<?php endforeach ?>
-			<td><?php echo $item->course; ?></td>
+			<td><?php echo $item->program; ?></td>
 			<td><?php echo $item->tuition_fee; ?></td>
 			<td><?php echo $item->misc; ?></td>
 			<td><?php echo $item->down_payment; ?></td>

@@ -90,7 +90,7 @@ class Controller_Admin_Students extends Controller_Admin
 		{
 			$student->course = Input::post('course');
 			$student->student_id = Input::post('student_id');
-			
+			$student->year = Input::post('year');
 
 			if ($student->save())
 			{
@@ -111,6 +111,7 @@ class Controller_Admin_Students extends Controller_Admin
 			{
 				$student->course = Input::post('course');
 				$student->student_id = Input::post('student_id');
+				$student->year = Input::post('year');
 
 				Session::set_flash('error', $val->error());
 			}

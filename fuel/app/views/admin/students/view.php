@@ -10,7 +10,7 @@
  
 <p>
 	<strong>Course:</strong>
-	<?php echo $student->course; ?></p>
+	<?php echo $student->program; ?></p>
 <p>
 	<strong>User Id:</strong>
 	<?php echo $student->student_id; ?></p>

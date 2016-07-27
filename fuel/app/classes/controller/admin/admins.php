@@ -1,4 +1,4 @@
-8<?php
+<?php
 class Controller_Admin_Admins extends Controller_Admin
 {
 
@@ -29,10 +29,10 @@ class Controller_Admin_Admins extends Controller_Admin
 
 		$view ['programs'] = Model_Program::find('all');
 
-		foreach ($view ['programs'] as $program) {
-			$view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute();
+		// foreach ($view ['programs'] as $program) {
+		// 	$view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute();
 			
-		}
+		// }
 		$view ['users'] = Model_User::find('all');
 		$view ['students'] = Model_Student::find('all');
 		$this->template->title = "Course";

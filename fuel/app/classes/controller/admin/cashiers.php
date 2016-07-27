@@ -57,7 +57,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 					'payment' => $student->down_payment,
 					'breakdown' => ($student->tuition_fee + $student->misc + $student->other_fees) / 4,
 					'balance' => ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment,
-					'date_time' => date('Y-m-d') . " " . date("h:i:s"),
+					'date_time' => date('D d M Y') . " " . date("h:i:s"),
                     
 			));
 			if ($student->save())

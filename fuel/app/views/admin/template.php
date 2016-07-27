@@ -9,9 +9,10 @@
     <meta name="author" content="">
 
 	<title><?php echo $title; ?></title>
+	<?php echo Asset::css('jquery.datetimepicker.css') ?>
     <?php echo Asset::css('plugins.css'); ?>
 	<?php echo Asset::css('bootstrap.min.css'); ?>
-	<?php echo Asset::css('business-casual.css'); ?>
+	<!-- <?php //echo Asset::css('business-casual.css'); ?> -->
     <!-- Fonts -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
@@ -19,13 +20,14 @@
 	<style>
 		body { margin: 50px; }
 	</style>
+
 	<?php echo Asset::js(array(
 		'http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js',
 		'bootstrap.js',
+		'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js',
+		'jquery.datetimepicker.full.js'
 	)); ?>
-	<script>
-		$(function(){ $('.topbar').dropdown(); });
-	</script>
+	
 </head>
 <body class="login fade-in" data-page="login">
 	<?php if ($current_user): ?>
@@ -211,5 +213,7 @@
             </div>
         </div>
     </footer>
+
+
 </body>
 </html>
