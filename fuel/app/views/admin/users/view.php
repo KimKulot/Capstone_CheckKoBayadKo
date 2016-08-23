@@ -19,8 +19,8 @@
 	<strong>Lastname:</strong>
 	<?php echo $user->lastname; ?></p>
 <p>
-	<strong>Phone number:</strong>
-	<?php echo $user->phone_number; ?></p>
+	<strong>Mobile number:</strong>
+	<?php echo $user->mobile_number; ?></p>
 <p>
 	<strong>Group:</strong>
 	<?php echo $user->group; ?></p>

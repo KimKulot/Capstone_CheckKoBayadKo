@@ -392,134 +392,7 @@ var DateFormatter;
                     return fmt.Y().toString().slice(-2);
                 },
 
-                //////////
-                // TIME //
-                //////////
-                /**
-                 * Meridian lower: `am or pm`
-                 * @return {string}
-                 */
-                a: function () {
-                    return fmt.A().toLowerCase();
-                },
-                /**
-                 * Meridian upper: `AM or PM`
-                 * @return {string}
-                 */
-                A: function () {
-                    var n = fmt.G() < 12 ? 0 : 1;
-                    return vSettings.meridiem[n];
-                },
-                /**
-                 * Swatch Internet time: `000..999`
-                 * @return {string}
-                 */
-                B: function () {
-                    var H = vDate.getUTCHours() * HOUR, i = vDate.getUTCMinutes() * 60, s = vDate.getUTCSeconds();
-                    return _lpad(Math.floor((H + i + s + HOUR) / 86.4) % 1000, 3);
-                },
-                /**
-                 * 12-Hours: `1..12`
-                 * @return {number}
-                 */
-                g: function () {
-                    return fmt.G() % 12 || 12;
-                },
-                /**
-                 * 24-Hours: `0..23`
-                 * @return {number}
-                 */
-                G: function () {
-                    return vDate.getHours();
-                },
-                /**
-                 * 12-Hours with leading 0: `01..12`
-                 * @return {string}
-                 */
-                h: function () {
-                    return _lpad(fmt.g(), 2);
-                },
-                /**
-                 * 24-Hours w/leading 0: `00..23`
-                 * @return {string}
-                 */
-                H: function () {
-                    return _lpad(fmt.G(), 2);
-                },
-                /**
-                 * Minutes w/leading 0: `00..59`
-                 * @return {string}
-                 */
-                i: function () {
-                    return _lpad(vDate.getMinutes(), 2);
-                },
-                /**
-                 * Seconds w/leading 0: `00..59`
-                 * @return {string}
-                 */
-                s: function () {
-                    return _lpad(vDate.getSeconds(), 2);
-                },
-                /**
-                 * Microseconds: `000000-999000`
-                 * @return {string}
-                 */
-                u: function () {
-                    return _lpad(vDate.getMilliseconds() * 1000, 6);
-                },
-
-                //////////////
-                // TIMEZONE //
-                //////////////
-                /**
-                 * Timezone identifier: `e.g. Atlantic/Azores, ...`
-                 * @return {string}
-                 */
-                e: function () {
-                    var str = /\((.*)\)/.exec(String(vDate))[1];
-                    return str || 'Coordinated Universal Time';
-                },
-                /**
-                 * Timezone abbreviation: `e.g. EST, MDT, ...`
-                 * @return {string}
-                 */
-                T: function () {
-                    var str = (String(vDate).match(self.tzParts) || [""]).pop().replace(self.tzClip, "");
-                    return str || 'UTC';
-                },
-                /**
-                 * DST observed? `0 or 1`
-                 * @return {number}
-                 */
-                I: function () {
-                    var a = new Date(fmt.Y(), 0), c = Date.UTC(fmt.Y(), 0),
-                        b = new Date(fmt.Y(), 6), d = Date.UTC(fmt.Y(), 6);
-                    return ((a - c) !== (b - d)) ? 1 : 0;
-                },
-                /**
-                 * Difference to GMT in hour format: `e.g. +0200`
-                 * @return {string}
-                 */
-                O: function () {
-                    var tzo = vDate.getTimezoneOffset(), a = Math.abs(tzo);
-                    return (tzo > 0 ? '-' : '+') + _lpad(Math.floor(a / 60) * 100 + a % 60, 4);
-                },
-                /**
-                 * Difference to GMT with colon: `e.g. +02:00`
-                 * @return {string}
-                 */
-                P: function () {
-                    var O = fmt.O();
-                    return (O.substr(0, 3) + ':' + O.substr(3, 2));
-                },
-                /**
-                 * Timezone offset in seconds: `-43200...50400`
-                 * @return {number}
-                 */
-                Z: function () {
-                    return -vDate.getTimezoneOffset() * 60;
-                },
-
+               
                 ////////////////////
                 // FULL DATE TIME //
                 ////////////////////
@@ -1107,8 +980,8 @@ var DateFormatter;
 		value: '',
 		rtl: false,
 
-		format:	'Y/m/d H:i',
-		formatTime:	'H:i',
+		format:	'Y/m/d ',
+		
 		formatDate:	'Y/m/d',
 
 		startDate:	false, // new Date(), '1986/12/08', '-1970/01/05','-1970/01/05',

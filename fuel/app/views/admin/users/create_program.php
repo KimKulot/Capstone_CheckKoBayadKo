@@ -1,5 +1,14 @@
-<h2>New Program</h2>
-<br>
+
+<div id="content">
+    <section>
+        <div class="section-header">
+            <ol class="breadcrumb"> 
+                <li class="active">New Program</li>
+            </ol>
+        </div>
+        <div class="section-body">
+            <div class="card">	
+            	<div class="card-body">
 
 <?php echo render('admin/users/_form_program'); ?>
 
@@ -9,3 +18,7 @@
 	<?php foreach ($programs as $key): ?>
 		<h5><?php echo $key->program_description ?></h5>
 	<?php endforeach ?>
+</div>
+            </div>
+        </div><!--end .section-body -->
+    </section>

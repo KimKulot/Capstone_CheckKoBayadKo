@@ -3,86 +3,85 @@
 			Response::redirect('/');
 		}
  ?>
-<div class="pull-right">
-		<div class="col-md-12">
-		<p>
 
-			<?php echo Html::anchor('admin/admins/index_student', 'Basic Education', array('class' => 'btn btn-primary')); ?>
-		</p>
-		</div>
-</div>
+<div id="content">
+    <section>
+        <div class="section-header">
+            <ol class="breadcrumb"> 
+                <li class="active">College Statistical Report</li>
+                <?php echo Html::anchor('admin/admins/index_student', 'Basic Education', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                </ol>
+        </div><!--end .section-header -->
+        <div class="section-body">
+            <div class="card">
+                <div class="card-body">
+				<?php if ($students): ?>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Program</th>
+							<th>Fully Paid</th>
+							<th>Not Paid</th>
+							<th>With Partial Payment</th>
+							<th>Date Time</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
 
+							<?php foreach ($programs as $program): ?>
+								<?php 
+									$paid = 0;
+									$unpaid = 0;
+									$partial = 0;
+								 ?>
+							<td><?php echo $program->program_description; ?></td>
+							
+							
+							<?php foreach ($students as $student): ?>
+								<?php if($program->program_description == $student->program){ ?>
+									<?php 
+									if($student->down_payment == ($student->tuition_fee + $student->misc)){
+										$paid++; 
+									}elseif ($student->down_payment == 0) {
+										$unpaid++;
+									}else{
+										$partial++;
+									}
+									?>
+								<?php } 
+									?>
+							
+							<?php endforeach ?>
+							<?php $total = $paid + $unpaid + $partial; ?>
+								<?php if($total != 0){ ?>
+									<td><?php echo 100 * $paid / $total . "%"; ?></td>
+									<td><?php echo 100 * $unpaid / $total . "%" ?></td>
+									<td><?php echo 100 * $partial / $total . "%"; ?></td>
 
-<h2>College Statistical Report</h2>
-<br>
-<?php if ($students): ?>
+										<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
+									<?php foreach ($view ['pros'] as $pro): ?>
+										<td><?php echo  $pro->lastdate; ?></td>
+									<?php endforeach; ?>
 
+									<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Students Financial Assessment', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> </td>
+								<?php } ?>
+						</tr>
+						<?php endforeach; ?>
+					 </tbody>
+				</table>
 
-<td>
-<?php date_default_timezone_set("America/New_York"); ?>
-<h3><?php echo  "The time and date is " . date('Y-m-d') . " " . date("h:i:s");?></td></h3>
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Program</th>
-			<th>Paid</th>
-			<th>Unpaid</th>
-			<th>Partially paid</th>
-			<th>Date Time</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
+					
 
-			<?php foreach ($programs as $program): ?>
-				<?php 
-					$paid = 0;
-					$unpaid = 0;
-					$partial = 0;
-				 ?>
-			<td><?php echo $program->program_description; ?></td>
-			
-			
-			<?php foreach ($students as $student): ?>
-				<?php if($program->program_description == $student->program){ ?>
-					<?php 
-					if($student->down_payment == ($student->tuition_fee + $student->misc)){
-						$paid++; 
-					}elseif ($student->down_payment == 0) {
-						$unpaid++;
-					}else{
-						$partial++;
-					}
-					?>
-				<?php } 
-					?>
-			
-			<?php endforeach ?>
-			<?php $total = $paid + $unpaid + $partial; ?>
-				<?php if($total != 0){ ?>
-					<td><?php echo 100 * $paid / $total . "%"; ?></td>
-					<td><?php echo 100 * $unpaid / $total . "%" ?></td>
-					<td><?php echo 100 * $partial / $total . "%"; ?></td>
+				<?php else: ?>
+				<p>No Students.</p>
 
-						<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
-					<?php foreach ($view ['pros'] as $pro): ?>
-						<td><?php echo  $pro->lastdate; ?></td>
-					<?php endforeach; ?>
+				<?php endif; ?><!-- <p>
+					<?php echo Html::anchor('admin/students/create', 'Add new Student', array('class' => 'btn btn-success')); ?>
 
-					<td> <?php echo Html::anchor('admin/admins/view/'.$program->program_description, 'Program', array('class' => 'btn ink-reaction btn-primary btn-raised')); ?> </td>
-				<?php } ?>
-		</tr>
-		<?php endforeach; ?>
-	 </tbody>
-</table>
-
-	
-
-<?php else: ?>
-<p>No Students.</p>
-
-<?php endif; ?><!-- <p>
-	<?php echo Html::anchor('admin/students/create', 'Add new Student', array('class' => 'btn btn-success')); ?>
-
-</p> -->
+				</p> -->
+				</div>
+            </div>
+        </div>>
+    </section>

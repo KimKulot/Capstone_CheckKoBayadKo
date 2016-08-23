@@ -22,8 +22,7 @@ class Controller_Admin_Users extends Controller_Admin
 
 	public function action_index_search($search)
 	{	
-		
-			$data ['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
+			$data ['users'] = DB::select('*')->from('users')->where('username','like', $search)->as_object()->execute();
 			$this->template->title = "Users";
 			$this->template->content = View::forge('admin/users/index_search', $data);
 
@@ -31,7 +30,7 @@ class Controller_Admin_Users extends Controller_Admin
 
 	public function action_notification()
 	{
-		$data ['phone_number'] = DB::select('phone_number')->from('users')->as_object()->execute();
+		$data ['mobile_number'] = DB::select('mobile_number')->from('users')->as_object()->execute();
 		$this->template->title = "SMS Notification";
 		$this->template->content = View::forge('admin/users/notification', $data);
 	}
@@ -96,7 +95,7 @@ class Controller_Admin_Users extends Controller_Admin
 						'middlename'=> Input::post('middlename'),
 						'lastname'=> Input::post('lastname'),
 						'password'=> Auth::instance()->hash_password(Input::post('password')),
-						'phone_number'=> Input::post('phone_number'),
+						'mobile_number'=> Input::post('mobile_number'),
 						'group'=> Input::post('group'),
 						'email'=> Input::post('email'),
 						'role'=> Input::post('role'),
@@ -145,7 +144,7 @@ class Controller_Admin_Users extends Controller_Admin
 						'middlename'=> Input::post('middlename'),
 						'lastname'=> Input::post('lastname'),
 						'password'=> Auth::instance()->hash_password(Input::post('password')),
-						'phone_number'=> Input::post('phone_number'),
+						'mobile_number'=> Input::post('mobile_number'),
 						'group'=> Input::post('group'),
 						'email'=> Input::post('email'),
 						'role'=> Input::post('role'),
@@ -190,7 +189,7 @@ class Controller_Admin_Users extends Controller_Admin
 					'middlename'=> Input::post('middlename'),
 					'lastname'=> Input::post('lastname'),
 					'password'=> Auth::instance()->hash_password(Input::post('password')),
-					'phone_number'=> Input::post('phone_number'),
+					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
@@ -248,7 +247,7 @@ class Controller_Admin_Users extends Controller_Admin
 					'middlename'=> Input::post('middlename'),
 					'lastname'=> Input::post('lastname'),
 					'password'=> Auth::instance()->hash_password(Input::post('password')),
-					'phone_number'=> Input::post('phone_number'),
+					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
@@ -277,7 +276,7 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	    Input::post('firstname'),
 				// 	    Input::post('middlename'),
 				// 	    Input::post('lastname'),
-				// 	    Input::post('phone_number'),
+				// 	    Input::post('mobile_number'),
 				// 	    Input::post('email'),
 				// 	    100,
 				// 	    array(
@@ -303,7 +302,7 @@ class Controller_Admin_Users extends Controller_Admin
 				// 	'middlename' => Input::post('middlename'),
 				// 	'lastname' => Input::post('lastname'),
 				// 	'password' => Auth::instance()->hash_password(Input::post('password')),
-				// 	'phone_number' => Input::post('phone_number'),
+				// 	'mobile_number' => Input::post('mobile_number'),
 				// 	'group' => Input::post('group'),
 				// 	'email' => Input::post('email'),
 				// 	'program' => Input::post('program'),
@@ -339,7 +338,7 @@ class Controller_Admin_Users extends Controller_Admin
 
 			
 		}
-		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 
@@ -361,7 +360,7 @@ class Controller_Admin_Users extends Controller_Admin
 			// 		    Input::post('firstname'),
 			// 		    Input::post('middlename'),
 			// 		    Input::post('lastname'),
-			// 		    Input::post('phone_number'),
+			// 		    Input::post('mobile_number'),
 			// 		    Input::post('email'),
 			// 		    100,
 			// 		    array(
@@ -378,7 +377,7 @@ class Controller_Admin_Users extends Controller_Admin
 					'firstname' => Input::post('firstname'),
 					'middlename' => Input::post('middlename'),
 					'lastname' => Input::post('lastname'),
-					'phone_number' => Input::post('phone_number'),
+					'mobile_number' => Input::post('mobile_number'),
 					'group' => Input::post('group'),
 					'email' => Input::post('email'),
 					'role'=> Input::post('role'),
@@ -555,7 +554,7 @@ public function action_create_basic_program()
 			$user->firstname = Input::post('firstname');
 			$user->middlename = Input::post('middlename');
 			$user->lastname = Input::post('lastname');
-			$user->phone_number = Input::post('phone_number');
+			$user->mobile_number = Input::post('mobile_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
@@ -585,7 +584,7 @@ public function action_create_basic_program()
 				$user->firstname = $val->validated('firstname');
 				$user->middlename = $val->validated('middlename');
 				$user->lastname = $val->validated('lastname');
-				$user->phone_number = $val->validated('phone_number');
+				$user->mobile_number = $val->validated('mobile_number');
 				$user->group = $val->validated('group');
 				$user->email = $val->validated('email');
 
@@ -617,7 +616,7 @@ public function action_create_basic_program()
 			$user->firstname = Input::post('firstname');
 			$user->middlename = Input::post('middlename');
 			$user->lastname = Input::post('lastname');
-			$user->phone_number = Input::post('phone_number');
+			$user->mobile_number = Input::post('mobile_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
@@ -647,7 +646,7 @@ public function action_create_basic_program()
 				$user->firstname = $val->validated('firstname');
 				$user->middlename = $val->validated('middlename');
 				$user->lastname = $val->validated('lastname');
-				$user->phone_number = $val->validated('phone_number');
+				$user->mobile_number = $val->validated('mobile_number');
 				$user->group = $val->validated('group');
 				$user->email = $val->validated('email');
 
@@ -680,7 +679,7 @@ public function action_create_basic_program()
 			$user->firstname = Input::post('firstname');
 			$user->middlename = Input::post('middlename');
 			$user->lastname = Input::post('lastname');
-			$user->phone_number = Input::post('phone_number');
+			$user->mobile_number = Input::post('mobile_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
@@ -710,7 +709,7 @@ public function action_create_basic_program()
 				$user->firstname = $val->validated('firstname');
 				$user->middlename = $val->validated('middlename');
 				$user->lastname = $val->validated('lastname');
-				$user->phone_number = $val->validated('phone_number');
+				$user->mobile_number = $val->validated('mobile_number');
 				$user->group = $val->validated('group');
 				$user->email = $val->validated('email');
 
@@ -743,7 +742,7 @@ public function action_create_basic_program()
 			$user->firstname = Input::post('firstname');
 			$user->middlename = Input::post('middlename');
 			$user->lastname = Input::post('lastname');
-			$user->phone_number = Input::post('phone_number');
+			$user->mobile_number = Input::post('mobile_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
@@ -773,7 +772,7 @@ public function action_create_basic_program()
 				$user->firstname = $val->validated('firstname');
 				$user->middlename = $val->validated('middlename');
 				$user->lastname = $val->validated('lastname');
-				$user->phone_number = $val->validated('phone_number');
+				$user->mobile_number = $val->validated('mobile_number');
 				$user->group = $val->validated('group');
 				$user->email = $val->validated('email');
 

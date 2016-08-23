@@ -1,4 +1,4 @@
-       <?php echo Form::open(array("class"=>"form-horizontal")); ?>
+    <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 
 	<fieldset>
 		<div class="form-group">
@@ -32,9 +32,9 @@
 
 		</div>
 		<div class="form-group">
-			<?php echo Form::label('Phone number', 'phone_number', array('class'=>'control-label')); ?>
+			<?php echo Form::label('Mobile number', 'mobile_number', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('phone_number', Input::post('phone_number', isset($user) ? $user->phone_number : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Phone number')); ?>
+				<?php echo Form::input('mobile_number', Input::post('mobile_number', isset($user) ? $user->mobile_number : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Mobile number')); ?>
 
 		</div>
 

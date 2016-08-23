@@ -21,7 +21,7 @@
 		<tr>
 			<th>Username</th>
 			<th>Full Name</th>
-			<th>Phone number</th>
+			<th>Mobile number</th>
 			<th>Email</th>
 			<th>Role</th>
 			<th></th>
@@ -44,7 +44,7 @@
 <?php foreach ($users as $item): ?>		<tr>
 			<td><?php echo $item->username; ?></td>
 			<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
-			<td><?php echo $item->phone_number; ?></td>
+			<td><?php echo $item->mobile_number; ?></td>
 
 			<td><?php echo $item->email; ?></td>
 

@@ -9,8 +9,18 @@
     <meta name="author" content="">
 
 	<title><?php echo $title; ?></title>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+	<?php echo Asset::css('theme-default/bootstrap.css'); ?>
+	<?php echo Asset::css('theme-default/materialadmin.css'); ?>
+	<?php echo Asset::css('theme-default/font-awesome.min.css'); ?>
+	<?php echo Asset::css('theme-default/material-design-iconic-font.min.css'); ?>
+	<?php echo Asset::css('theme-default/libs/morris/morris.core.css'); ?>
+	<?php echo Asset::css('theme-default/libs/rickshaw/rickshaw.css'); ?>
+
+
+
 	<?php echo Asset::css('jquery.datetimepicker.css') ?>
-    <?php echo Asset::css('plugins.css'); ?>
+   	<?php echo Asset::css('plugins.css'); ?>
 	<?php echo Asset::css('bootstrap.min.css'); ?>
 	<!-- <?php //echo Asset::css('business-casual.css'); ?> -->
     <!-- Fonts -->
@@ -29,23 +39,132 @@
 	)); ?>
 	
 </head>
-<body class="login fade-in" data-page="login">
+<body  class="menubar-hoverable header-fixed menubar-pin">
+
 	<?php if ($current_user): ?>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">CheckKoBayadKo</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+<!-- trydaw -->
+
+
+<!-- BEGIN HEADER-->
+<div class="nav navbar-fixed-top">
+<header id="header" >
+    <div class="headerbar">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="headerbar-left">
+            <ul class="header-nav header-nav-options">
+                <li class="header-nav-brand">
+                    <div class="brand-holder">
+                        <a href="#">
+                        	<?php echo Asset::img('logs.png');?>
+                        	
+                        		<?php echo Html::anchor('admin', '<span class="text-lg text-bold text-primary">CheckKoBayadKo</span>') ?>
+                        	
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="headerbar-right">
+            <ul class="header-nav header-nav-options">
+                <li>
+                    <!-- Search form -->
+                    <form class="navbar-search" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="headerSearch" placeholder="Enter your keyword">
+                        </div>
+                        <button type="submit" class="btn btn-icon-toggle ink-reaction"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+               
+                
+            </ul><!--end .header-nav-options -->
+            <ul class="header-nav header-nav-profile">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+                    	<?php echo Asset::img('default_icon.png') ?>
+                     	<?php echo " " . $current_user->username?> 		
+                    </a>
+                    <ul class="dropdown-menu animation-dock">
+                        <li> <?php echo Html::anchor('admin/logout', '<i class="fa fa-fw fa-power-off text-danger"></i> Logout') ?></li>
+                    </ul><!--end .dropdown-menu -->
+                </li><!--end .dropdown -->
+            </ul><!--end .header-nav-profile -->
+
+        </div><!--end #header-navbar-collapse -->
+    </div>
+    </div>
+</header>
+<!-- END HEADER-->
+
+<!-- BEGIN BASE-->
+<div id="base">
+
+    <!-- BEGIN OFFCANVAS LEFT -->
+    <div class="offcanvas">
+    </div><!--end .offcanvas-->
+    <!-- END OFFCANVAS LEFT -->
+
+    <?php //$this->load->view($v); ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end try -->
+
+<!-- begin footer try -->
+
+
+
+
+
+<!-- BEGIN MENUBAR-->
+<div id="menubar" class="menubar-inverse ">
+    <div class="menubar-fixed-panel">
+        <div>
+            <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+        
+    </div>
+    <div class="menubar-scroll-panel">
+
+       
+        <ul id="main-menu" class="gui-controls">
+					<!-- <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
 						<?php echo Html::anchor('admin', 'Home') ?>
-					</li>
+					</li> -->
 
 					<?php
 						$files = new GlobIterator(APPPATH.'classes/controller/admin/*.php');
@@ -55,22 +174,112 @@
 							$section_segment = $file->getBasename('.php');
 							
 							//START SUPER ADMIN -->
-							if($current_user->role == 10):
-									$section_title = Inflector::humanize($section_segment); 
+							if($current_user->role == 10 || $current_user->role == 2):
+								// BEGIN DEAN
+								if ($section_segment == "deans" ): 
+									$section_title = "Dean"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
 									</li>
+								<?php endif ?>
+								<!-- END DEAN -->
+
+
+								<!-- BEGIN ACCOUNTANT -->
+								<?php
+								if($section_segment == "accountants"){
+										$section_title = "Accountant"; 
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-my-library-books"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+									<?php
+									}elseif($section_segment == "students"){
+										$section_title = "Students";
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-people"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+									<?php
+									}elseif($section_segment == "users"){
+										$section_title = "Users";
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-users"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+									<?php
+									}
+									?>
+								<!-- END ACCOUNTANT -->
+
+								<!-- BEGIN CASHIER -->
+								<?php
+								if ($section_segment == "cashiers"): 
+									$section_title = "Cashier"; 
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+								<?php endif ?>
+								<!-- END CASHIER -->
+
+
+								<!-- BEGIN PRINCIPAL -->
+								<?php 
+								if ($section_segment == "principals"): 
+									$section_title = "Principal"; 
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-person"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+								<?php endif ?>
+								<!-- END PRINCIPAL -->
+
+								<!-- BEGIN ADMINS -->
+								<?php
+								if ($section_segment == "admins"): 
+									$section_title = "School Administrator"; 
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									
+									<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-account-box"></i></div> <span class="title">'. $section_title). '</span>'?>
+									</li>
+								<?php endif ?>
+								<!-- END ADMINS -->
+
+								<!-- BEGIN VPAA -->
+								<?php
+								if ($section_segment == "vpaas"): 
+									$section_title = "VPAA"; 
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+			
+										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title). '</span>'?>
+									</li>
+								<?php endif ?>
+								<!-- END VPAA -->
 							<?php endif ?>
 							<!--END SUPER ADMIN -->
+
+							
+
+
+
+
+
+
+
+
 							<?php
 							//START VPAAS -->
 							if($current_user->role == 7):
 								if ($section_segment == "vpaas"): 
-									$section_title = Inflector::humanize($section_segment); 
+									$section_title = "VPAA"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+			
+										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title). '</span>'?>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -84,7 +293,8 @@
 									$section_title = Inflector::humanize($section_segment); 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+									
+									<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-web"></i></div> <span class="title">'. $section_title). '</span>'?>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -95,10 +305,10 @@
 							//START PRINCIPAL -->
 							if($current_user->role == 5):
 								if ($section_segment == "principals"): 
-									$section_title = Inflector::humanize($section_segment); 
+									$section_title = "Principal"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-person"></i></div> <span class="title">'.  $section_title). '</span>'?>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -108,10 +318,10 @@
 							//START CASHIERS -->
 							if($current_user->role == 4):
 								if ($section_segment == "cashiers"): 
-									$section_title = Inflector::humanize($section_segment); 
+									$section_title = "Cashier"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -122,10 +332,10 @@
 							//START DEAN / PROGRAM -->
 							if($current_user->role == 1 || $current_user->role == 2):
 								if ($section_segment == "deans" ): 
-									$section_title = Inflector::humanize($section_segment); 
+									$section_title = "Dean"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -136,39 +346,73 @@
 							<?php
 							//START ACCOUNTANT
 							if($current_user->role == 3):
-								if ($section_segment == "accountants" || $section_segment == "users" || $section_segment == "students" ): 
-									$section_title = Inflector::humanize($section_segment); 
+								
+									if($section_segment == "accountants"){
+										$section_title = "Accountant"; 
 									?>
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title)?>
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-web"></i></div> <span class="title">'.  $section_title). '</span>'?>
 									</li>
-								<?php endif ?>
+									<?php
+									}elseif($section_segment == "students"){
+										$section_title = "Students";
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-perm-contact-cal"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+									<?php
+									}elseif($section_segment == "users"){
+										$section_title = "Users";
+									?>
+									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-users"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									</li>
+									<?php
+									}
+									?>
+
+									
+								
 							<?php endif ?>
 							<!--END ACCOUNTANT -->
 							<?php
 						}
 					?>
 				</ul>
-				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown">
-						<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-user"></span><?php echo " " . $current_user->username?> <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><?php echo Html::anchor('admin/logout', 'Logout') ?></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    </div>
+</div>
+<!-- END BASE -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- END FOOTER TRY -->
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
 	<?php endif; ?>
-	<div class="box">
-	<div class="container">
-		
-		  <div class="row">
-			<div class="col-md-12">
-				<!-- <h1><?php echo $title; ?></h1> -->
-				<hr>
 <?php if (Session::get_flash('success')): ?>
 				<div class="alert alert-success alert-dismissable">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -183,17 +427,12 @@
 					<p>
 					<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
 					</p>
-				</div>
+				
 <?php endif; ?>
-			</div>
 			
 			<div class="col-md-12">
-<?php echo $content; ?>
-			</div>
-			</div>
-		
-		<hr/>
-		</div>
+				<?php echo $content; ?>
+			
 		<!-- <footer>
 			<p class="pull-right">Page rendered in {exec_time}s using {mem_usage}mb of memory.</p>
 			<p>
@@ -201,19 +440,51 @@
 				<small>Version: <?php echo e(Fuel::VERSION); ?></small>
 			</p>
 		</footer> -->
-	</div>
+	
     <!-- START SIGNUP BOX -->
    
-	<footer>
+	<footer class=" navbar-fixed-bottom navbar-default" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>Copyright &copy; CheckKoBayadKo 2016</p>
+                    <span class="title">Copyright &copy; CheckKoBayadKo 2016</span>
                 </div>
             </div>
         </div>
     </footer>
 
-
+<?php echo Asset::js(array(
+		'libs/jquery/jquery-1.11.2.min.js',
+		'libs/jquery/jquery-migrate-1.2.1.min.js',
+		'libs/bootstrap/bootstrap.min.js',
+		'libs/spin.js/spin.min.js',
+		'libs/autosize/jquery.autosize.min.js',
+		'libs/nanoscroller/jquery.nanoscroller.min.js',
+		'core/source/App.js',
+		'core/source/AppNavigation.js',
+		'core/source/AppOffcanvas.js',
+		'libs/autosize/jquery.autosize.min.js',
+		'core/source/AppCard.js',
+		'core/source/AppForm.js',
+		'core/source/AppNavSearch.js',
+		'core/source/AppVendor.js',
+		'core/demo/Demo.js',
+		'libs/moment/moment.min.js',
+		'libs/flot/jquery.flot.min.js',
+		'libs/flot/jquery.flot.time.min.js',
+		'libs/flot/jquery.flot.resize.min.js',
+		'libs/flot/jquery.flot.orderBars.js',
+		'libs/flot/jquery.flot.pie.js',
+		'libs/flot/curvedLines.js',
+		'libs/jquery-knob/jquery.knob.min.js',
+		'libs/sparkline/jquery.sparkline.min.js',
+		'libs/raphael/raphael-min.js',
+		'libs/morris.js/morris.min.js',
+		'libs/d3/d3.min.js',
+		'libs/d3/d3.v3.js',
+		'libs/rickshaw/rickshaw.min.js',
+		'core/demo/DemoCharts.js',
+	)); ?>
+		
 </body>
 </html>

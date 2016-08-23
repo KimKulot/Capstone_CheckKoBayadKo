@@ -3,72 +3,86 @@
 			Response::redirect('/');
 		}
  ?>
- <h3><?php echo $current_user->lastname . ", " . $current_user->firstname . " " . $current_user->middlename; ?></h3>
+ <div id="content">
+    <section>
+        <div class="section-header">
+            <ol class="breadcrumb"> 
+                <li class="active">Listing of Students </li>
+                <li class="active"><?php echo $current_user->lastname . ", " . $current_user->firstname . " " . $current_user->middlename; ?></li>
+                </ol>
+        </div><!--end .section-header -->
+        <div class="section-body">
+            <div class="card">
+                <div class="card-body">
 
-<h2>Listing of Students</h2>
-<br>
+				 
 
-<?php if ($students): ?>
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Full Name</th>
-			<th>Year Level</th>
-			<th>Total Payment</th>
-			<th>Tuition Fee</th>
-			<th>Misc</th>
-			<th>Other Fees</th>
-			<th>Down Payment</th>
-			<th>Ammount per exam</th>
-			<th>Balance</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>	
-<?php foreach ($progdeans as $progdean): ?>
-	<?php if ($current_user->id == $progdean->dean_id): ?>
-			<?php foreach ($students as $item): ?>
-				<?php foreach ($programs as $program): ?>
-					<?php if ($program->id == $progdean->program_id): ?>
-						<?php if ($item->course == $program->program_description): ?>
-							<tr>
-								<?php foreach ($users as $key): ?>
-									<?php if($item->student_id == $key->id){ ?>
-										<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
-									<?php } ?>
+				<?php if ($students): ?>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Full Name</th>
+							<th>Year Level</th>
+							<th>Total Assesment</th>
+							<th>Tuition Fee</th>
+							<th>Misc</th>
+							<th>Other Fees</th>
+							<th>Total Payment</th>
+							<th>Amount per exam</th>
+							<th>Balance</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>	
+				<?php $count = 0; ?>
+				<?php foreach ($progdeans as $progdean): ?>
+					<?php if ($current_user->id == $progdean->dean_id): ?>
+							<?php foreach ($students as $item): ?>
+								<?php foreach ($programs as $program): ?>
+									<?php if ($program->id == $progdean->program_id): ?>
+										<?php if ($item->program == $program->program_description): ?>
+											<tr>
+												<?php foreach ($users as $key): ?>
+													<?php if($item->student_id == $key->id){ ?>
+														<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
+													<?php } ?>
+												<?php endforeach ?>
+												
+												<?php if ($count == 0): ?>
+													<?php 
+														echo $item->program;
+														$count++; 
+													?>
+													
+												<?php endif ?>
+												
+												<td><?php echo $item->year; ?></td>
+												<td><?php echo number_format(($item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->other_fees); ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
+												<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
+											</tr>
+										<?php endif ?>
+									<?php endif ?>
 								<?php endforeach ?>
-								<?php $count = 0; ?>
-								<?php if ($count ==0): ?>
-									<?php 
-										echo $item->course;
-										$count++; 
-									?>
-									
-								<?php endif ?>
-								
-								<td><?php echo $item->year; ?></td>
-								<td><?php echo number_format(($item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
-								<td><?php echo $item->tuition_fee; ?></td>
-								<td><?php echo $item->misc; ?></td>
-								<td><?php echo $item->other_fees; ?></td>
-								<td><?php echo $item->down_payment; ?></td>
-								<td><?php echo $item->breakdown; ?></td>
-								<td><?php echo $item->balance; ?></td>
-							</tr>
-						<?php endif ?>
+						<?php endforeach; ?>	
 					<?php endif ?>
 				<?php endforeach ?>
-		<?php endforeach; ?>	
-	<?php endif ?>
-<?php endforeach ?>
 
-	 </tbody>
-</table>
+					 </tbody>
+				</table>
 
-<?php else: ?>
-<p>No Students.</p>
+				<?php else: ?>
+				<p>No Students.</p>
 
-<?php endif; ?><!-- <p>
-	<?php echo Html::anchor('admin/students/create', 'Add new Student', array('class' => 'btn btn-success')); ?>
+				<?php endif; ?><!-- <p>
+					<?php echo Html::anchor('admin/students/create', 'Add new Student', array('class' => 'btn btn-success')); ?>
 
-</p> -->
+				</p> -->
+				</div>
+            </div>
+        </div>
+    </section>

@@ -1,46 +1,58 @@
-<h2>Setting Time and Date</h2>
-<br>
-<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+<div id="content">
+    <section>
+        <div class="section-header">
+            <ol class="breadcrumb"> 
+                <li class="active">Setting Time and Date</li>
+            </ol>
+        </div>
+        <div class="section-body">
+            <div class="card">
+            	<div class="card-body">
 
-	<fieldset>
+				<?php echo Form::open(array("class"=>"form-horizontal")); ?>
 
-		<div class="form-group col-sm-4">
-			<?php echo Form::label('Time and date of exam', 'date_time', array('class'=>'control-label')); ?>
-				
-				<?php echo Form::input('date_time', Input::post('date_time', isset($accountantcron) ? $accountantcron->date_time : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Date', 'id' => 'datetimepicker')); ?>
-		</div>
-		
-		<div class="form-group" style="margin-top:25px">
-			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>		
-		</div>
+					<fieldset>
 
-	</fieldset>
+						<div class="form-group floating-label">
+							<?php echo Form::label('Time and date of exam', 'date_time', array('class'=>'control-label')); ?>
+								
+								<?php echo Form::input('date_time', Input::post('date_time', isset($accountantcron) ? $accountantcron->date_time : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Date', 'id' => 'datetimepicker', 'required')); ?>
+						</div>
+						
+						<div class="form-group floating-label" style="margin-top:25px">
+							<label class='control-label'>&nbsp;</label>
+							<?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>		
+						</div>
 
-
-<?php echo Form::close(); ?>
-
-
-
-
-
-
-
-
+					</fieldset>
 
 
-
-<!-- CALLING ASSETS -->
-<?php echo Asset::js('jquery.min.js') ?>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<?php echo Asset::js('jquery.datetimepicker.full.js') ?>
-
-<!-- DATE TIME SCRIPT -->
-<script>
-	$("#datetimepicker").datetimepicker();
-</script>
+				<?php echo Form::close(); ?>
 
 
+
+
+
+
+
+
+
+
+
+				<!-- CALLING ASSETS -->
+				<?php echo Asset::js('jquery.min.js') ?>
+				<!-- Include all compiled plugins (below), or include individual files as needed -->
+				<?php echo Asset::js('jquery.datetimepicker.full.js') ?>
+
+				<!-- DATE TIME SCRIPT -->
+				<script>
+					$("#datetimepicker").datetimepicker();
+				</script>
+
+					</div>
+            </div>
+        </div><!--end .section-body -->
+    </section>
 
 
 
