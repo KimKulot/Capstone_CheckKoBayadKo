@@ -1,3 +1,7 @@
+
+
+
+
 <?php echo render('admin/cashiers/_form'); ?>
 
 <p>

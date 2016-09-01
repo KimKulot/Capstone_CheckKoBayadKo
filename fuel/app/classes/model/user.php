@@ -14,8 +14,14 @@ class Model_User extends \Orm\Model
 		'role',
 		'created_at',
 		'updated_at',
+		// 'deleted_at',
+		// 'deleted',
 
 	);
+	// protected static $_soft_delete = array(
+	// 	'deleted_field' => 'deleted',
+	// 	'mysql_timestamp' => false,
+	// );
 
 	protected static $_has_one = array(
 		'student' => array(

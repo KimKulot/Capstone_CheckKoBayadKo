@@ -139,7 +139,7 @@
 
 
 <!-- BEGIN MENUBAR-->
-<div id="full-height menubar" class="menubar-inverse ">
+<div id="menubar" class="menubar-inverse ">
     <div class="menubar-fixed-panel">
         <div>
             <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
@@ -175,22 +175,26 @@
 
 
 <?php endif; ?>
-<?php if (Session::get_flash('success')): ?>
-				<div class="alert alert-success alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p>
-					<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
-					</p>
-				</div>
-<?php endif; ?>
-<?php if (Session::get_flash('error')): ?>
-				<div class="alert alert-danger alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p>
-					<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
-					</p>
-				</div>
-<?php endif; ?>
+<div class="page-icon animated bounceInDown">
+    <?php if (Session::get_flash('success')): ?>
+    				<div class="alert alert-success alert-dismissable">
+    					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    					<p>
+    					<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
+    					</p>
+    				</div>
+    <?php endif; ?>
+</div>
+<div class="page-icon animated bounceInDown">
+    <?php if (Session::get_flash('error')): ?>
+    				<div class="alert alert-danger alert-dismissable">
+    					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    					<p>
+    					<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
+    					</p>
+    				</div>
+    <?php endif; ?>
+</div>
 
 			
 			<div class="col-md-12">

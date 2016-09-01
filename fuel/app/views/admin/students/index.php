@@ -1,5 +1,5 @@
 <?php 
-		if ($current_user->role != 3 && $current_user->role != 10) {
+		if ($current_user->role != 3 && $current_user->role != 10 && $current_user->role != 6) {
 			Response::redirect('/');
 		}
  ?>
@@ -23,7 +23,7 @@
 							<th>Year</th>
 							<th>Student ID</th>
 							<th>Full Name</th>
-							<th>Parent Name</th>
+							
 							<th></th>
 						</tr>
 					</thead>
@@ -48,12 +48,15 @@
 
 								
 							<?php endforeach ?>
-							<td>
-								<?php //echo Html::anchor('admin/students/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> 
-								<?php echo Html::anchor('admin/students/edit/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> |
-								<?php echo Html::anchor('admin/students/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm ink-reaction ' )); ?>
+							<?php if ($current_user->role != 6): ?>
+								<td>
+									<?php //echo Html::anchor('admin/students/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> 
+									<?php echo Html::anchor('admin/students/edit/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> |
+									<?php echo Html::anchor('admin/students/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm ink-reaction ' )); ?>
 
-							</td>
+								</td>
+							<?php endif ?>
+							
 						</tr>
 					
 				<?php endforeach; ?>	</tbody>

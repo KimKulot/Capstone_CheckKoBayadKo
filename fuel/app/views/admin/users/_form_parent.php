@@ -33,7 +33,11 @@
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('Password', 'password', array('class'=>'control-label')); ?>
-
+				<?php
+					if(isset($user->password)){ 
+						$user->password = null; 
+					}
+				?>
 				<?php echo Form::input('password', Input::post('password', isset($user) ? $user->password : ''), array('class' => 'col-md-4 form-control', 'type' => 'password', 'placeholder'=>'Password')); ?>
 
 		</div>

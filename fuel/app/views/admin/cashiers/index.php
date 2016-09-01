@@ -1,5 +1,5 @@
 <?php 
-		if ($current_user->role != 4 && $current_user->role != 10) {
+		if ($current_user->role != 4 && $current_user->role != 10 && $current_user->role != 6) {
 			Response::redirect('/');
 		}
  ?>
@@ -41,20 +41,23 @@
 								<?php } ?>
 							<?php endforeach ?>
 							<td><?php echo $item->program; ?></td>
-							<td><?php echo number_format((
-							$item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->other_fees); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format((
+							$item->tuition_fee + $item->misc + $item->other_fees) , 2) ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee,2); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->other_fees,2); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->breakdown,2); ?></td>
+							<td><span>&#8369</span><?php echo " " . number_format($item->balance,2); ?></td>
 							<td>
 								<?php echo Html::anchor('admin/cashiers/view/'.$item->id, 'View', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
 							</td>
-							<td>
-								<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
-							</td>
+							<?php if ($current_user->role != 6): ?>
+								<td>
+									<?php echo Html::anchor('admin/cashiers/edit/'.$item->id, 'Encode', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
+								</td>
+							<?php endif ?>
+							
 						</tr>
 							
 				<?php endforeach; ?>	</tbody>

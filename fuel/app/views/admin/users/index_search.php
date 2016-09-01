@@ -1,18 +1,6 @@
 
-	<div class="pull-right">
-		<div class="col-md-12">
-		<p>
-
-			<?php echo Html::anchor('admin/users/create_student', '+ Student', array('class' => 'btn btn-success')); ?>
-		</p>
-		</div>
-	</div>
-	<div class="pull-right">
-		<p>
-			<?php echo Html::anchor('admin/users/create_parent', '+ Parents', array('class' => 'btn btn-success')); ?>
-		</p>
-	</div>
-<h2>Listing Users</h2>
+	
+<h2>Users</h2>
 <br>
 <?php if ($users): ?>
 
@@ -29,19 +17,23 @@
 	</thead>
 	<tbody>
 	
-		<div class="row">
-			<div class="col-xs-3">		
-				<?php echo Form::label('', 'search', array('class'=>'control-label')); ?>
-					<input type="text" class="form-control" placeholder="Search" name="search_item">
+		<fieldset>
+			<div class="form-group ">
+				<?php $search = ""; ?>
+					
+					<?php echo Form::input('search',  Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Search' ));  
+					?>
 			</div>
-			
-			<?php echo Html::anchor('admin/users/index_search/', 'Search', array('class' => 'btn btn-primary')); ?>
-		</div>
+			<div class="form-group">
+					<?php echo Html::anchor('admin/users/index_search/'. $search, '<span class="glyphicon glyphicon-search"></span> Search', array('class' => 'btn btn-primary btn-sm')); ?> 
+			</div>	
+		</fieldset>
 
 	
 <!-- <input type="submit" name="submit" value="submit" /> -->
 	
 <?php foreach ($users as $item): ?>		<tr>
+	
 			<td><?php echo $item->username; ?></td>
 			<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
 			<td><?php echo $item->mobile_number; ?></td>

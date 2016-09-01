@@ -56,7 +56,6 @@
                     <div class="brand-holder">
                         <a href="#">
                         	<?php echo Asset::img('logs.png');?>
-                        	
                         		<?php echo Html::anchor('admin', '<span class="text-lg text-bold text-primary">CheckKoBayadKo</span>') ?>
                         	
                         </a>
@@ -174,7 +173,7 @@
 							$section_segment = $file->getBasename('.php');
 							
 							//START SUPER ADMIN -->
-							if($current_user->role == 10 || $current_user->role == 2):
+							if($current_user->role == 10 || $current_user->role == 6):
 								// BEGIN DEAN
 								if ($section_segment == "deans" ): 
 									$section_title = "Dean"; 
@@ -286,19 +285,19 @@
 							<!--END VPAAS -->
 
 
-							<?php
-							//START ADMIN -->
-							if($current_user->role == 6):
-								if ($section_segment == "admins"): 
-									$section_title = Inflector::humanize($section_segment); 
-									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+							 <?php
+							// //START ADMIN -->
+							// if($current_user->role == 6):
+							// 	if ($section_segment == "admins"): 
+							// 		$section_title = "School Administrator"; 
+							// 		?>
+							<!-- <li class="<?php //echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 									
-									<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-web"></i></div> <span class="title">'. $section_title). '</span>'?>
-									</li>
-								<?php endif ?>
-							<?php endif ?>
-							<!--END ADMIN -->
+							 		<?php //echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-web"></i></div> <span class="title">'. $section_title). '</span>'?>
+								<!--</li> -->
+							 	<?php //endif ?>
+							 <?php //endif ?>
+							 <!--END ADMIN -->
 
 
 							<?php
@@ -413,22 +412,26 @@
 	
 
 	<?php endif; ?>
-<?php if (Session::get_flash('success')): ?>
-				<div class="alert alert-success alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p>
-					<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
-					</p>
-				</div>
-<?php endif; ?>
-<?php if (Session::get_flash('error')): ?>
-				<div class="alert alert-danger alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p>
-					<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
-					</p>
-				
-<?php endif; ?>
+<div class="page-icon animated bounceInDown">
+	<?php if (Session::get_flash('success')): ?>
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p>
+						<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
+						</p>
+					</div>
+	<?php endif; ?>
+</div>
+<div class="page-icon animated bounceInDown">
+	<?php if (Session::get_flash('error')): ?>
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p>
+						<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
+						</p>
+					
+	<?php endif; ?>
+</div>
 			
 			<div class="col-md-12">
 				<?php echo $content; ?>

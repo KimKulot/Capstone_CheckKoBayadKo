@@ -401,7 +401,7 @@ var DateFormatter;
                  * @return {string}
                  */
                 c: function () {
-                    return 'Y-m-d\\TH:i:sP'.replace(backspace, doFormat);
+                    return 'm/d/Y\\TH:i:sP'.replace(backspace, doFormat);
                 },
                 /**
                  * RFC 2822 date
@@ -980,9 +980,9 @@ var DateFormatter;
 		value: '',
 		rtl: false,
 
-		format:	'Y/m/d ',
+		format:	'm/d/Y ',
 		
-		formatDate:	'Y/m/d',
+		formatDate:	'm/d/Y',
 
 		startDate:	false, // new Date(), '1986/12/08', '-1970/01/05','-1970/01/05',
 		step: 60,
@@ -1104,14 +1104,14 @@ var DateFormatter;
 			dateHelper = dateFormatter;
 		},
 		RFC_2822: 'D, d M Y H:i:s O',
-		ATOM: 'Y-m-d\TH:i:sP',
-		ISO_8601: 'Y-m-d\TH:i:sO',
+		ATOM: 'm/d/Y\TH:i:sP',
+		ISO_8601: 'm/d/Y\TH:i:sO',
 		RFC_822: 'D, d M y H:i:s O',
 		RFC_850: 'l, d-M-y H:i:s T',
 		RFC_1036: 'D, d M y H:i:s O',
 		RFC_1123: 'D, d M Y H:i:s O',
 		RSS: 'D, d M Y H:i:s O',
-		W3C: 'Y-m-d\TH:i:sP'
+		W3C: 'm/d/Y\TH:i:sP'
 	};
 
 	// first init date formatter

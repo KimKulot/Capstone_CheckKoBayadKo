@@ -104,9 +104,20 @@ class Controller_Site extends Controller_Base
 	public function action_index($id = null)
 	{
 		// $view['histories'] = Model_Studhistorie::find('all');
-		$view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
-		$view['users'] = Model_User::find('all');
-		$view['students'] = Model_Student::find('all');
+		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
+		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		$view['students'] = Model_Student::find('all', [
+		'related' => array(
+			'user', 'history' => array(
+				'order_by' => [
+					'id' => 'desc'
+					]
+				)
+			),
+		'where' => array(
+			'student_id' => Auth::get('id')
+			)
+		]);
 		$this->template->title = 'Dashboard';
 		$this->template->content = View::forge('site/dashboard', $view);
 	}

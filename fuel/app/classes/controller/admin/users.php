@@ -4,8 +4,17 @@ class Controller_Admin_Users extends Controller_Admin
 
 	public function action_index()
 	{
+		$search = "";
+		if (Input::method() == 'POST')
+		{
+			$search = Input::post('search');
+		}
 
-		$data['users'] = Model_User::find('all');
+		$data['users'] = Model_User::find('all', [
+			'where' => [
+				['username', 'like', "%$search%"]
+			]
+		]);
 		$data['roles'] = Model_Role::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
@@ -20,9 +29,14 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/cron_message', $data);
 	}
 
-	public function action_index_search($search)
+	public function action_index_search()
 	{	
-			$data ['users'] = DB::select('*')->from('users')->where('username','like', $search)->as_object()->execute();
+		$search = "";
+		if (Input::method() == 'POST')
+		{
+			$search = Input::post('search');
+		}
+			$data ['users'] = DB::select('*')->from('users')->where('username','like', "%$search%")->as_object()->execute();
 			$this->template->title = "Users";
 			$this->template->content = View::forge('admin/users/index_search', $data);
 

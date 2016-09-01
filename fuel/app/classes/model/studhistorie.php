@@ -53,13 +53,13 @@ class Model_Studhistorie extends \Orm\Model
 		$val = Validation::forge($factory);
 		$val->add_field('program_description', 'Program Description', 'required|max_length[255]');
 		$val->add_field('studenthistory_id', 'Studenthistory_id',  'required|valid_string[numeric]');
-		$val->add_field('tuition_fee', 'Tuition Fee',  'required|valid_string[numeric]');
-		$val->add_field('misc', 'Miscellaneous',  'required|valid_string[numeric]');
-		$val->add_field('other_fees', 'Other Fees',  'required|valid_string[numeric]');
-		$val->add_field('down_payment', 'Down Payment',  'required|valid_string[numeric]');
-		$val->add_field('payment', 'Payment',  'required|valid_string[numeric]');
-		$val->add_field('breakdown', 'Breakdown',  'required|valid_string[numeric]');
-		$val->add_field('balance', 'Balance',  'required|valid_string[numeric]');
+		$val->add_field('tuition_fee', 'Tuition Fee',  'floatval(valid_string[float])');
+		$val->add_field('misc', 'Miscellaneous',  'floatval(valid_string[float])');
+		$val->add_field('other_fees', 'Other Fees',  'floatval(valid_string[float])');
+		$val->add_field('down_payment', 'Down Payment',  'floatval(valid_string[float])');
+		$val->add_field('payment', 'Payment',  'floatval(valid_string[float])');
+		$val->add_field('breakdown', 'Breakdown',  'floatval(valid_string[float])');
+		$val->add_field('balance', 'Balance',  'floatval(valid_string[float])');
 		$val->add_field('date_time', 'Date Time', 'required|max_length[255]');
 		return $val;
 	}

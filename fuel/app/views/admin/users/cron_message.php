@@ -2,6 +2,13 @@
 <br>
 <br>
 <br>
+
+
+
+<br>
+<br>
+<br>
+
 <?php  
 	$date1 = new DateTime('08/16/2013');
 	$date2 = new DateTime('08/23/2013');
@@ -9,8 +16,50 @@
 	 // or $diff->days
 	echo $diff->days;
 	echo "<br>";
-	
 ?>
+
+<?php echo date('m/d/Y'."<br>"); ?>
+
+
+
+<br>
+<br>		
+<!-- BEGIN DATE FORMULA -->
+<?php 
+	$date_Counter = 7; 
+	$diff = 0;
+?>
+<?php foreach ($dates as $date): ?>
+	<?php
+	
+	$currentDate = date('m/d/Y', strtotime("+". $date_Counter. " days"));
+	$var_date = trim($date->date_time);
+	if ($currentDate > $var_date) {
+		$date1 = new DateTime($currentDate);
+		$date2 = new Datetime($var_date);
+		$diff = $date1->diff($date2);
+		echo $diff->days . "<br>";
+	}
+	$currentDate = date('m/d/Y', strtotime("+". $date_Counter - $diff->days. " days"));
+	if ($currentDate == $var_date) {
+		echo 'send sms notif <br>';
+	}
+
+ ?>
+<?php endforeach ?>
+
+<!-- END DATE FORMULA -->
+
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
 <br>
 <br>
 <br>
@@ -39,8 +88,7 @@ date_default_timezone_set("America/New_York");
 	  	 }  
 	  }
 
-	  $daters = date("Y/m/d");
-	  echo "<br>" . $daters, strtotime('+7 days'). "<br><br>";
+	 
 
 	  echo date($date->date_time, strtotime("7 days"));
 	 
@@ -62,14 +110,14 @@ date_default_timezone_set("America/New_York");
 
 							 <!-- START MESSAGE TO BE EXECUTED -->
 							<?php  $message = "
-							Parent Name: <u>$use->lastname, $use->firstname $use->middlename</u><br>
-							Mobile Number: $use->mobile_number; <br>
-							Hello! The date of exam will be (Date and Time)<br>";
+							Parent Name:" . $use->lastname . ", " .  $use->firstname . " " . $use->middlename . 
+							" Mobile Number: " . $use->mobile_number . " " . 
+							"Hello! The date of exam will be: " $date->$date_time;
 
 							if($student->balance != 0):
-								$message .= "Your total payment is: $total  <br>
-								Your payment: $student->down_payment; <br>
-								Your Outstanding Balance:  $student->balance "; 
+								$message .= "Your total payment is: " . $total .
+								" Your payment: " . $student->down_payment .
+								" Your Outstanding Balance: " . $student->balance ; 
 							endif
 							?>
 

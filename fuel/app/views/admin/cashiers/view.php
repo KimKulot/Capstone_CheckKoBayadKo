@@ -54,12 +54,12 @@
 												  		<!-- START DISPLAY -->
 												  		<?php if (!$count >= 1): ?>
 												  			<?php echo "<h3>Course: $student->program</h3>"; ?>
-												  			<td><?php echo number_format(($history->tuition_fee + $history->misc + $history->other_fees)) ?></td>
-															<td><?php echo number_format($history->tuition_fee); ?></td>
+												  			<td><?php echo number_format(($history->tuition_fee + $history->misc + $history->other_fees, 2)) ?></td>
+															<td><?php echo number_format($history->tuition_fee, 2); ?></td>
 															<td><?php echo number_format($history->misc); ?></td>
-															<td><?php echo number_format($history->other_fees); ?></td>
+															<td><?php echo number_format($history->other_fees,2); ?></td>
 												  			<?php $count++; ?>
-															<td><?php echo number_format($history->breakdown); ?></td>
+															<td><?php echo number_format($history->breakdown,2); ?></td>
 														<?php endif ?>
 														<!-- END DISPLAY -->
 

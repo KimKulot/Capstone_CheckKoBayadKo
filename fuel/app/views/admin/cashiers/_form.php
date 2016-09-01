@@ -1,21 +1,31 @@
 <div id="content">
+<div class="card contain-sm style-transparent">
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-12" style="text-align: left;">
     <section>
-        <div class="section-header">
-            <ol class="breadcrumb"> 
-                <li class="active">Encoding</li>
-            </ol>
-        </div>
         <div class="section-body">
-            <div class="card">
-            	<div class="card-body">
+            <div class="card card-bordered style-primary">
+                <div class="card-head">
+                    <header><i class="fa fa-fw fa-tag"></i>Encoding</header>
+                </div>
+                <div class="card-body style-default-bright">
 				<?php echo Form::open(array("class"=>"form-horizontal")); ?>
-				<h5><?php echo "Totals Assessment: &#8369 " . number_format((
-							$student->tuition_fee + $student->misc + $student->other_fees)); ?></h5>
-				<h5><?= "Outstanding balance: &#8369 " . number_format($student->balance); ?></h5>
-				<h5><?= "Total Payment: &#8369 " . number_format($student->down_payment); ?></h5>
+				<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('studenthistory_id', '=', $student->id)->as_object()->execute(); ?>
+				<?php foreach ($view ['pros'] as $pro): ?>
+					<td><?php echo "As of: " . $pro->lastdate; ?></td>
+				<?php endforeach; ?>
+				<h5><?php echo "Total Assessment: &#8369 " . number_format((
+							$student->tuition_fee + $student->misc + $student->other_fees), 2); ?></h5>
+				<h5><?= "Outstanding balance: &#8369 " . number_format($student->balance, 2); ?></h5>
+				<h5><?= "Total Payment: &#8369 " . number_format($student->down_payment, 2); ?></h5>
+				<!-- BEGIN LASTDATE -->
+				
+				<!-- END LASTDATE -->
 				<hr>
+				
 				<!-- BEGIN TUITION FEE -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Tuition Fee: &#8369 " . number_format($student->tuition_fee);?></h5>
+				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Tuition Fee: &#8369 " . number_format($student->tuition_fee, 2);?></h5>
 
 				<div class="form-group floating-label">
 							<?php echo Form::label('', 'tuition_fee', array('class'=>'control-label')); ?>
@@ -25,7 +35,7 @@
 				<!-- END TUITION FEE -->
 				
 				<!-- BEGIN MISCELLANOUS  -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc);?></h5>
+				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc, 2);?></h5>
 
 				<div class="form-group floating-label">
 					<?php echo Form::label('', 'misc', array('class'=>'control-label')); ?>
@@ -36,7 +46,7 @@
 				<!-- END MISCELLANOUS  -->
 
 				<!-- BEGIN OTHER FEES -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Other Fees: &#8369 " . number_format($student->other_fees);?></h5>
+				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Other Fees: &#8369 " . number_format($student->other_fees, 2);?></h5>
 
 				<div class="form-group floating-label">
 					<?php echo Form::label('', 'other_fees', array('class'=>'control-label')); ?>
@@ -59,7 +69,7 @@
 						<?php $student->down_payment = null ?>
 							<?php echo Form::label($paymentString, 'down_payment', array('class'=>'control-label')); ?>
 								
-								<?php echo Form::input('down_payment', Input::post('down_payment', isset($student) ? $student->down_payment : ''), array('class' => 'col-md-4 form-control', 'placeholder'=> $paymentString)); ?>
+								<?php echo Form::input('down_payment', Input::post('down_payment', isset($student) ? $student->down_payment : ''), array('class' => 'col-md-4 form-control', 'placeholder'=> $paymentString, 'type' => 'number', 'step' => '0.1')); ?>
 						</div>
 
 					 	<div class="form-group floating-label">
@@ -110,6 +120,8 @@
 
 						
 					</fieldset>
-				<?php echo Form::close(); ?>
-
+				<?php echo Form::close(); ?>		
+		</div>
+	</div>
+</div>
 				

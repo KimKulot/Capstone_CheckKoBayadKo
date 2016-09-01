@@ -3,7 +3,7 @@
     <section>
         <div class="section-header">
             <ol class="breadcrumb"> 
-                <li class="active">Listing Students</li>
+                <li class="active">Listing of Students</li>
                 <?php echo Html::anchor('admin/accountants/index', 'course', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
             </ol>
         </div><!--end .section-header -->
@@ -37,11 +37,11 @@
 					<?php } ?>
 				<?php endforeach ?>
 				<td><?php echo $item->program; ?></td>
-				<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
-				<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-				<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
-				<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
-				<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
+				<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee,2); ?></td>
+				<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
+				<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
+				<td><span>&#8369</span><?php echo " " . number_format($item->breakdown,2); ?></td>
+				<td><span>&#8369</span><?php echo " " . number_format($item->balance,2); ?></td>
 			</tr>
 		<?php endif ?>
 	<?php endforeach ?>

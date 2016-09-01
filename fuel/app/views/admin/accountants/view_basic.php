@@ -37,12 +37,12 @@
 								<?php endforeach ?>
 								<td><?php echo $item->program; ?></td>
 								<td><?php echo $item->year; ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->other_fees); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee,2); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->other_fees,2); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->breakdown,2); ?></td>
+								<td><span>&#8369</span><?php echo " " . number_format($item->balance,2); ?></td>
 							</tr>
 						<?php endif ?>
 					<?php endforeach ?>
