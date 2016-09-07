@@ -57,6 +57,23 @@
 		</div>
 
 		<div class="form-group floating-label">
+			<?php echo Form::label('Scholarship Type', 'scholarship_type', array('class'=>'control-label')); ?>
+
+				<?php 
+			 	echo Form::select('scholarship_type', Input::post('scholarship_type', isset($student) ? $user->scholarship_type : ''), array(
+				    'Scholarship Type' => array( 
+				        'Regular' => 'Regular',
+				        'GOE' => 'GOE',
+				        'GOEF' => 'GOEF',
+				        'Varsity' => 'Varsity',
+				        'Sinagila' => 'Sinagila',
+				        'Academic' => 'Academic',
+				    ),
+				)); ?>
+
+		</div>
+
+		<div class="form-group floating-label">
 			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
 
 				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : '8'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>

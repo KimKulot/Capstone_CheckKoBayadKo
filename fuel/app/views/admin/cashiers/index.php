@@ -9,6 +9,8 @@
         <div class="section-header">
             <ol class="breadcrumb"> 
                 <li class="active">Cashier</li>
+                <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="glyphicon glyphicon-plus "></span>Miscellanous', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+
                 </ol>
         </div><!--end .section-header -->
         <div class="section-body">

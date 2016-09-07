@@ -1,5 +1,5 @@
 <?php
-class Model_Studhistorie extends \Orm\Model
+class Model_Studhistorie extends \Orm\Model_Soft
 {
 	protected static $_properties = array(
 		'id',
@@ -15,8 +15,11 @@ class Model_Studhistorie extends \Orm\Model
 		'date_time',
 		'created_at',
 		'updated_at',
+		'deleted_at',
 
 	);
+	protected static $_soft_delete_column = 'deleted_at';
+    protected static $_mysql_timestamp = false; 
 
 	protected static $_belongs_to = array(
 		'user' => array(

@@ -1,5 +1,5 @@
 <?php 	
-class Model_Studparent extends \Orm\Model
+class Model_Studparent extends \Orm\Model_Soft
 {
 
 	protected static $_properties = array(
@@ -8,8 +8,10 @@ class Model_Studparent extends \Orm\Model
 		'parent_id',
 		'created_at',
 		'updated_at',
+		'deleted_at',
 	);
-
+	protected static $_soft_delete_column = 'deleted_at';
+    protected static $_mysql_timestamp = false; 
 	/**
 	 * @var array	belongs_to relationships
 	 */

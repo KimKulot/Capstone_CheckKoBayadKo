@@ -34,14 +34,20 @@
 								</tr>
 							</thead>
 						<!-- //START STUDENT PROFILE -->
-						<?php $count = 0; ?>
+						<?php 
+							$count = 0;
+							$student_course = ""; 
+						?>
+
 						<?php foreach ($students as $student): ?>
 								<?php foreach ($student->history as $history): ?>
 
 											  <tr>
 											  		<!-- START DISPLAY -->
 											  		<?php if ($count < 1): ?>
-											  			<?php echo "<h3>Course: $student->program</h3>"; ?>
+											  			<?php
+											  			 $student_course = $student->program;
+											  			 echo "<h3>Course: " . $student->program. " " . $student->year .  "</h3>"; ?>
 											  			<td><span>&#8369</span><?php echo " " . number_format(($history->tuition_fee + $history->misc + $history->other_fees), 2) ?></td>
 														<td><span>&#8369</span><?php echo " " . number_format($history->tuition_fee, 2); ?></td>
 														<td><span>&#8369</span><?php echo " " . number_format($history->misc, 2); ?></td>
@@ -51,7 +57,6 @@
 														
 														<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
 															<?php $result = $history->payment/$history->breakdown; ?>
-															  ?>
 														<!-- END DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
 
 														<!-- BEGIN BREAKDOWN -->
@@ -145,9 +150,65 @@
 						</table>
 						<!-- END TOTAL ASSESSMENT -->
 
+
+
+
+
+						    <div class="card contain-sm style-transparent">
+						        <div class="row">
+						                <div class="col-sm-8" style="text-align: left;">
+						<table class="table table-striped">
+						<thead>
+						<h3>Miscellanous</h3>
+								<tr>
+									<th>Type</th>
+									<th>Amount</th>
+								</tr>
+							</thead>
+						<!-- //START STUDENT PROFILE -->
+
+						<?php foreach ($misc as $mis): ?>
+							<?php foreach ($programs as $program): ?>
+								<?php if ($program->program_description == $student_course): ?>
+									<?php if($mis->program_id == $program->id): ?>
+									  <tr>
+									  		<!-- START DISPLAY -->
+											<td><?php echo $mis->type; ?></td> 
+											<td><span>&#8369</span><?php echo " " . number_format($mis->amount, 2); ?></td>
+											<!-- END DISPLAY -->
+									 </tr>
+									 <?php endif ?>
+								<?php endif ?>
+							<?php endforeach ?>
+						<?php endforeach ?>
+						
+						<!-- //END STUDENT PROFILE -->
+
+							</tbody>
+						</table>
+				
+             </div>
+         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 						<table class="table table-striped">
 						<thead>
 								<tr>
+								<h3>History of Payments</h3>
 									<th>Payment</th>
 									<th>Overall payment</th>
 									<th>Balance</th>

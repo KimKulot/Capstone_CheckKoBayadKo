@@ -50,7 +50,7 @@
 							<?php endforeach ?>
 							<?php if ($current_user->role != 6): ?>
 								<td>
-									<?php //echo Html::anchor('admin/students/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> 
+									<?php echo Html::anchor('admin/students/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> 
 									<?php echo Html::anchor('admin/students/edit/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> |
 									<?php echo Html::anchor('admin/students/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm ink-reaction ' )); ?>
 

@@ -23,35 +23,51 @@
 				
 				<!-- END LASTDATE -->
 				<hr>
-				
+
+				<script>
+					function showPasswordInputBox()
+					{
+					  document.getElementById('tuition').style.display="block" ;
+					}
+					function showPasswordInputBox2()
+					{
+					  document.getElementById('misc').style.display="block" ;
+					}
+					function showPasswordInputBox3()
+					{
+					  document.getElementById('fee').style.display="block" ;
+					}
+				</script>
+				<input type="text" id="passwd" name="password"  style="display:none;" />
+	
 				<!-- BEGIN TUITION FEE -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Tuition Fee: &#8369 " . number_format($student->tuition_fee, 2);?></h5>
+				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox()')); ?><?="Tuition Fee: &#8369 " . number_format($student->tuition_fee, 2);?></h5>
 
 				<div class="form-group floating-label">
 							<?php echo Form::label('', 'tuition_fee', array('class'=>'control-label')); ?>
 
-						<?php echo Form::input('tuition_fee', Input::post('tuition_fee', isset($student) ? $student->tuition_fee : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Tuition Fee', 'readonly' => 'readonly')); ?>
+						<?php echo Form::input('tuition_fee', Input::post('tuition_fee', isset($student) ? $student->tuition_fee : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Tuition Fee', 'id' => 'tuition', 'style' => 'display:none')); ?>
 				</div>
 				<!-- END TUITION FEE -->
 				
 				<!-- BEGIN MISCELLANOUS  -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc, 2);?></h5>
+				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox2()')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc, 2);?></h5>
 
 				<div class="form-group floating-label">
 					<?php echo Form::label('', 'misc', array('class'=>'control-label')); ?>
 
-						<?php echo Form::input('misc', Input::post('misc', isset($student) ? $student->misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous', 'readonly' => 'readonly')); ?>
+						<?php echo Form::input('misc', Input::post('misc', isset($student) ? $student->misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous', 'id' => 'misc', 'style' => 'display:none')); ?>
 				</div>
 
 				<!-- END MISCELLANOUS  -->
 
 				<!-- BEGIN OTHER FEES -->
-				<h5><?php echo Html::anchor('admin/students/edit/'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction')); ?><?="Other Fees: &#8369 " . number_format($student->other_fees, 2);?></h5>
+				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox3()')); ?><?='<span title="Miscellaneous"> Other Fees:</span> &#8369 ' . number_format($student->other_fees, 2);?></h5>
 
 				<div class="form-group floating-label">
 					<?php echo Form::label('', 'other_fees', array('class'=>'control-label')); ?>
 
-						<?php echo Form::input('other_fees', Input::post('other_fees', isset($student) ? $student->other_fees : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Other Fees', 'readonly' => 'readonly'	)); ?>
+						<?php echo Form::input('other_fees', Input::post('other_fees', isset($student) ? $student->other_fees : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Other Fees', 'id' => 'fee', 'style' => 'display:none')); ?>
 				</div>
 				<!-- END OTHER FEES -->
 				

@@ -153,7 +153,7 @@
        
         <ul id="main-menu" class="gui-controls">
         			<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-						<?php echo Html::anchor('admin', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">Home</span>') ?>
+						<?php echo Html::anchor('admin/', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">Home</span>') ?>
 					</li> 
 					<?php
 						$files = new GlobIterator(APPPATH.'classes/controller/site/*.php');
@@ -165,6 +165,7 @@
 							<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 								<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title) . '</span>' ?>
 							</li>
+
 							<?php
 						}
 					?>

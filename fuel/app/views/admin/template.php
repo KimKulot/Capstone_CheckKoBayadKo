@@ -204,12 +204,33 @@
 									}elseif($section_segment == "users"){
 										$section_title = "Users";
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-users"></i></div> <span class="title">'.  $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Cron</span> '); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Basic Education Student</span>'); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Dean</span>'); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/users/graveyard', '<span class="title">Deactivated Users</span> '); ?>
+											</li>
+											
+										</ul><!--end /submenu -->
 									</li>
 									<?php
 									}
 									?>
+
 								<!-- END ACCOUNTANT -->
 
 								<!-- BEGIN CASHIER -->
@@ -217,8 +238,13 @@
 								if ($section_segment == "cashiers"): 
 									$section_title = "Cashier"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/cashiers/index_miscellanous', '<span class="title">Miscellanous</span> '); ?>
+											</li>
+											
+										</ul>
 									</li>
 								<?php endif ?>
 								<!-- END CASHIER -->

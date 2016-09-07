@@ -1,5 +1,5 @@
 <?php 	
-class Model_Progdean extends \Orm\Model
+class Model_Progdean extends \Orm\Model_Soft
 {
 
 	protected static $_properties = array(
@@ -9,7 +9,8 @@ class Model_Progdean extends \Orm\Model
 		'created_at',
 		'updated_at',
 	);
-
+	protected static $_soft_delete_column = 'deleted_at';
+    protected static $_mysql_timestamp = false; 
 	/**
 	 * @var array	belongs_to relationships
 	 */

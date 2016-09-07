@@ -106,6 +106,8 @@ class Controller_Site extends Controller_Base
 		// $view['histories'] = Model_Studhistorie::find('all');
 		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
 		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		$view['misc'] = Model_Miscellanou::find('all');
+		$view['programs'] = Model_Program::find('all');
 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
 			'user', 'history' => array(

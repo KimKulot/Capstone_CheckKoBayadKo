@@ -19,8 +19,76 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 		// $view->set_global('users', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'username'));
 	}
+	public function action_create()
+	{
+		
 
-	
+	}
+
+	public function action_index_miscellanous()
+	{
+		$view = View::forge('admin/cashiers/index_miscellanous');
+		$view->programs = Model_Program::find('all');
+		$view->users = Model_User::find('all');
+		$view->students = Model_Student::find('all');
+		$this->template->title = "Programs";
+		$this->template->content = $view;
+
+	}
+
+	public function action_add_miscellanous()
+	{
+		$view = View::forge('admin/cashiers/create_miscellanous');
+ 		$view->programs = Model_Program::find('all');
+		if (Input::method() == 'POST')
+		{
+			$val = Model_Miscellanou::validate('create');
+
+			if ($val->run())
+			{
+				$miscellanou = Model_Miscellanou::forge(array(
+					'program_id' => Input::post('program_id'),
+					'type' => Input::post('type'),
+					'amount' => Input::post('amount')
+				));
+
+				if ($miscellanou->save())
+				{
+					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
+
+					Response::redirect('admin/cashiers');
+				}
+					else
+					{
+						Session::set_flash('error', e('Could not save user.'));
+					}
+			}	
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$this->template->title = "New Miscellanous";
+		$this->template->content = $view;
+		// $data['programs'] = DB::select('*')->from('programs')->where('id', '=', $program_id)->as_object()->execute();
+	}
+
+	public function action_view_misc($id = null)
+	{
+		// $view['histories'] = Model_Studhistorie::find('all');
+		
+		$view['miscellanous'] = Model_Miscellanou::find('all', [
+			'where' => [
+				['program_id', 'like', "$id"]
+			]
+		]);
+		// $view['misc'] = DB::select('*')->from('miscellanous')->where()
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('admin/cashiers/view_misc', $view);
+	}
+
 
 	public function action_view($id = null)
 	{
@@ -109,6 +177,72 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		}
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/cashiers/edit');
+
+	}
+
+	public function action_edit_misc($id = null)
+	{
+
+		$view = View::forge('admin/cashiers/edit_misc');
+		$view->programs = Model_Program::find('all');
+		$misc = Model_Miscellanou::find($id);
+		$val = Model_Miscellanou::validate('edit');
+		if ($val->run())
+		{
+
+			$misc->program_id = Input::post('program_id');	
+			$misc->type = Input::post('type');
+			$misc->amount = Input::post('amount');
+
+			if ($misc->save())
+			{
+
+				Session::set_flash('success', e('Updated misc #' . $id));
+				
+				Response::redirect('admin/cashiers/view_misc/'. $id);
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update misc #' . $id));
+			}
+		}
+
+		else
+		{
+			if (Input::method() == 'POST')
+			{
+				$misc->program_id = Input::post('program_id');	
+				$misc->type = Input::post('type');
+				$misc->amount = Input::post('amount');
+				
+				
+				Session::set_flash('error', $val->error());
+			}
+
+			$this->template->set_global('miscellanou', $misc, false);
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+
+	public function action_delete_misc($id = null)
+	{
+		if ($misc = Model_Miscellanou::find($id))
+		{
+			$misc->delete();
+
+			Session::set_flash('success', e('Delete miscellanous #'.$id));
+		}
+
+		else
+		{
+			Session::set_flash('error', e('Could not delete miscellanous #'.$id));
+		}
+
+		Response::redirect('admin/cashiers/view_misc/' . $id);
 
 	}
 

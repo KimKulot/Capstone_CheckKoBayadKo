@@ -19,6 +19,26 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
+
+	public function action_graveyard()
+	{
+		$search = "";
+		if (Input::method() == 'POST')
+		{
+			$search = Input::post('search');
+		}
+		// $data['users'] = DB::select('*')->from('users')->where('username', 'like', "%search%")->as_object()->execute();
+		$data['users'] = Model_User::find('all', [
+			'where' => [
+				['username', 'like', "%$search%"]
+			]
+		]);
+		$data['roles'] = Model_Role::find('all');
+
+		$this->template->title = "Users";
+		$this->template->content = View::forge('admin/users/graveyard', $data);
+	}
+
 	public function action_cron_message()
 	{ 
 		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
@@ -187,6 +207,55 @@ class Controller_Admin_Users extends Controller_Admin
 	}
 	//END PARENT CREATION
 
+
+	//BEGIN EXIST PARENT CREATION
+	public function action_create_exist_parent($id = null){
+		$data->programs = Model_Program::find('all');
+		$data->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
+		$data['student'] = Model_User::find($id); 
+		if (Input::method() == 'POST')
+		{
+			$val = Model_User::validate('create');
+
+			
+				if ($val->run())
+				{
+					$newuser = Model_User::forge(array(
+						'username'=> Input::post('username'),
+						'firstname' =>Input::post('firstname'),
+						'middlename'=> Input::post('middlename'),
+						'lastname'=> Input::post('lastname'),
+						'password'=> Auth::instance()->hash_password(Input::post('password')),
+						'mobile_number'=> Input::post('mobile_number'),
+						'group'=> Input::post('group'),
+						'email'=> Input::post('email'),
+						'role'=> Input::post('role'),
+					));
+					$newuser->parent_student = Model_Studparent::forge(array(
+						'student_id'=> $id,
+					));
+					if($newuser->save()){
+						Session::set_flash('success', e('Added user'));
+					 	Response::redirect('admin/users');
+				}
+
+			// }catch(Exception $e){
+
+			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
+			 }
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+
+		$this->template->title = "Users";
+		$data->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
+		$this->template->content = View::forge('admin/users/create_exist_parent', $data);
+
+	}
+	//END EXIST PARENT CREATION
+
 //BEGIN BASIC EDUCATION STUDENT CREATION
 	public function action_create_basic_student(){
 		$view = View::forge('admin/users/create_basic_student');
@@ -206,6 +275,7 @@ class Controller_Admin_Users extends Controller_Admin
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
+					'scholarship_type' => Input::post('scholarship_type'),
 					'role'=> Input::post('role'),
 				));
 				$newuser->student = Model_Student::forge(array(
@@ -243,8 +313,8 @@ class Controller_Admin_Users extends Controller_Admin
  		$view->programs = Model_Program::find('all');
 		if (Input::method() == 'POST')
 		{  	
-			$val = Model_User::validate('create');
 
+			$val = Model_User::validate('create');
 			//$val = Model_Student::validate('create');
 			// try{
 			// 	$user = Auth::username_checker(
@@ -255,6 +325,15 @@ class Controller_Admin_Users extends Controller_Admin
 			// );
 			if ($val->run())
 			{
+				$amount = 0;
+				$data = DB::select('id')->from('programs')->where('program_description', '=', Input::post('program'))->as_object()->execute();
+				foreach ($data as $programid) {
+					$program_result = DB::select('amount')->from('miscellanous')->where('program_id', '=', $programid->id)->as_object()->execute();
+					// $amount += $program_result;
+				}	
+				foreach ($program_result as $key) {
+						$amount += $key->amount; 
+				}
 				$newuser = Model_User::forge(array(
 					'username'=> Input::post('username'),
 					'firstname' =>Input::post('firstname'),
@@ -264,14 +343,17 @@ class Controller_Admin_Users extends Controller_Admin
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
+					'scholarship_type' => Input::post('scholarship_type'),
 					'role'=> Input::post('role'),
 				));
+				
+
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('program'),
 					'year' =>Input::post('year'),
 					'tuition_fee' => 0,
-					'other_fees' => 0,
-					'misc' => 0,
+					'other_fees' => 0,	
+					'misc' => $amount,
 					'down_payment' => 0,
 					'breakdown' => 0,
 					'balance' => 0,
@@ -808,12 +890,30 @@ public function action_create_basic_program()
 		{
 			$user->delete();
 
-			Session::set_flash('success', e('Deleted user #'.$id));
+			Session::set_flash('success', e('Deactivate user #'.$id));
 		}
 
 		else
 		{
-			Session::set_flash('error', e('Could not delete user #'.$id));
+			Session::set_flash('error', e('Could not deactivate user #'.$id));
+		}
+
+		Response::redirect('admin/users');
+
+	}
+
+	public function action_activate($id = null)
+	{
+		if ($user = Model_User::find($id))
+		{
+			$user->restore();
+
+			Session::set_flash('success', e('Activate user #'.$id));
+		}
+
+		else
+		{
+			Session::set_flash('error', e('Could not Activate user #'.$id));
 		}
 
 		Response::redirect('admin/users');

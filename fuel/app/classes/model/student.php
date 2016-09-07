@@ -1,5 +1,5 @@
 <?php 	
-class Model_Student extends \Orm\Model
+class Model_Student extends \Orm\Model_Soft
 {
 
 	protected static $_properties = array(
@@ -16,8 +16,12 @@ class Model_Student extends \Orm\Model
 		'balance',
 		'created_at',
 		'updated_at',
+		'deleted_at',
 	);
 
+
+	protected static $_soft_delete_column = 'deleted_at';
+    protected static $_mysql_timestamp = false; 
 	/**
 	 * @var array	belongs_to relationships
 	 */
@@ -26,7 +30,7 @@ class Model_Student extends \Orm\Model
 			'model_to' => 'Model_User',
 			'key_from' => 'student_id',
 			'key_to'   => 'id',
-			'cascade_delete' => false,
+			'cascade_delete' => true,
 		),
 		// 'parent_user' => array(
 		// 	'model_to' => 'Model_User',

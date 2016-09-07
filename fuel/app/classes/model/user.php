@@ -1,5 +1,5 @@
 <?php
-class Model_User extends \Orm\Model
+class Model_User extends \Orm\Model_Soft
 {
 	protected static $_properties = array(
 		'id',
@@ -11,17 +11,18 @@ class Model_User extends \Orm\Model
 		'mobile_number',
 		'group',
 		'email',
+		'scholarship_type',
 		'role',
 		'created_at',
 		'updated_at',
-		// 'deleted_at',
+		'deleted_at',
 		// 'deleted',
 
 	);
-	// protected static $_soft_delete = array(
-	// 	'deleted_field' => 'deleted',
-	// 	'mysql_timestamp' => false,
-	// );
+	
+	protected static $_soft_delete_column = 'deleted_at';
+    protected static $_mysql_timestamp = false; 
+
 
 	protected static $_has_one = array(
 		'student' => array(
@@ -80,8 +81,21 @@ class Model_User extends \Orm\Model
 		$val->add_field('mobile_number', 'Mobile Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
+		$val->add_field('scholarship_type', 'Scholarship Type', 'required|max_length[150]');
 		$val->add_field('role', 'Role', 'required|valid_string[numeric]');
 		return $val;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

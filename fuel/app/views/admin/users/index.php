@@ -12,15 +12,15 @@
                 <li class="active">Listing of Users</li>
                 <?php if ($current_user->role != 6): ?>
 
-					<?php echo Html::anchor('admin/users/setcron', '<span class="glyphicon glyphicon-cog"></span> Setting Cron', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+					<!-- <?php //echo Html::anchor('admin/users/setcron', '<span class="glyphicon glyphicon-cog"></span> Setting Cron', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
 
-					<?php echo Html::anchor('admin/users/create_student', '<span class="glyphicon glyphicon-plus"></span> College Student', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+					<?php //echo Html::anchor('admin/users/create_student', '<span class="glyphicon glyphicon-plus"></span> College Student', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
 
-                	<?php echo Html::anchor('admin/users/create_basic_student', '<span class="glyphicon glyphicon-plus"></span> Basic Education Student', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                	<?php //echo Html::anchor('admin/users/create_basic_student', '<span class="glyphicon glyphicon-plus"></span> Basic Education Student', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
 
-                	<?php echo Html::anchor('admin/users/create_program', '<span class="glyphicon glyphicon-plus"></span> College Program', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                	<?php //echo Html::anchor('admin/users/create_program', '<span class="glyphicon glyphicon-plus"></span> College Program', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
 
-                	<?php echo Html::anchor('admin/users/create_dean', '<span class="glyphicon glyphicon-plus"></span> Dean', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?> 
+                	<?php //echo Html::anchor('admin/users/create_dean', '<span class="glyphicon glyphicon-plus"></span> Dean', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>  -->
 
                 <?php endif ?>
             </ol>
@@ -111,7 +111,8 @@
 										<?php endif ?>	
 
 
-									<?php echo Html::anchor('admin/users/delete/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
+									<?php echo Html::anchor('admin/users/delete/'.$item->id, 'Deactivate', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
+
 
 								</td>
 							<?php endif ?>
