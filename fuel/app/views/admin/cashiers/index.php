@@ -18,6 +18,7 @@
                 <div class="card-body">
 
 				<?php if ($students): ?>
+				<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -26,9 +27,10 @@
 							<th>Total Assessment</th>
 							<th>Tuition Fee</th>
 							<th>Misc</th>
-							<th>Other Fees</th>
 							<th>Total Payment</th>
 							<th>Amount per exam</th>
+							<th>Tuition Discount</th>
+							<th>Miscellaneous Discount</th>
 							<th>Balance</th>
 							<th></th>
 						</tr>
@@ -44,13 +46,15 @@
 							<?php endforeach ?>
 							<td><?php echo $item->program; ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format((
-							$item->tuition_fee + $item->misc + $item->other_fees) , 2) ?></td>
+							$item->tuition_fee + $item->misc) , 2) ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee,2); ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
-							<td><span>&#8369</span><?php echo " " . number_format($item->other_fees,2); ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format($item->breakdown,2); ?></td>
+							<td><?= ($item->tuition_fee / 100) * ($item->dis_tuition); ?></td>
+							<td><?= ($item->misc / 100) * ('0.' . $item->dis_misc); ?></td>
 							<td><span>&#8369</span><?php echo " " . number_format($item->balance,2); ?></td>
+							
 							<td>
 								<?php echo Html::anchor('admin/cashiers/view/'.$item->id, 'View', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
 							</td>
@@ -64,6 +68,7 @@
 							
 				<?php endforeach; ?>	</tbody>
 				</table>
+				</div>
 
 				<?php else: ?>
 				<p>No Students.</p>

@@ -9,7 +9,7 @@
     <meta name="author" content="">
 
 	<title><?php echo $title; ?></title>
-	<link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+	<link href='http://fonts.googleapis.com/ css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
 	<?php echo Asset::css('theme-default/bootstrap.css'); ?>
 	<?php echo Asset::css('theme-default/materialadmin.css'); ?>
 	<?php echo Asset::css('theme-default/font-awesome.min.css'); ?>
@@ -21,12 +21,11 @@
 
 	<?php echo Asset::css('jquery.datetimepicker.css') ?>
    	<?php echo Asset::css('plugins.css'); ?>
-	<?php echo Asset::css('bootstrap.min.css'); ?>
 	<!-- <?php //echo Asset::css('business-casual.css'); ?> -->
     <!-- Fonts -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
-	<?php echo Asset::css('bootstrap.css'); ?>
+	
 	<style>
 		body { margin: 50px; }
 	</style>
@@ -190,8 +189,12 @@
 								if($section_segment == "accountants"){
 										$section_title = "Accountant"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="gui-folder  <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-my-library-books"></i></div> <span class="title">'.  $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/accountants/index_scholarship', '<span class="title">Scholarship</span> '); ?>
+											</li>
+										</ul>
 									</li>
 									<?php
 									}elseif($section_segment == "students"){

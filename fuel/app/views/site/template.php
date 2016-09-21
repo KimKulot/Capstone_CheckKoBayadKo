@@ -14,7 +14,7 @@
 	<?php echo Asset::css('theme-default/materialadmin.css'); ?>
 	<?php echo Asset::css('theme-default/font-awesome.min.css'); ?>
 	<?php echo Asset::css('theme-default/material-design-iconic-font.min.css'); ?>
-	<?php echo Asset::css('bootstrap.min.css'); ?>
+	<!-- <?php //echo Asset::css('bootstrap.min.css'); ?> -->
     <?php echo Asset::css('plugins.css'); ?>
 	<?php //echo Asset::css('business-casual.css'); ?>
     <!-- Fonts -->

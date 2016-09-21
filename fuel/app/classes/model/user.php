@@ -11,7 +11,6 @@ class Model_User extends \Orm\Model_Soft
 		'mobile_number',
 		'group',
 		'email',
-		'scholarship_type',
 		'role',
 		'created_at',
 		'updated_at',
@@ -29,21 +28,21 @@ class Model_User extends \Orm\Model_Soft
 			'model_to' => 'Model_Student',
 			'key_from' => 'id',
 			'key_to' => 'student_id',
-			'cascade_delete' => true,
+			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
 		'parent_student' => array(
 			'model_to' => 'Model_Studparent',
 			'key_from' => 'id',
 			'key_to' => 'parent_id',
-			'cascade_delete' => true,
+			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
 		'dean_program' => array(
 			'model_to' => 'Model_Progdean',
 			'key_from' => 'id',
 			'key_to' => 'dean_id',
-			'cascade_delete' => true,
+			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
 
@@ -81,7 +80,6 @@ class Model_User extends \Orm\Model_Soft
 		$val->add_field('mobile_number', 'Mobile Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
-		$val->add_field('scholarship_type', 'Scholarship Type', 'required|max_length[150]');
 		$val->add_field('role', 'Role', 'required|valid_string[numeric]');
 		return $val;
 	}

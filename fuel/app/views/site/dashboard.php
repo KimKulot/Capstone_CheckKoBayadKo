@@ -24,7 +24,6 @@
 									<th>Total Assessment</th>
 									<th>Tuition fee</th>
 									<th>Miscellaneous</th>
-									<th>Other Fees</th>
 									<th>Amount per Exam</th>
 									<th>Prelim</th>
 									<th>Midterm</th>
@@ -48,10 +47,9 @@
 											  			<?php
 											  			 $student_course = $student->program;
 											  			 echo "<h3>Course: " . $student->program. " " . $student->year .  "</h3>"; ?>
-											  			<td><span>&#8369</span><?php echo " " . number_format(($history->tuition_fee + $history->misc + $history->other_fees), 2) ?></td>
+											  			<td><span>&#8369</span><?php echo " " . number_format(($history->tuition_fee + $history->misc), 2) ?></td>
 														<td><span>&#8369</span><?php echo " " . number_format($history->tuition_fee, 2); ?></td>
 														<td><span>&#8369</span><?php echo " " . number_format($history->misc, 2); ?></td>
-														<td><span>&#8369</span><?php echo " " . number_format($history->other_fees, 2); ?></td>
 											  			<?php $count++; ?>
 														<td><span>&#8369</span><?php echo " " . number_format($history->breakdown, 2); ?></td>
 														
@@ -189,19 +187,6 @@
 				
              </div>
          </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

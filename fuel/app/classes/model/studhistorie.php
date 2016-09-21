@@ -7,10 +7,11 @@ class Model_Studhistorie extends \Orm\Model_Soft
 		'studenthistory_id',
 		'tuition_fee',
 		'misc',
-		'other_fees',
 		'down_payment',
 		'payment',
 		'breakdown',
+		'dis_misc',
+		'dis_tuition',
 		'balance',
 		'date_time',
 		'created_at',
@@ -58,7 +59,6 @@ class Model_Studhistorie extends \Orm\Model_Soft
 		$val->add_field('studenthistory_id', 'Studenthistory_id',  'required|valid_string[numeric]');
 		$val->add_field('tuition_fee', 'Tuition Fee',  'floatval(valid_string[float])');
 		$val->add_field('misc', 'Miscellaneous',  'floatval(valid_string[float])');
-		$val->add_field('other_fees', 'Other Fees',  'floatval(valid_string[float])');
 		$val->add_field('down_payment', 'Down Payment',  'floatval(valid_string[float])');
 		$val->add_field('payment', 'Payment',  'floatval(valid_string[float])');
 		$val->add_field('breakdown', 'Breakdown',  'floatval(valid_string[float])');

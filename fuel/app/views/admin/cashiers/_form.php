@@ -16,7 +16,7 @@
 					<td><?php echo "As of: " . $pro->lastdate; ?></td>
 				<?php endforeach; ?>
 				<h5><?php echo "Total Assessment: &#8369 " . number_format((
-							$student->tuition_fee + $student->misc + $student->other_fees), 2); ?></h5>
+							$student->tuition_fee + $student->misc), 2); ?></h5>
 				<h5><?= "Outstanding balance: &#8369 " . number_format($student->balance, 2); ?></h5>
 				<h5><?= "Total Payment: &#8369 " . number_format($student->down_payment, 2); ?></h5>
 				<!-- BEGIN LASTDATE -->
@@ -39,7 +39,6 @@
 					}
 				</script>
 				<input type="text" id="passwd" name="password"  style="display:none;" />
-	
 				<!-- BEGIN TUITION FEE -->
 				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox()')); ?><?="Tuition Fee: &#8369 " . number_format($student->tuition_fee, 2);?></h5>
 
@@ -60,18 +59,7 @@
 				</div>
 
 				<!-- END MISCELLANOUS  -->
-
-				<!-- BEGIN OTHER FEES -->
-				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox3()')); ?><?='<span title="Miscellaneous"> Other Fees:</span> &#8369 ' . number_format($student->other_fees, 2);?></h5>
-
-				<div class="form-group floating-label">
-					<?php echo Form::label('', 'other_fees', array('class'=>'control-label')); ?>
-
-						<?php echo Form::input('other_fees', Input::post('other_fees', isset($student) ? $student->other_fees : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Other Fees', 'id' => 'fee', 'style' => 'display:none')); ?>
-				</div>
-				<!-- END OTHER FEES -->
 				
-
 					<fieldset>
 						<div class="form-group floating-label">
 
@@ -122,16 +110,32 @@
 								<?php echo Form::input('student_id', Input::post('student_id', isset($student) ? $student->student_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Student ID', 'type'=>'hidden')); ?>
 						</div>
 						<div class="form-group floating-label">
+							<?php echo Form::label('', 'scholarship_id', array('class'=>'control-label')); ?>
+
+								<?php echo Form::input('scholarship_id', Input::post('scholarship_id', isset($student) ? $student->scholarship_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Scholarship', 'type'=>'hidden')); ?>
+						</div>
+						<div class="form-group floating-label">
 							<?php echo Form::label('', 'program', array('class'=>'control-label')); ?>
 
 								<?php echo Form::input('program', Input::post('program', isset($student) ? $student->program : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Course', 'type'=>'hidden')); ?>
 						</div>
 
 						<div class="form-group floating-label">
+							<?php echo Form::label('', 'dis_tuition', array('class'=>'control-label')); ?>
+
+								<?php echo Form::input('dis_tuition', Input::post('dis_tuition', isset($student) ? $student->dis_tuition : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'tuition')); ?>
+						</div>
+						<div class="form-group floating-label">
+							<?php echo Form::label('', 'dis_misc', array('class'=>'control-label')); ?>
+
+								<?php echo Form::input('dis_misc', Input::post('dis_misc', isset($student) ? $student->dis_misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous')); ?>
+						</div>
+						<div class="form-group floating-label">
 							<?php echo Form::label('', 'year', array('class'=>'control-label')); ?>
 
 								<?php echo Form::input('year', Input::post('year', isset($student) ? $student->year : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Year', 'type'=>'hidden')); ?>
 						</div>
+						
 
 
 						

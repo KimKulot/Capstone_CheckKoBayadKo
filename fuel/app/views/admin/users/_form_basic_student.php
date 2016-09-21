@@ -74,6 +74,42 @@
 		     <?php echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''),$basicprograms, array('class' => 'span6')); ?>
 		 
 		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group floating-label">
+					<?php echo Form::label('Scholarship Type', 'scholarship_type', array('class'=>'control-label')); ?>
+
+						<?php 
+					 	echo Form::select('scholarship_type', Input::post('scholarship_type', isset($student) ? $user->scholarship_type : ''), array(
+						    'Scholarship Type' => array( 
+						        'Regular' => 'Regular',
+						        'GOE' => 'GOE',
+						        'GOEF' => 'GOEF',
+						        'Varsity' => 'Varsity',
+						        'Sinagila' => 'Sinagila',
+						        'Academic' => 'Academic',
+						    ),
+						)); ?>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group floating-label">
+					<?php echo Form::label('Category', 'category', array('class'=>'control-label')); ?>
+
+						<?php 
+					 	echo Form::select('category', Input::post('category', isset($student) ? $user->category : ''), array(
+						    'Category' => array( 
+						        'a' => 'A',
+						        'b' => 'B',
+						        'c' => 'C',
+						        'c' => 'D',
+						        'e' => 'E',
+						        'f' => 'F',
+						    ),
+						)); ?>
+				</div>
+			</div>
+		</div>
 
 
 		<!-- <div class="form-group floating-label">

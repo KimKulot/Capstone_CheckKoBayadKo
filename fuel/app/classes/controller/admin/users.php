@@ -20,6 +20,17 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
 
+	public function get_list()
+    {
+        return $this->response(array(
+            'foo' => "foo",
+            'baz' => array(
+                1, 50, 219
+            ),
+            'empty' => null
+        ));
+    }
+
 	public function action_graveyard()
 	{
 		$search = "";
@@ -28,7 +39,7 @@ class Controller_Admin_Users extends Controller_Admin
 			$search = Input::post('search');
 		}
 		// $data['users'] = DB::select('*')->from('users')->where('username', 'like', "%search%")->as_object()->execute();
-		$data['users'] = Model_User::find('all', [
+		$data['users'] = Model_User::find_deleted('all', [
 			'where' => [
 				['username', 'like', "%$search%"]
 			]
@@ -39,15 +50,144 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/graveyard', $data);
 	}
 
+
+
+
+
+
+
+
+
+
 	public function action_cron_message()
-	{ 
+	{ 	
+
+
 		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$data['studparents'] = Model_Studparent::find('all');
 		$data['users'] = Model_User::find('all');
 		$data['students'] = Model_Student::find('all');
-		$this->template->title = "Users";
-		$this->template->content = View::forge('admin/users/cron_message', $data);
+
+		// BEGIN DATE FORMULA
+date_default_timezone_set("America/New_York");
+	$date_Counter = 7; 
+	$diff = 0;
+
+ $arrmessage = array(); 
+ foreach ($data['dates'] as $date){
+	
+	$subdate = 0;
+	$currentDate = date('m/d/Y', strtotime("+". $date_Counter. " days"));
+
+	$var_date = trim($date->date_time);
+	$tempdate = date('m/d/Y');
+	if($var_date < $tempdate)
+	{
+		
+	}else{
+
+		if ($currentDate > $var_date) {
+			$date1 = new DateTime($currentDate);
+			$date2 = new Datetime($var_date);
+			$diff = $date1->diff($date2);
+			$subdate = $diff->days;
+		}
+		$currentDate = date('m/d/Y', strtotime("+". ($date_Counter - $subdate). " days"));
+
+		if ($currentDate == $var_date) {
+
+			 
+
+			  foreach ($data['students'] as $student){
+				  foreach ($data['users'] as $user){ 
+				 	 if ($student->student_id == $user->id){ 
+						 foreach ($data['studparents'] as $studparent){ 
+							 if ($studparent->student_id == $student->id){ 
+								 foreach ($data['users'] as $use){ 
+									 if ($studparent->parent_id == $use->id){ 
+
+										  $total = $student->tuition_fee + $student->misc; 
+
+										  $message = "Parent Name:" . $use->lastname . ", " .  $use->firstname . " " . $use->middlename . 
+										" Mobile Number: " . $use->mobile_number . " " . 
+										"Hello! The date of exam will be: " . $date->date_time;
+
+										if($student->balance != 0){
+											$message .= "Your total payment is: " . $total .
+											" Your payment: " . $student->down_payment .
+											" Your Outstanding Balance: " . $student->balance ; 
+										}
+										
+									 }
+								 } 
+							 }
+						 } 
+
+							  //$total = $student->tuition_fee + $student->misc + $student; 
+
+							
+							  $message = "Name:" .  $user->lastname . ", " . $user->firstname. " " . $user->middlename . "Mobile Number: " . $user->mobile_number . 
+							"Hello! The date of exam will be: " . $date->date_time ;
+							if($student->balance != 0){
+								$message .= "Your total payment is: " .$total . 
+								"Your payment: " . $student->down_payment . 
+								"Your Outstanding Balance: " . $student->balance; 
+
+							}
+
+							array_push($arrmessage, $message); 
+				
+
+						 }
+					}
+			 	} 
+
+
+		 
+			}
+		}
+ 	
+}
+ echo header('Content-Type: application/json'); 
+
+	 echo json_encode($arrmessage);	
+
+
+		 $this->template= null;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public function action_index_search()
 	{	
@@ -168,93 +308,69 @@ class Controller_Admin_Users extends Controller_Admin
 		if (Input::method() == 'POST')
 		{
 			$val = Model_User::validate('create');
-
+			// BEGIN CHECK IF USER FIRSTNAME AND LASTNAME IS EXISTING CONDITION
+			
+			
+			// END CHECK IF USER FIRSTNAME AND LASTNAME IS EXISTING CONDITION
 			
 				if ($val->run())
 				{
-					$newuser = Model_User::forge(array(
-						'username'=> Input::post('username'),
-						'firstname' =>Input::post('firstname'),
-						'middlename'=> Input::post('middlename'),
-						'lastname'=> Input::post('lastname'),
-						'password'=> Auth::instance()->hash_password(Input::post('password')),
-						'mobile_number'=> Input::post('mobile_number'),
-						'group'=> Input::post('group'),
-						'email'=> Input::post('email'),
-						'role'=> Input::post('role'),
-					));
-					$newuser->parent_student = Model_Studparent::forge(array(
-						'student_id'=> $id,
-					));
-					if($newuser->save()){
-						Session::set_flash('success', e('Added user'));
-					 	Response::redirect('admin/users');
+					//---------------------------------------------
+
+					$firstname = Input::post('firstname');
+					$lastname = Input::post('lastname');
+					$udata['users'] = DB::select('*')->from('users')
+					    ->where('firstname', $firstname)
+					    ->and_where('lastname', $lastname)
+						->as_object()
+						->execute();
+					die;
+					if (isset($udata['users'])) {
+						foreach ($udata['users'] as $user) {
+							
+							$newuser = Model_Studparent::forge(array(
+								'student_id'=> $id,
+								'parent_id' => $user->id,
+							));
+							if($newuser->save()){
+								Session::set_flash('success', e('Added user'));
+							 	Response::redirect('admin/users');
+							 }
+							
+						}
+
+					//----------------------------------------------
+					}else{
+
+						$newuser = Model_User::forge(array(
+							'username'=> Input::post('username'),
+							'firstname' =>Input::post('firstname'),
+							'middlename'=> Input::post('middlename'),
+							'lastname'=> Input::post('lastname'),
+							'password'=> Auth::instance()->hash_password(Input::post('password')),
+							'mobile_number'=> Input::post('mobile_number'),
+							'group'=> Input::post('group'),
+							'email'=> Input::post('email'),
+							'role'=> Input::post('role'),
+						));
+						$newuser->parent_student = Model_Studparent::forge(array(
+							'student_id'=> $id,
+						));
+						if($newuser->save()){
+							Session::set_flash('success', e('Added user'));
+						 	Response::redirect('admin/users');
+						}
+					}
+				 }else{
+					Session::set_flash('error', $val->error());
 				}
-
-			// }catch(Exception $e){
-
-			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
-			 }
-			else
-			{
-				Session::set_flash('error', $val->error());
 			}
-		}
 
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/create_parent', $data);
 
 	}
 	//END PARENT CREATION
-
-
-	//BEGIN EXIST PARENT CREATION
-	public function action_create_exist_parent($id = null){
-		$data->programs = Model_Program::find('all');
-		$data->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
-		$data['student'] = Model_User::find($id); 
-		if (Input::method() == 'POST')
-		{
-			$val = Model_User::validate('create');
-
-			
-				if ($val->run())
-				{
-					$newuser = Model_User::forge(array(
-						'username'=> Input::post('username'),
-						'firstname' =>Input::post('firstname'),
-						'middlename'=> Input::post('middlename'),
-						'lastname'=> Input::post('lastname'),
-						'password'=> Auth::instance()->hash_password(Input::post('password')),
-						'mobile_number'=> Input::post('mobile_number'),
-						'group'=> Input::post('group'),
-						'email'=> Input::post('email'),
-						'role'=> Input::post('role'),
-					));
-					$newuser->parent_student = Model_Studparent::forge(array(
-						'student_id'=> $id,
-					));
-					if($newuser->save()){
-						Session::set_flash('success', e('Added user'));
-					 	Response::redirect('admin/users');
-				}
-
-			// }catch(Exception $e){
-
-			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
-			 }
-			else
-			{
-				Session::set_flash('error', $val->error());
-			}
-		}
-
-		$this->template->title = "Users";
-		$data->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
-		$this->template->content = View::forge('admin/users/create_exist_parent', $data);
-
-	}
-	//END EXIST PARENT CREATION
 
 //BEGIN BASIC EDUCATION STUDENT CREATION
 	public function action_create_basic_student(){
@@ -275,17 +391,24 @@ class Controller_Admin_Users extends Controller_Admin
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
-					'scholarship_type' => Input::post('scholarship_type'),
 					'role'=> Input::post('role'),
 				));
+				$category_check = "";
+				if (Input::post('scholarship_type') == 'Regular') {
+						$category_check = "none";
+				}else{
+					$category_check = Input::post('category');
+				}
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('year'),
 					'year' =>Input::post('year'),
+					'scholarship_type' =>Input::post('scholarship_type'),
+					'category' => $category_check,
 					'tuition_fee' => 0,
-					'other_fees' => 0,
 					'misc' => 0,
 					'down_payment' => 0,
 					'breakdown' => 0,
+					'discount' => '',
 					'balance' => 0,
 				));
 				if($newuser->save()){
@@ -311,9 +434,25 @@ class Controller_Admin_Users extends Controller_Admin
 	public function action_create_student(){
 		$view = View::forge('admin/users/create_student');
  		$view->programs = Model_Program::find('all');
+ 		$view->scholarships = Model_Scholarship::find('all');
+ 		
 		if (Input::method() == 'POST')
 		{  	
-
+			$scholarship_check = Input::post('scholarships');
+			$data['scholarships'] = Model_Scholarship::find('all', [
+				'where' => [
+					['id', 'like', "$scholarship_check"]
+				]
+			]);
+			// BEGIN DECLARATIONS
+				$mdiscount = 0;
+				$tdiscount = 0;
+			// END DECLARATIONS
+			foreach ($data['scholarships'] as $scholar) {
+				$mdiscount = $scholar->dis_misc;
+				$tdiscount = $scholar->dis_tuition;
+			}
+			// var_dump($data['scholarships']);die;
 			$val = Model_User::validate('create');
 			//$val = Model_Student::validate('create');
 			// try{
@@ -343,20 +482,19 @@ class Controller_Admin_Users extends Controller_Admin
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
 					'email'=> Input::post('email'),
-					'scholarship_type' => Input::post('scholarship_type'),
 					'role'=> Input::post('role'),
 				));
-				
-
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('program'),
 					'year' =>Input::post('year'),
+					'scholarship_id' =>Input::post('scholarships'),
 					'tuition_fee' => 0,
-					'other_fees' => 0,	
 					'misc' => $amount,
 					'down_payment' => 0,
 					'breakdown' => 0,
-					'balance' => 0,
+					'dis_tuition' => $tdiscount,
+					'dis_misc' => $mdiscount,
+					'balance' => $amount - ($amount * ('0.' . $mdiscount)),
 				));
 				if($newuser->save()){
 					Session::set_flash('success', e('Added user'));
@@ -435,6 +573,7 @@ class Controller_Admin_Users extends Controller_Admin
 			
 		}
 		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
+		$view->set_global('scholarships', Arr::assoc_to_keyval(Model_Scholarship::find('all'), 'id', 'scholarship_provider'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 
@@ -904,7 +1043,7 @@ public function action_create_basic_program()
 
 	public function action_activate($id = null)
 	{
-		if ($user = Model_User::find($id))
+		if ($user = Model_User::find_deleted($id))
 		{
 			$user->restore();
 

@@ -48,7 +48,6 @@
 					</thead>
 					<tbody>
 				<?php foreach ($users as $item): ?>		<tr>
-					<?php if ($item->deleted_at == NULL): ?>
 							<td><?php echo $item->username; ?></td>
 							<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
 							<td><?php echo $item->mobile_number; ?></td>
@@ -64,26 +63,10 @@
 							<?php if ($current_user->role != 6): ?>
 								<td>
 									<!-- <?php //echo Html::anchor('admin/users/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm')); ?> | -->
-
-										<?php if ($item->role == 3  || $item->role == 4 ||  $item->role == 5 || $item->role == 6 || $item->role == 7): ?>
-											<?php echo Html::anchor('admin/users/edit/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?> 
-										<?php endif ?>
-										<?php if ($item->role == 1): ?>
-											<?php echo Html::anchor('admin/users/edit_dean/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
-										<?php endif ?>
-										<?php if ($item->role == 8): ?>
-											<?php echo Html::anchor('admin/users/edit_student/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
-										<?php endif ?>
-										<?php if ($item->role == 9): ?>
-											<?php echo Html::anchor('admin/users/edit_parent/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
-										<?php endif ?>	
-
-
-									<?php echo Html::anchor('admin/users/delete/'.$item->id, 'Deactivate', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
+									<?php echo Html::anchor('admin/users/activate/'.$item->id, 'Activate', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-primary btn-sm' )); ?>
 
 
 								</td>
-							<?php endif ?>
 							<?php endif ?>
 						</tr>
 				<?php endforeach; ?>	</tbody>
@@ -93,11 +76,6 @@
 				<p>No Users.</p>
 
 				<?php endif; ?> 
-				<p>
-				<?php if ($current_user->role != 6): ?>
-					<?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?>
-				<?php endif ?>
-				</p>
 				 </div>
             </div>
         </div><!--end .section-body -->

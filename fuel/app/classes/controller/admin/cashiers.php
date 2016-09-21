@@ -121,26 +121,30 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		{
 
 			$student->student_id = Input::post('student_id');
+			$student->scholarship_id = Input::post('scholarship_id');
+			$student->dis_misc = Input::post('dis_misc');
+			$student->dis_tuition = Input::post('dis_tuition');
 			$student->program = Input::post('program');
 			$student->year = Input::post('year');
 			$student->tuition_fee = Input::post('tuition_fee');
 			$student->misc = Input::post('misc');
-			$student->other_fees = Input::post('other_fees');
 			$student->down_payment = $student->down_payment + Input::post('down_payment');
-			
-			$student->breakdown = ($student->tuition_fee + $student->misc + $student->other_fees) / 4;
-			$student->balance = ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment;
+			$discount_tuition = $student->tuition_fee - (($student->tuition_fee / 100) *  ($student->dis_tuition));
+			$discount_misc = $student->misc - (($student->misc / 100) * ($student->dis_misc));
+			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
+			$student->balance = ($discount_tuition + $discount_misc) - $student->down_payment;
 
 			$student->history[] = Model_Studhistorie::forge(array(
 					'studenthistory_id'=> $id,
 					'program_description' => $student->program,
 					'tuition_fee' => Input::post('tuition_fee'),
 					'misc' => Input::post('misc'),
-					'other_fees' => Input::post('other_fees'), 
 					'down_payment' => Input::post('down_payment'),
 					'payment' => $student->down_payment,
-					'breakdown' => ($student->tuition_fee + $student->misc + $student->other_fees) / 4,
-					'balance' => ($student->tuition_fee + $student->misc + $student->other_fees) - $student->down_payment,
+					'breakdown' => ($student->tuition_fee + $student->misc) / 4,
+					'dis_tuition' => $student->dis_tuition,
+					'dis_misc' => $student->dis_misc,
+					'balance' => ($student->tuition_fee + $student->misc) - $student->down_payment,
 					'date_time' => date('D d M Y') . " " . date("h:i:s"),
                     
 			));
@@ -162,7 +166,8 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		{
 			if (Input::method() == 'POST')
 			{
-				$student->student_id = Input::post('student_id');
+				$student->student_id = Input::post('student_id');		
+				
 				$student->course = Input::post('course');
 				$student->tuition_fee = Input::post('tuition_fee');
 				$student->misc = Input::post('misc');

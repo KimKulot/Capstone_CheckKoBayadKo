@@ -16,7 +16,7 @@
 							<?php foreach ($users as $use): ?>
 								<?php if ($studparent->parent_id == $use->id): ?>
 
-									 <?php $total = $student->tuition_fee + $student->misc + $student->other_fees; ?>
+									 <?php $total = $student->tuition_fee + $student->misc + $student; ?>
 
 									 <!-- START MESSAGE TO BE EXECUTED -->
 									<?php  $message = "
@@ -41,7 +41,7 @@
 
 						
 
-						 <?php $total = $student->tuition_fee + $student->misc + $student->other_fees; ?>
+						 <?php $total = $student->tuition_fee + $student->misc; ?>
 							
 						 <!-- START MESSAGE TO BE EXECUTED -->
 						<?php  $messages = "Good Day! Name: " . $user->lastname. ", " . $user->firstname . " " . $user->middlename . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
@@ -51,7 +51,7 @@
 								" Your Outstanding balance: &#8369 " . number_format($student->balance) . ". Thank You!"; 
 							}
 						?>
-						<?php $number = 639168730241; ?>
+						<?php $number = null; ?>
 
 				<?php try{ ?>
 				<!-- START SEMAPHORE SEND SMS NOTIFICATION -->
