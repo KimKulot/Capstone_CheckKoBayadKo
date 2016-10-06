@@ -19,7 +19,6 @@
 							<th>Year</th>
 							<th>Tuition Fee</th>
 							<th>Misc</th>
-							<th>Other Fees</th>
 							<th>Total Payment</th>
 							<th>Amount per exam</th>
 							<th>Balance</th>
@@ -40,7 +39,7 @@
 								<td><?php echo $item->year; ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-								<td><span>&#8369</span><?php echo " " . number_format($item->other_fees); ?></td>
+								
 								<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>

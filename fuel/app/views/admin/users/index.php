@@ -1,5 +1,8 @@
 
 <?php 
+	if (!isset($current_user->role)) {
+		Response::redirect('/');
+	}
 	if ($current_user->role != 3 && $current_user->role != 10 && $current_user->role != 6) {
 		Response::redirect('/');
 	}
@@ -119,14 +122,14 @@
 						</tr>
 				<?php endforeach; ?>	</tbody>
 				</table>
-</div>
+				</div>
 				<?php else: ?>
 				<p>No Users.</p>
 
 				<?php endif; ?> 
 				<p>
 				<?php if ($current_user->role != 6): ?>
-					<?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?>
+					<!-- <?php //echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?> 
 				<?php endif ?>
 				</p>
 				 </div>

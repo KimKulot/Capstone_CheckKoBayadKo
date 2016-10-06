@@ -106,6 +106,7 @@ class Controller_Site extends Controller_Base
 		// $view['histories'] = Model_Studhistorie::find('all');
 		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
 		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Miscellanou::find('all');
 		$view['programs'] = Model_Program::find('all');
 		$view['students'] = Model_Student::find('all', [
@@ -125,6 +126,7 @@ class Controller_Site extends Controller_Base
 	}
 	public function action_index_parent($id = null)
 	{
+		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['studparents'] = Model_Studparent::find('all');
 		$view['users'] = Model_User::find('all');
 		$view['students'] = Model_Student::find('all');

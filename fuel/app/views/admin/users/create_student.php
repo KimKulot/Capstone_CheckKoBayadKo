@@ -13,6 +13,7 @@
 				                </div>
 				                <div class="card-body style-default-bright">
 								<?php echo render('admin/users/_form_student'); ?>
+								
 								 <p><?php echo Html::anchor('admin/users', 'Back'); ?></p>
 
 						 	</div>

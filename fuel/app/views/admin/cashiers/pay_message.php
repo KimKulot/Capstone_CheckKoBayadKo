@@ -15,8 +15,8 @@
 						<?php if ($studparent->student_id == $student->id): ?>
 							<?php foreach ($users as $use): ?>
 								<?php if ($studparent->parent_id == $use->id): ?>
-
-									 <?php $total = $student->tuition_fee + $student->misc + $student; ?>
+									
+									 <?php $total = $student->tuition_fee + $student->misc; ?>
 
 									 <!-- START MESSAGE TO BE EXECUTED -->
 									<?php  $message = "
@@ -51,7 +51,7 @@
 								" Your Outstanding balance: &#8369 " . number_format($student->balance) . ". Thank You!"; 
 							}
 						?>
-						<?php $number = null; ?>
+						<?php $number = ""; ?>
 
 				<?php try{ ?>
 				<!-- START SEMAPHORE SEND SMS NOTIFICATION -->
@@ -106,7 +106,7 @@
 			<?php endforeach ?>
 		<?php endforeach ?>
 	<?php endforeach ?>
-	<?php Response::redirect('admin/cashiers'); ?>
+	<!-- <?php //Response::redirect('admin/cashiers'); ?> -->
 <?php endforeach ?>
 
 				

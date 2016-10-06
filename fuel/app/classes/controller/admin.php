@@ -7,8 +7,7 @@ class Controller_Admin extends Controller_Base
 	public function before()
 	{
 		parent::before();
-
-		if (Request::active()->controller !== 'Controller_Admin' or ! in_array(Request::active()->action, array('login', 'logout')))
+		if ((Request::active()->controller !== 'Controller_Admin' or ! in_array(Request::active()->action , array('login', 'logout'))) and  (Request::active()->controller != 'Controller_Admin_Users' and Request::active()->action != 'cron_message'))
 		{
 			if (Auth::check())
 			{

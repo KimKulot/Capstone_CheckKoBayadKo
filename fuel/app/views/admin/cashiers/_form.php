@@ -12,7 +12,7 @@
                 <div class="card-body style-default-bright">
 				<?php echo Form::open(array("class"=>"form-horizontal")); ?>
 				<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('studenthistory_id', '=', $student->id)->as_object()->execute(); ?>
-				<?php foreach ($view ['pros'] as $pro): ?>
+				<?php foreach ($view['pros'] as $pro): ?>
 					<td><?php echo "As of: " . $pro->lastdate; ?></td>
 				<?php endforeach; ?>
 				<h5><?php echo "Total Assessment: &#8369 " . number_format((
@@ -123,18 +123,18 @@
 						<div class="form-group floating-label">
 							<?php echo Form::label('', 'dis_tuition', array('class'=>'control-label')); ?>
 
-								<?php echo Form::input('dis_tuition', Input::post('dis_tuition', isset($student) ? $student->dis_tuition : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'tuition')); ?>
+								<?php echo Form::input('dis_tuition', Input::post('dis_tuition', isset($student) ? $student->dis_tuition : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'tuition', 'type'=>'hidden')); ?>
 						</div>
 						<div class="form-group floating-label">
 							<?php echo Form::label('', 'dis_misc', array('class'=>'control-label')); ?>
 
-								<?php echo Form::input('dis_misc', Input::post('dis_misc', isset($student) ? $student->dis_misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous')); ?>
+								<?php echo Form::input('dis_misc', Input::post('dis_misc', isset($student) ? $student->dis_misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous', 'type'=>'hidden')); ?>
 						</div>
 						<div class="form-group floating-label">
 							<?php echo Form::label('', 'year', array('class'=>'control-label')); ?>
 
 								<?php echo Form::input('year', Input::post('year', isset($student) ? $student->year : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Year', 'type'=>'hidden')); ?>
-						</div>
+						</div> 
 						
 
 

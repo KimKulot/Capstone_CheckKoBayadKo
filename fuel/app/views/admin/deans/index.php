@@ -26,9 +26,10 @@
 							<th>Total Assesment</th>
 							<th>Tuition Fee</th>
 							<th>Misc</th>
-							<th>Other Fees</th>
 							<th>Total Payment</th>
 							<th>Amount per exam</th>
+							<th>Tuition Discount</th>
+							<th>Miscellaneous Discount</th>
 							<th>Balance</th>
 							<th></th>
 						</tr>
@@ -36,7 +37,7 @@
 					<tbody>	
 				<?php $count = 0; ?>
 				<?php foreach ($progdeans as $progdean): ?>
-					<?php if ($current_user->id == $progdean->dean_id): ?>
+					<?php if ($current_user->id == $progdean->user_id): ?>
 							<?php foreach ($students as $item): ?>
 								<?php foreach ($programs as $program): ?>
 									<?php if ($program->id == $progdean->program_id): ?>
@@ -57,12 +58,13 @@
 												<?php endif ?>
 												
 												<td><?php echo $item->year; ?></td>
-												<td><?php echo number_format(($item->tuition_fee + $item->misc + $item->other_fees)) ?></td>
+												<td><?php echo number_format(($item->tuition_fee + $item->misc)) ?></td>
 												<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
 												<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->other_fees); ?></td>
 												<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
 												<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
+												<td><span>&#8369</span><?= " " . number_format(($item->tuition_fee / 100) * ($item->dis_tuition)); ?></td>
+												<td><span>&#8369</span><?= " " . number_format(($item->misc / 100) * ('0.' . $item->dis_misc)); ?></td>
 												<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
 											</tr>
 										<?php endif ?>

@@ -5,7 +5,7 @@ class Model_Progdean extends \Orm\Model_Soft
 	protected static $_properties = array(
 		'id',
 		'program_id',
-		'dean_id',
+		'user_id',
 		'created_at',
 		'updated_at',
 	);
@@ -17,7 +17,7 @@ class Model_Progdean extends \Orm\Model_Soft
 	protected static $_belongs_to = array(
 		'user' => array(
 			'model_to' => 'Model_User',
-			'key_from' => 'dean_id',
+			'key_from' => 'user_id',
 			'key_to'   => 'id',
 			'cascade_delete' => false,
 		),
@@ -47,7 +47,7 @@ class Model_Progdean extends \Orm\Model_Soft
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('program_id', 'Program id',  'required|valid_string[numeric]');
-		$val->add_field('dean_id', 'Dean id',  'required|valid_string[numeric]');
+		$val->add_field('user_id', 'Dean id',  'required|valid_string[numeric]');
 		return $val;
 	}
 }

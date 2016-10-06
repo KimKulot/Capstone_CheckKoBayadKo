@@ -41,10 +41,10 @@
 				<?php echo Form::input('password', Input::post('password', isset($user) ? $user->password : ''), array('class' => 'col-md-4 form-control', 'type' => 'password', 'placeholder'=>'Password')); ?>
 
 		</div>
-		<div class="form-group">
-			<?php echo Form::label('Mobile number', 'mobile_number', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('mobile_number', Input::post('mobile_number', isset($user) ? $user->mobile_number : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Mobile number')); ?>
+		<div class="form-group floating-label ">
+			<?php echo Form::label('Mobile number(+63)', 'mobile_number', array('class'=>'control-label')); ?>
+				<!-- <input type="text" readonly="readonly" value="+63"> -->
+				<?php echo Form::input('mobile_number', Input::post('mobile_number', isset($user) ? $user->mobile_number : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Mobile number', 'type' => 'text', 'name'=>'phone', 'maxlength'=>'10', 'onkeypress'=>'return /\d/.test(String.fromCharCode(((event||window.event).which||(event||window.event).which)));', 'required')); ?>
 
 		</div>
 		

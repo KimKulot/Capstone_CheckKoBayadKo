@@ -19,7 +19,6 @@
 						<tr>
 							<th>Scholarship Provider</th>
 							<th>Category</th>
-							<th>Description</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -28,8 +27,10 @@
 							<tr>
 								<td><?php echo $scholar->scholarship_provider; ?></td>
 								<td><?php echo $scholar->category; ?></td>
-								<td><?php echo $scholar->description; ?></td>
-								<td> <?php echo Html::anchor('admin/accountants/edit_scholar/'.$scholar->id, 'Edit', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> </td>
+								<?php if ($current_user->role != 6): ?>
+									<td> <?php echo Html::anchor('admin/accountants/edit_scholar/'.$scholar->id, 'Edit', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> </td>
+								<?php endif ?>
+								
 							</tr>
 						<?php endforeach ?>
 					 </tbody>

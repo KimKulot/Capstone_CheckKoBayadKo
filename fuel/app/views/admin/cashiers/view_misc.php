@@ -25,10 +25,12 @@
 			<tr>
 				<td><?php echo $item->type; ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->amount,2); ?></td>
-				<td><?php echo Html::anchor('admin/cashiers/edit_misc/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?> 
-				<?php echo Html::anchor('admin/cashiers/delete_misc/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
-					
-				</td>
+				<?php if ($current_user->role != 6): ?>
+					<td><?php echo Html::anchor('admin/cashiers/edit_misc/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?> 
+					<?php echo Html::anchor('admin/cashiers/delete_misc/'.$item->id, 'Delete', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
+						
+					</td>
+				<?php endif ?>
 			</tr>
 				
 		<?php endforeach; ?>	

@@ -11,11 +11,27 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_index()
 	{
 		//$view->users = Model_User::find('all');
-		$view = View::forge('admin/cashiers/index');
-		$view->users = Model_User::find('all');
-		$view->students = Model_Student::find('all');
+	
+
+	
+		$search = "";
+		if (Input::method() == 'POST')
+		{
+			
+			$search = Input::post('search');
+		}
+
+		$view['users'] = Model_User::find('all', [
+			'where' => [
+				['firstname', 'like', "%$search%"]
+			]
+		]);
+	
+		
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
 		$this->template->title = "Students";
-		$this->template->content = $view;
+		$this->template->content = View::forge('admin/cashiers/index', $view);
 
 		// $view->set_global('users', Arr::assoc_to_keyval(Model_User::find('all'), 'id', 'username'));
 	}
@@ -93,10 +109,28 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_view($id = null)
 	{
 		// $view['histories'] = Model_Studhistorie::find('all');
-		$view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
-		$view['users'] = Model_User::find('all');
-		$view['currents'] = DB::select('*')->from('students')->where('id', '=', $id)->as_object()->execute();
-		$view['students'] = Model_Student::find('all');
+
+		
+		// $view['users'] = Model_Student::find('student_id', [
+		// 	'where' => [
+		// 		['id', 'like', "$id"]
+		// 	]
+		// ]);
+		$view['misc'] = Model_Miscellanou::find('all');
+		$view['programs'] = Model_Program::find('all');
+		$view['students'] = Model_Student::find('all', [
+		'related' => array(
+			'user', 'history' => array(
+				'order_by' => [
+					'id' => 'desc'
+					]
+				)
+			),
+		'where' => array(
+			'student_id' => Auth::get('id')
+			)
+		]);
+		var_dump($view['misc']);die; 
 		$this->template->title = 'Dashboard';
 		$this->template->content = View::forge('admin/cashiers/view', $view);
 	}

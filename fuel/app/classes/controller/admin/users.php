@@ -69,30 +69,18 @@ class Controller_Admin_Users extends Controller_Admin
 		$data['students'] = Model_Student::find('all');
 
 		// BEGIN DATE FORMULA
-date_default_timezone_set("America/New_York");
+ date_default_timezone_set("America/New_York");
 	$date_Counter = 7; 
 	$diff = 0;
-
+ $useNumber = array();
  $arrmessage = array(); 
+
  foreach ($data['dates'] as $date){
 	
 	$subdate = 0;
 	$currentDate = date('m/d/Y', strtotime("+". $date_Counter. " days"));
 
 	$var_date = trim($date->date_time);
-	$tempdate = date('m/d/Y');
-	if($var_date < $tempdate)
-	{
-		
-	}else{
-
-		if ($currentDate > $var_date) {
-			$date1 = new DateTime($currentDate);
-			$date2 = new Datetime($var_date);
-			$diff = $date1->diff($date2);
-			$subdate = $diff->days;
-		}
-		$currentDate = date('m/d/Y', strtotime("+". ($date_Counter - $subdate). " days"));
 
 		if ($currentDate == $var_date) {
 
@@ -122,7 +110,7 @@ date_default_timezone_set("America/New_York");
 								 } 
 							 }
 						 } 
-
+						
 							  //$total = $student->tuition_fee + $student->misc + $student; 
 
 							
@@ -136,11 +124,29 @@ date_default_timezone_set("America/New_York");
 							}
 
 							array_push($arrmessage, $message); 
-				
+							array_push($useNumber, $user->mobile_number);
+						// START SEMAPHORE SEND SMS NOTIFICATION 
+					// $numberTmp = explode("/", str_replace(array("-","+"),"",str_replace(",","/",$_REQUEST['to'])));
+					$resultArray = array();
+
+					
+					// foreach( $numberTmp as $tmp)
+					// {
+					// 	$tmp = trim($tmp);
+					// 	if(  strlen($tmp) == "12" && substr($tmp,0,2) == "63" )
+					// 	{
+					// 	 $useNumber[] = $tmp;
+					// 	}
+					// 	else if( strlen($tmp) == "11" && substr($tmp,0,2) == "09"  )
+					// 	{
+					// 	 $useNumber[] = "63" . substr($tmp,1,10);
+					// 	}
+					// }
+					
 
 						 }
 					}
-			 	} 
+			 	 
 
 
 		 
@@ -148,6 +154,53 @@ date_default_timezone_set("America/New_York");
 		}
  	
 }
+
+
+$x=0;
+foreach($useNumber as $mynumber)
+{
+
+	/*foreach ($arrmessage as $messages) 
+	{*/
+		$url = 'http://api.semaphore.co/api/sms';
+		 $fields = array(
+	        'api' => 'LVpxU61qZzU4pEW2czJc',
+	        'number' => $mynumber,
+	        'message' => $arrmessage[$x]
+	    );
+
+
+		$fields_string = "";
+		foreach($fields as $key=>$value)
+	    {
+	        $fields_string .= $key.'='.$value.'&';
+	    }
+
+	    rtrim($fields_string, '&');
+		$ch = curl_init();
+		// set url
+		curl_setopt($ch,CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_POST, count($fields));
+		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+		//return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// $output contains the output  string
+		$output = curl_exec($ch);
+		// close curl resource to free up system resources
+		curl_close($ch);
+
+		$resultArray = array($fields,$output);
+		
+	/*}*/
+	$x++;
+
+}
+
+	print_r($resultArray);
+ // simple print output....
+
+// END SEMAPHORE SEND SMS NOTIFICATION 
+
  echo header('Content-Type: application/json'); 
 
 	 echo json_encode($arrmessage);	
@@ -255,7 +308,10 @@ date_default_timezone_set("America/New_York");
 
 	//START DEAN CREATION
 	public function action_create_dean($id = null){
-		$data['dean'] = Model_User::find($id); 
+		$view = View::forge('admin/users/create_dean');
+		$view->dean = Model_User::find($id);
+		$view->programs = Model_Program::find('all');
+
 		if (Input::method() == 'POST')
 		{
 			$val = Model_User::validate('create');
@@ -275,8 +331,7 @@ date_default_timezone_set("America/New_York");
 						'role'=> Input::post('role'),
 					));
 					$newuser->dean_program = Model_Progdean::forge(array(
-						'program_id'=> Input::post('program_id'),
-						'dean_id' => $id,
+						'program_id'=> Input::post('program_id'),	
 
 					));
 					if($newuser->save()){
@@ -293,9 +348,9 @@ date_default_timezone_set("America/New_York");
 				Session::set_flash('error', $val->error());
 			}
 		}
-
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
 		$this->template->title = "Users";
-		$this->template->content = View::forge('admin/users/create_dean', $data);
+		$this->template->content = $view;
 
 	}
 	//END DEAN CREATION
@@ -312,7 +367,6 @@ date_default_timezone_set("America/New_York");
 			
 			
 			// END CHECK IF USER FIRSTNAME AND LASTNAME IS EXISTING CONDITION
-			
 				if ($val->run())
 				{
 					//---------------------------------------------
@@ -324,8 +378,9 @@ date_default_timezone_set("America/New_York");
 					    ->and_where('lastname', $lastname)
 						->as_object()
 						->execute();
-					die;
-					if (isset($udata['users'])) {
+					
+				
+					if (count($udata['users'])) {
 						foreach ($udata['users'] as $user) {
 							
 							$newuser = Model_Studparent::forge(array(
@@ -338,10 +393,9 @@ date_default_timezone_set("America/New_York");
 							 }
 							
 						}
-
 					//----------------------------------------------
 					}else{
-
+						
 						$newuser = Model_User::forge(array(
 							'username'=> Input::post('username'),
 							'firstname' =>Input::post('firstname'),
@@ -393,17 +447,10 @@ date_default_timezone_set("America/New_York");
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
 				));
-				$category_check = "";
-				if (Input::post('scholarship_type') == 'Regular') {
-						$category_check = "none";
-				}else{
-					$category_check = Input::post('category');
-				}
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('year'),
 					'year' =>Input::post('year'),
-					'scholarship_type' =>Input::post('scholarship_type'),
-					'category' => $category_check,
+					'scholarship_id' =>Input::post('scholarships'),
 					'tuition_fee' => 0,
 					'misc' => 0,
 					'down_payment' => 0,
@@ -484,6 +531,7 @@ date_default_timezone_set("America/New_York");
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
 				));
+				//var_dump(Input::post('scholarships'));die;
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('program'),
 					'year' =>Input::post('year'),
@@ -572,8 +620,26 @@ date_default_timezone_set("America/New_York");
 
 			
 		}
+		$scholarshipss = Model_Scholarship::find('all');
+		$arrscholarship = array(); 
+		$arrsid = array(); 
+		 foreach($scholarshipss as $schol){ 
+		 	array_push($arrsid, $schol->id);
+			array_push($arrscholarship, $schol->scholarship);
+		} 
+		  
+		
+		// echo $schol->scholarship;
+		//var_dump($scholarship->scholarship);die;
+
+		// $scholar['scholars'] = Model_Scholarship::find('first');
+		// foreach ($scholarship as $key) {
+		// 	var_dump($key);
+		// }
+		
+		//var_dump($view->scholarships);die;
+
 		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
-		$view->set_global('scholarships', Arr::assoc_to_keyval(Model_Scholarship::find('all'), 'id', 'scholarship_provider'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 
@@ -770,9 +836,6 @@ public function action_create_basic_program()
 
 	//END CREATE PROGRAM
 
-
-
-
 	public function action_edit($id = null)
 	{
 		$view = View::forge('admin/users/edit');
@@ -793,7 +856,6 @@ public function action_create_basic_program()
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
-
 			if ($user->save())
 			{
 				Session::set_flash('success', e('Updated user #' . $id));
@@ -838,9 +900,18 @@ public function action_create_basic_program()
 	public function action_edit_dean($id = null)
 	{
 		$view = View::forge('admin/users/edit_dean');
+		$prog =   Model_Progdean::find('all', [
+			'where' => [
+				['user_id', 'like', "$id"]
+			]
+		]);
+		foreach ($prog as $pro) {
+			echo $pro->id;
+		}
+		$programdean = Model_Progdean::find($pro->id);
 		$user = Model_User::find($id);
 		$val = Model_User::validate('edit');
-
+		
 		if ($val->run())
 		{
 			if ($user->password != Input::post('password')) {
@@ -855,17 +926,19 @@ public function action_create_basic_program()
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
+			$programdean->program_id = Input::post('program_id');
+			if($programdean->save()){
+				if ($user->save())
+				{ 
+					Session::set_flash('success', e('Updated user #' . $id));
 
-			if ($user->save())
-			{
-				Session::set_flash('success', e('Updated user #' . $id));
+					Response::redirect('admin/users');
+				}
 
-				Response::redirect('admin/users');
-			}
-
-			else
-			{
-				Session::set_flash('error', e('Could not update user #' . $id));
+				else
+				{
+					Session::set_flash('error', e('Could not update user #' . $id));
+				}
 			}
 		}
 
@@ -890,7 +963,8 @@ public function action_create_basic_program()
 
 			$this->template->set_global('user', $user, false);
 		}
-
+		$view->programs = Model_Program::find('all');
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 

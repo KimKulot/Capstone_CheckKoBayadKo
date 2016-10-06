@@ -13,6 +13,16 @@ class Model_Scholarship extends \Orm\Model_Soft
 	protected static $_soft_delete_column = 'deleted_at';
     protected static $_mysql_timestamp = false; 
 
+    public function &__get($name)
+	{
+		if ($name == 'scholarship') {
+			$var =  $this->scholarship_provider . ' ' . $this->category;
+			return $var;
+		}
+
+		return parent::__get($name);
+	}
+
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

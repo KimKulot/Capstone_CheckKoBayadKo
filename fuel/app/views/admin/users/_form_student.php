@@ -75,6 +75,8 @@
 				 
 				</div>
 			</div>
+
+			
 			<div class="col-sm-4">
 				<div class="form-group floating-label">
 				    <?php echo Form::label('Year', 'year', array('class'=>'control-label')); ?>
@@ -92,16 +94,29 @@
 				</div>
 			</div>
 		</div>
+
+		<?php $scholarshipss = Model_Scholarship::find('all'); ?>
+		<?php $arrscholarship = array(); ?>
+		<?php foreach($scholarshipss as $schol => $value){
+			$temparray = array($schol => $value->scholarship);
+			array_push($arrscholarship, $temparray);
+		} 
+		
+			//print_r($arrscholarship);
+		?>  
+		
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group floating-label">
-				     <?php echo Form::label('Scholarship Provider', 'scholarships', array('class'=>'control-label')); ?>
-				 
-				     <?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $user->scholarships : ''),$scholarships, array('class' => 'span6')); ?>
-				 
+				    <?php echo Form::label('Scholarship Provider', 'scholarships', array('class'=>'control-label')); ?>
+				   
+
+					<?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $user->scholarships : ''),$arrscholarship, array('class' => 'span6')); ?>
 				</div>
 			</div>
 		</div>
+
+		
 		<div class="form-group floating-label">
 			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
 

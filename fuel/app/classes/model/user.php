@@ -41,17 +41,12 @@ class Model_User extends \Orm\Model_Soft
 		'dean_program' => array(
 			'model_to' => 'Model_Progdean',
 			'key_from' => 'id',
-			'key_to' => 'dean_id',
+			'key_to' => 'user_id',
 			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
 
 	);
-
-	
-	
-	
-	
 
 	// public function get_full_name () {
 	// 	return $this->'firstname' . ' ' . $this->'lastname';

@@ -17,7 +17,12 @@ class Controller_Admin_Accountants extends Controller_Admin
 		$this->template->title = "Course";
 		$this->template->content = $view;
 	}
-
+	public function action_send_test()
+	{
+		$view = View::forge('admin/accountants/send_test');
+		$this->template->title = "TEST SMS";
+		$this->template->content = $view;
+	}
 	
 	public function action_view_basic($basic_program_description = null)
 	{	
@@ -28,6 +33,7 @@ class Controller_Admin_Accountants extends Controller_Admin
 			$this->template->title = "Basic Education Programs";
 			$this->template->content = View::forge('admin/accountants/view_basic', $data);
 	}
+
 	public function action_view($program_description = null)
 	{	
 

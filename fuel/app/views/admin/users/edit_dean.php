@@ -7,12 +7,12 @@
                         <div class="section-body">
                             <div class="card card-bordered style-primary">
                                 <div class="card-head">
-                                    <header><i class="fa fa-fw fa-tag"></i>Edit Dean</header>
+                                    <header><i class="fa fa-fw fa-tag"></i>New Dean / Program Head</header>
                                 </div>
                                 <div class="card-body style-default-bright">
-									<?php echo render('admin/users/_form_dean'); ?>
-									<p><?php echo Html::anchor('admin/users', 'Back'); ?></p>
-							</div>
+                                    <?php echo render('admin/users/_form_dean'); ?>
+                                    <p><?php echo Html::anchor('admin/users', 'Back'); ?></p>
+                             </div>
                          </div>
                      </div>
                  </section>

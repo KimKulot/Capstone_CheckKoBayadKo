@@ -11,23 +11,9 @@
                 <div class="card-body">
 					<div class="pull-right">
 							<p>
-								<script>
-									function showPasswordInputBox()
-									{
-									  document.getElementById('tuition').style.display="block" ;
-									  document.getElementById('misc').style.display="block" ;
-									}
-								</script>
-								<?php echo Html::anchor('#', '<span class="glyphicon glyphicon-plus"></span> Parents', array('class' => 'btn btn-primary btn-sm' , 'onClick' => 'showPasswordInputBox()')); ?>
-
-								<div>
-
-									<?php echo Html::anchor('admin/users/create_exist_parent/'. $student->id, '<span class="glyphicon glyphicon-plus"></span> Exist Parent', array('class' => 'btn btn-primary btn-sm' , 'id' => 'tuition', 'style' => 'display:none')); ?>
-								</div>
-
-							
-									<?php echo Html::anchor('admin/users/create_parent/'. $student->id, '<span class="glyphicon glyphicon-plus"></span> Not Exist Parent', array('class' => 'btn btn-primary btn-sm' , 'id' => 'misc', 'style' => 'display:none')); ?>
-
+								
+								<?php echo Html::anchor('admin/users/create_parent/'. $student->id, '<span class="glyphicon glyphicon-plus"></span> Parents', array('class' => 'btn btn-primary btn-sm' , 'onClick' => 'showPasswordInputBox()')); ?>
+								
 							</p>
 					</div>
 
