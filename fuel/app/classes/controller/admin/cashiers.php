@@ -11,9 +11,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_index()
 	{
 		//$view->users = Model_User::find('all');
-	
 
-	
 		$search = "";
 		if (Input::method() == 'POST')
 		{
@@ -38,7 +36,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_create()
 	{
 		
-
+		$view['users'] = Model::User::find('all');
 	}
 
 	public function action_index_miscellanous()
