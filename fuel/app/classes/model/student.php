@@ -73,13 +73,13 @@ class Model_Student extends \Orm\Model_Soft
 		$val->add_field('year', 'Year', 'required|max_length[255]');
 		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
 		$val->add_field('scholarship_id', 'Scholarship',  'required|valid_string[numeric]');
-		$val->add_field('tuition_fee', 'Tuition Fee',  'floatval(valid_string[float])');
-		$val->add_field('misc', 'Miscellaneous',  'floatval(valid_string[float])');
-		$val->add_field('down_payment', 'Down Payment',  'floatval(valid_string[float])');
-		$val->add_field('breakdown', 'Breakdown',  'floatval(valid_string[float])');
-		$val->add_field('dis_tuition', 'Tuition Discount',  'floatval(valid_string[float])');
-		$val->add_field('dis_misc', 'Miscellaneous Discount',  'floatval(valid_string[float])');
-		$val->add_field('balance', 'Balance',  'floatval(valid_string[float])');
+		$val->add_field('tuition_fee', 'Tuition Fee',  'valid_string[float]');
+		$val->add_field('misc', 'Miscellaneous',  'valid_string[float]');
+		$val->add_field('down_payment', 'Down Payment',  'valid_string[float]');
+		$val->add_field('breakdown', 'Breakdown',  'valid_string[float]');
+		$val->add_field('dis_tuition', 'Tuition Discount',  'valid_string[float]');
+		$val->add_field('dis_misc', 'Miscellaneous Discount',  'valid_string[float]');
+		$val->add_field('balance', 'Balance',  'valid_string[float]');
 		return $val;
 	}
 }

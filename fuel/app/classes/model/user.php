@@ -70,7 +70,7 @@ class Model_User extends \Orm\Model_Soft
 		$val->add_field('username', 'Username', 'required|max_length[50]');
 		$val->add_field('password', 'Password', 'required|max_length[255]');
 		$val->add_field('firstname', 'Firstname', 'required|max_length[50]');
-		$val->add_field('middlename', 'Middlename', 'required|max_length[255]');
+		$val->add_field('middlename', 'Middlename', 'max_length[255]');
 		$val->add_field('lastname', 'Lastname', 'required|max_length[255]');
 		$val->add_field('mobile_number', 'Mobile Number', 'required|valid_string[numeric]');
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');

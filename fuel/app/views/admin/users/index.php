@@ -40,9 +40,9 @@
 									<?php echo Form::input('search',  Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Search' ));  
 									?>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 									<?php echo Html::anchor('admin/users/'. $search, '<span class="glyphicon glyphicon-search"></span> Search', array('class' => 'btn btn-primary btn-sm')); ?> 
-							</div>	
+							</div> -->	
 						</fieldset>
 
 						<!-- <form action="admin/users/index_search" method="post">
@@ -129,7 +129,7 @@
 				<?php endif; ?> 
 				<p>
 				<?php if ($current_user->role != 6): ?>
-					<!-- <?php //echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?> 
+					<?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?> 
 				<?php endif ?>
 				</p>
 				 </div>

@@ -100,7 +100,7 @@
                             </figure>
                             <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                                 <span class="name"><?= $current_user->lastname . ", " .$current_user->firstname;?></span>
-                                <span class="role">Parent</span>
+                                <!-- <span class="role">Parent</span> -->
                             </div>
             
                             <i class="fa custom-caret"></i>
@@ -141,19 +141,23 @@
                         <div class="nano-content">
                             <nav id="menu" class="nav-main" role="navigation">
                                 <ul class="nav nav-main">
-                                    <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+                                    <!-- <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
                                         <?php echo Html::anchor('admin/', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">Home</span>') ?> 
-                                    </li> 
+                                    </li>  -->
                                     <?php
                                         $files = new GlobIterator(APPPATH.'classes/controller/site/*.php');
+
                                         foreach($files as $file)
                                         {
                                             $section_segment = $file->getBasename('.php');
                                             $section_title = Inflector::humanize($section_segment);
                                             ?>
+                                            );die; ?>
                                             <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
                                                 <?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title) . '</span>' ?>
                                             </li>
+
+
 
                                             <?php
                                         }

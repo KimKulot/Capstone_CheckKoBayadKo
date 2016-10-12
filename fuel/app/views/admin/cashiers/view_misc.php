@@ -38,7 +38,7 @@
 </table>
 
 <?php else: ?>
-<p>No Students.</p>
+<p>No Miscellaneous.</p>
 <?php endif; ?><!-- <p>
 	<?php echo Html::anchor('admin/students/create', 'Add new Student', array('class' => 'btn btn-success')); ?>
 

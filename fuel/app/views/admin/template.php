@@ -227,7 +227,9 @@
 										<ul>
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Users List</span> '); ?>
 											</li>
-											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Cron</span> '); ?>
+											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Exam Schedule</span> '); ?>
+											</li>
+											<li> <?php echo Html::anchor('admin/users/basicsetcron', '<span class="title">Setting Exam for Basic Education</span> '); ?>
 											</li>
 
 											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
@@ -259,12 +261,18 @@
 									$section_title = "Cashier"; 
 									?>
 									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
+										<?php echo Html::anchor('#', '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
 										<ul>
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Cashier Encode</span> '); ?>
 											</li>
 											
 											<li> <?php echo Html::anchor('admin/cashiers/index_miscellanous', '<span class="title">Miscellaneous</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="title">New Miscellaneous (Program)</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/cashiers/add_basic_miscellanous', '<span class="title">New Miscellaneous (Basic Program)</span> '); ?>
 											</li>
 											
 										</ul>
@@ -432,7 +440,7 @@
 										<ul>
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Users List</span> '); ?>
 											</li>
-											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Cron</span> '); ?>
+											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Exam Schedule</span> '); ?>
 											</li>
 
 											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
@@ -495,11 +503,13 @@
 
 
 
-	
-
 	<?php endif; ?>
+
 <div class="page-icon animated bounceInDown">
 	<?php if (Session::get_flash('success')): ?>
+		<br>
+		<br>
+		<br>
 					<div class="alert alert-success alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<p>
@@ -510,6 +520,9 @@
 </div>
 <div class="page-icon animated bounceInDown">
 	<?php if (Session::get_flash('error')): ?>
+		<br>
+		<br>
+		<br>
 					<div class="alert alert-danger alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<p>

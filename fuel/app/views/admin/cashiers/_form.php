@@ -50,7 +50,7 @@
 				<!-- END TUITION FEE -->
 				
 				<!-- BEGIN MISCELLANOUS  -->
-				<h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox2()')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc, 2);?></h5>
+				<!-- <h5><?php echo Html::anchor('#'.$student->id, '', array('class' => 'md md-mode-edit gui-icon ink-reaction', 'onClick' => 'showPasswordInputBox2()')); ?><?="Miscellaneous: &#8369 " . number_format($student->misc, 2);?></h5> -->
 
 				<div class="form-group floating-label">
 					<?php echo Form::label('', 'misc', array('class'=>'control-label')); ?>

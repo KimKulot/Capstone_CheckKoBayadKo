@@ -4,7 +4,7 @@
 		<div class="form-group">
 			<?php echo Form::label('Username', 'username', array('class'=>'control-label')); ?>
 				
-				<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username')); ?>
+				<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username', 'required')); ?>
 
 		</div>
 		<div class="form-group">
@@ -16,19 +16,19 @@
 		<div class="form-group">
 			<?php echo Form::label('Firstname', 'firstname', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('firstname', Input::post('firstname', isset($user) ? $user->firstname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Firstname')); ?>
+				<?php echo Form::input('firstname', Input::post('firstname', isset($user) ? $user->firstname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Firstname', 'required')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('Middlename', 'middlename', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename')); ?>
+				<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('Lastname', 'lastname', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('lastname', Input::post('lastname', isset($user) ? $user->lastname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Lastname')); ?>
+				<?php echo Form::input('lastname', Input::post('lastname', isset($user) ? $user->lastname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Lastname', 'required')); ?>
 
 		</div>
 		<div class="form-group">
@@ -38,7 +38,7 @@
 						$user->password = null; 
 					}
 				?>
-				<?php echo Form::input('password', Input::post('password', isset($user) ? $user->password : ''), array('class' => 'col-md-4 form-control', 'type' => 'password', 'placeholder'=>'Password')); ?>
+				<?php echo Form::input('password', Input::post('password', isset($user) ? $user->password : ''), array('class' => 'col-md-4 form-control', 'type' => 'password', 'placeholder'=>'Password', 'required')); ?>
 
 		</div>
 		<div class="form-group floating-label ">
@@ -51,7 +51,7 @@
 		<div class="form-group">
 			<?php echo Form::label('Email', 'email', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email')); ?>
+				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email', 'required')); ?>
 
 		</div>
 		<div class="form-group">
