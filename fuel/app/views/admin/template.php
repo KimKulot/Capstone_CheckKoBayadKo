@@ -269,6 +269,9 @@
 											<li> <?php echo Html::anchor('admin/cashiers/index_miscellanous', '<span class="title">Miscellaneous</span> '); ?>
 											</li>
 
+											<li> <?php echo Html::anchor('admin/cashiers/index_basic_miscellanous', '<span class="title">Basic Program Miscellaneous</span> '); ?>
+											</li>
+
 											<li> <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="title">New Miscellaneous (Program)</span> '); ?>
 											</li>
 

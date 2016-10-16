@@ -8,6 +8,7 @@ class Model_Student extends \Orm\Model_Soft
 		'year',
 		'student_id',
 		'scholarship_id',
+		'total_assessment',
 		'tuition_fee',
 		'misc',
 		'down_payment',
@@ -73,7 +74,8 @@ class Model_Student extends \Orm\Model_Soft
 		$val->add_field('year', 'Year', 'required|max_length[255]');
 		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
 		$val->add_field('scholarship_id', 'Scholarship',  'required|valid_string[numeric]');
-		$val->add_field('tuition_fee', 'Tuition Fee',  'valid_string[float]');
+		$val->add_field('total_assessment', 'Total Assessment', 'valid_string[float]');
+		$val->add_field('tuition_fee', 'Tuition Fee', 'valid_string[float]');
 		$val->add_field('misc', 'Miscellaneous',  'valid_string[float]');
 		$val->add_field('down_payment', 'Down Payment',  'valid_string[float]');
 		$val->add_field('breakdown', 'Breakdown',  'valid_string[float]');

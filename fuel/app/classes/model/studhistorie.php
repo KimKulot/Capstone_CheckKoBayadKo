@@ -5,6 +5,7 @@ class Model_Studhistorie extends \Orm\Model_Soft
 		'id',
 		'program_description',
 		'studenthistory_id',
+		'total_assessment',
 		'tuition_fee',
 		'misc',
 		'down_payment',
@@ -57,6 +58,7 @@ class Model_Studhistorie extends \Orm\Model_Soft
 		$val = Validation::forge($factory);
 		$val->add_field('program_description', 'Program Description', 'required|max_length[255]');
 		$val->add_field('studenthistory_id', 'Studenthistory_id',  'required|valid_string[numeric]');
+		$val->add_field('total_assessment', 'Total Assessment', 'valid_string[float]');
 		$val->add_field('tuition_fee', 'Tuition Fee',  'valid_string[float]');
 		$val->add_field('misc', 'Miscellaneous',  'valid_string[float]');
 		$val->add_field('down_payment', 'Down Payment',  'valid_string[float]');

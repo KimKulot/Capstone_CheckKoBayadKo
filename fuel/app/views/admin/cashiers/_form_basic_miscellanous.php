@@ -5,7 +5,7 @@
 		<div class="form-group floating-label">
 	     <?php echo Form::label('Basic Program', 'basic_program_id', array('class'=>'control-label')); ?>
 	 
-	     <?php echo Form::select('basic_program_id', Input::post('basic program_id', isset($miscellanou) ? $miscellanou->program_id : ''),$programs, array('class' => 'span6')); ?>
+	     <?php echo Form::select('basic_program_id', Input::post('basic_program_id', isset($miscellanou) ? $miscellanou->basic_program_id : ''),$programs, array('class' => 'span6')); ?>
 		 
 		</div>
 

@@ -15,7 +15,7 @@ class Controller_Admin_Users extends Controller_Admin
 				['username', 'like', "%$search%"]
 			]
 		]);
-		
+
 		$data['roles'] = Model_Role::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
@@ -56,15 +56,22 @@ class Controller_Admin_Users extends Controller_Admin
 
 		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$data['studparents'] = Model_Studparent::find('all');
-		$data['users'] = Model_User::find('all');
+		$data['users'] = Model_User::find('all', [
+			'where' => [
+				['send_at', 'like', "0"]
+			]
+		]);
 		$data['students'] = Model_Student::find('all');
-		/*where */
+		/*where 
+		*/
+
 		// BEGIN DATE FORMULA
 		 date_default_timezone_set('Asia/Manila');
 			$date_Counter = 7; 
 			$diff = 0;
 		 $useNumber = array();
 		 $arrmessage = array(); 
+		 $arruser_id = array();
 
 		 foreach ($data['dates'] as $date){
 			
@@ -98,6 +105,7 @@ class Controller_Admin_Users extends Controller_Admin
 												}
 												array_push($arrmessage, $messages);
 												array_push($useNumber, $use->mobile_number);
+												array_push($arruser_id, $use->id);
 
 											 }
 										 } 
@@ -115,7 +123,7 @@ class Controller_Admin_Users extends Controller_Admin
 										"Your Outstanding Balance: " . $student->balance; 
 
 									}
-
+									array_push($arruser_id, $user->id);
 									array_push($arrmessage, $message); 
 									array_push($useNumber, $user->mobile_number);
 								// START SEMAPHORE SEND SMS NOTIFICATION 
@@ -159,6 +167,7 @@ foreach($useNumber as $mynumber)
 	        'api' => 'LVpxU61qZzU4pEW2czJc',
 	        'number' => $mynumber,
 	        'message' => $arrmessage[$x],
+	        'user_id' => $arruser_id[$x],
 	        'status' => ''
 	    );
 		
@@ -182,10 +191,28 @@ foreach($useNumber as $mynumber)
 		// close curl resource to free up system resources
 		curl_close($ch);
 		$varjson = json_decode($output);
+		
 		$fields['status'] = $varjson->status;
 
 		// if status == sucses
 			// save
+		
+		if($fields['status'] != 'failure');
+		{	
+			echo $fields['message'] . "<br>" . $fields['user_id'];
+			$id = $fields['user_id'];
+			$edit_data['users'] = Model_User::find('all', [
+				'where' => [
+					['id', 'like', "$id"]
+				]
+			]);
+			foreach ($edit_data['users'] as $edit_user) {
+				$edit_user->send_at = 1;
+				$edit_user->save(); 
+			}
+			
+		} 
+		
 
 		$resultArray[] = $fields;
 		
@@ -469,12 +496,28 @@ foreach($useNumber as $mynumber)
 		{  	
 			
 			
-				$scholarship_check = Input::post('scholarships');
-				$data['scholarships'] = Model_Scholarship::find('all', [
-					'where' => [
-						['id', 'like', "$scholarship_check"]
-					]
-				]);
+			$username = Input::post('username');
+			$data['users'] =  Model_User::find('all', [
+				'where' => [
+					['username', 'like', "$username"]
+				]
+			]);
+
+			$count = count($data['users']);
+			// echo $count;
+			if($count >= 1){
+				Session::set_flash('success', e('Added user'));
+				Response::redirect('admin/users/create_basic_student');
+			}
+
+			$scholarship_check = Input::post('scholarships');
+
+			$data['scholarships'] = Model_Scholarship::find('all', [
+				'where' => [
+					['id', 'like', "$scholarship_check"]
+				]
+			]);
+
 			// BEGIN DECLARATIONS
 				$mdiscount = 0;
 				$tdiscount = 0;
@@ -484,16 +527,27 @@ foreach($useNumber as $mynumber)
 				$tdiscount = $scholar->dis_tuition;
 			}
 
+			// var_dump($data['scholarships']);die;
 			$val = Model_User::validate('create');
+			//$val = Model_Student::validate('create');
+			// try{
+			// 	$user = Auth::username_checker(
+			// 		Input::post('username'),
+			// 	    Input::post('email'),
+			// 	    array(	
+			// 	    	)
+			// );
 
 			if ($val->run())
 			{
 				$amount = 0;
 				$data = DB::select('id')->from('basicprograms')->where('basic_program_description', '=', Input::post('year'))->as_object()->execute();
+
 				foreach ($data as $programid) {
 					$program_result = DB::select('amount')->from('basicmiscellanous')->where('basic_program_id', '=', $programid->id)->as_object()->execute();
-					
-				}	
+					// $amount += $program_result;
+				}
+				// var_dump($program_result); die;
 				foreach ($program_result as $key) {
 						$amount += $key->amount; 
 				}
@@ -509,18 +563,22 @@ foreach($useNumber as $mynumber)
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
 				));
+				$discount_balance = $amount - ($mdiscount/100) * $amount;
+				// var_dump($mdiscount);die;
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('year'),
 					'year' =>Input::post('year'),
 					'scholarship_id' =>Input::post('scholarships'),
+					'total_assessment' => $amount,
 					'tuition_fee' => 0,
 					'misc' => $amount,
 					'down_payment' => 0,
 					'breakdown' => 0,
-					'dis_tuition' => $tdiscount,
-					'dis_misc' => $mdiscount,
-					'balance' => $amount - ($amount * ('0.' . $mdiscount)),
+					'dis_tuition' => 0,
+					'dis_misc' => ($mdiscount/100) * $amount,
+					'balance' => $discount_balance,
 				));
+
 				if($newuser->save()){
 					Session::set_flash('success', e('Added user'));
 				 	Response::redirect('admin/users');
@@ -555,18 +613,23 @@ foreach($useNumber as $mynumber)
 					['username', 'like', "$username"]
 				]
 			]);
+
+
 			$count = count($data['users']);
-			echo $count;
+			// echo $count;
 			if($count >= 1){
 				Session::set_flash('success', e('Added user'));
 				Response::redirect('admin/users/create_student');
 			}
+
 			$scholarship_check = Input::post('scholarships');
+
 			$data['scholarships'] = Model_Scholarship::find('all', [
 				'where' => [
 					['id', 'like', "$scholarship_check"]
 				]
 			]);
+
 			// BEGIN DECLARATIONS
 				$mdiscount = 0;
 				$tdiscount = 0;
@@ -609,17 +672,21 @@ foreach($useNumber as $mynumber)
 					'role'=> Input::post('role'),
 				));
 				//var_dump(Input::post('scholarships'));die;
+				$discount_balance = $amount - ($mdiscount/100) * $amount;
+
+				// var_dump($amount);die;
 				$newuser->student = Model_Student::forge(array(
 					'program' =>Input::post('program'),
 					'year' =>Input::post('year'),
 					'scholarship_id' =>Input::post('scholarships'),
+					'total_assessment' => $amount,
 					'tuition_fee' => 0,
 					'misc' => $amount,
 					'down_payment' => 0,
 					'breakdown' => 0,
-					'dis_tuition' => $tdiscount,
-					'dis_misc' => $mdiscount,
-					'balance' => $amount - ($amount * ('0.' . $mdiscount)),
+					'dis_tuition' => 0,
+					'dis_misc' => ($mdiscount/100) * $amount,
+					'balance' => $discount_balance,
 				));
 				if($newuser->save()){
 					Session::set_flash('success', e('Added user'));

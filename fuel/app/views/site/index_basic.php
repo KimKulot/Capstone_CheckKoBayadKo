@@ -48,7 +48,7 @@
 												<!-- //START STUDENT PROFILE -->
 												<?php 
 													$count = 0;
-													$student_course = ""; 
+													$student_course = "";	 
 												?>
 
 												<?php foreach ($students as $student): ?>
@@ -65,7 +65,7 @@
 																	<!-- get  -->
 																	<?php foreach ($misc as $mis): ?>
 																		<?php foreach ($programs as $program): ?>
-																			<?php if ($program->program_description == $student_course): ?>
+																			<?php if ($program->basic_program_description == $student_course): ?>
 																				<?php if($mis->program_id == $program->id): ?>
 																				  		<!-- START DISPLAY -->
 
@@ -290,8 +290,10 @@
 											<!-- //START STUDENT PROFILE -->
 
 											<?php foreach ($misc as $mis): ?>
+												<?php var_dump($mis); ?>
 												<?php foreach ($programs as $program): ?>
-													<?php if ($program->program_description == $student_course): ?>
+													<?php var_dump($student_course); ?>
+													<?php if ($program->basic_program_description == $student_course): ?>
 														<?php if($mis->program_id == $program->id): ?>
 														  <tr>
 														  		<!-- START DISPLAY -->

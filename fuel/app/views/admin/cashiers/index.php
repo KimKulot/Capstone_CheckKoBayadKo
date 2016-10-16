@@ -13,7 +13,7 @@
             <ol class="breadcrumb"> 
              <?php if ($current_user->role == 4 || $current_user->role == 10): ?>
                 <li class="active">Cashier</li>
-                <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="glyphicon glyphicon-plus "></span>Miscellanous', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+               <!--  <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="glyphicon glyphicon-plus "></span>Miscellanous', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?> -->
 
                 </ol>
             <?php endif ?>
@@ -86,8 +86,8 @@
 								<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
 								
-								<td><?= ($item->tuition_fee / 100) * ($item->dis_tuition); ?></td>
-								<td><?= ($item->misc / 100) * ('0.' . $item->dis_misc); ?></td>
+								<td><?= $item->dis_tuition; ?></td>
+								<td><?= $item->dis_misc; ?></td>
 								<td><span>&#8369</span><?php echo " " . number_format($item->balance,2);?></td>
 								
 								<td>

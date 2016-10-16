@@ -17,6 +17,7 @@
 				<?php endforeach; ?>
 				<h5><?php echo "Total Assessment: &#8369 " . number_format((
 							$student->tuition_fee + $student->misc), 2); ?></h5>
+				<h5><?= "Overall Discount: &#8369 " . number_format($student->dis_tuition + $student->dis_misc, 2); ?></h5>
 				<h5><?= "Outstanding balance: &#8369 " . number_format($student->balance, 2); ?></h5>
 				<h5><?= "Total Payment: &#8369 " . number_format($student->down_payment, 2); ?></h5>
 				<!-- BEGIN LASTDATE -->

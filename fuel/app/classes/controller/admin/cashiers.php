@@ -29,6 +29,10 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	
 		
 		$view['users'] = Model_User::find('all');
+		$view['miscellaneous'] = Model_Miscellanou::find('all');
+		$view['basic_miscellaneous'] = Model_Basicmiscellanou::find('all');
+		$view['programs'] = Model_Program::find('all');
+		$view['basic_programs'] = Model_Basicprogram::find('all');
 		$view['students'] = Model_Student::find('all');
 		$this->template->title = "Students";
 		$this->template->content = View::forge('admin/cashiers/index', $view);
@@ -52,44 +56,27 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 	}
 
-	public function action_add_miscellanous()
+	/*
+	* Fetch data from model that connect to database
+	* Function for index basic education miscellaneous
+	*
+	* @params
+	*
+	*/
+
+	public function action_index_basic_miscellanous()
 	{
-		$view = View::forge('admin/cashiers/create_miscellanous');
- 		$view->programs = Model_Program::find('all');
-		if (Input::method() == 'POST')
-		{
-			$val = Model_Miscellanou::validate('create');
-
-			if ($val->run())
-			{
-				$miscellanou = Model_Miscellanou::forge(array(
-					'program_id' => Input::post('program_id'),
-					'type' => Input::post('type'),
-					'amount' => Input::post('amount')
-				));
-
-				if ($miscellanou->save())
-				{
-					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
-
-					Response::redirect('admin/cashiers');
-				}
-					else
-					{
-						Session::set_flash('error', e('Could not save user.'));
-					}
-			}	
-			else
-			{
-				Session::set_flash('error', $val->error());
-			}
-		
-		}
-		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
-		$this->template->title = "New Miscellanous";
+		$view = View::forge('admin/cashiers/index_basic_miscellanous');
+		$view->programs = Model_Basicprogram::find('all');
+		$view->users = Model_User::find('all');
+		$view->students = Model_Student::find('all');
+		$this->template->title = "Basic Programs";
 		$this->template->content = $view;
-		// $data['programs'] = DB::select('*')->from('programs')->where('id', '=', $program_id)->as_object()->execute();
+
 	}
+
+	
+
 
 	public function action_add_basic_miscellanous()
 	{
@@ -130,6 +117,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		// $data['programs'] = DB::select('*')->from('programs')->where('id', '=', $program_id)->as_object()->execute();
 	}
 
+
 	public function action_view_misc($id = null)
 	{
 		// $view['histories'] = Model_Studhistorie::find('all');
@@ -144,6 +132,24 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		$this->template->content = View::forge('admin/cashiers/view_misc', $view);
 	}
 
+	/*
+	* 
+	* Function for you to view basic education miscellaneous
+	*
+	*/
+	public function action_view_basic_misc($id = null)
+	{
+		// $view['histories'] = Model_Studhistorie::find('all');
+		
+		$view['miscellanous'] = Model_Basicmiscellanou::find('all', [
+			'where' => [
+				['basic_program_id', 'like', "$id"]
+			]
+		]);
+		// $view['misc'] = DB::select('*')->from('miscellanous')->where()
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('admin/cashiers/view_basic_misc', $view);
+	}
 
 	public function action_view($id = null)
 	{
@@ -343,59 +349,83 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_edit($id = null)
 	{
 		$student = Model_Student::find($id);
-
-		$info['students'] = Model_Student::find('all', [
-			'where' => [
-				['id', 'like', "$id"]
-			]
-		]);
-
 		$val = Model_Student::validate('edit');
 
-		foreach ($info['students'] as $value) {
+		// $info['students'] = Model_Student::find('all', [
+		// 	'where' => [
+		// 		['id', 'like', "$id"]
+		// 	]
+		// ]);
 
-			$info['programs'] = Model_Program::find('all', [
-				'where' => [
-					['program_description', 'like', "$value->program"]
-				]
-			]);
 
-		}
+		// foreach ($info['students'] as $value) {
 
-		foreach ($info['programs'] as $program) {
+		// 	$info['programs'] = Model_Program::find('all', [
+		// 		'where' => [
+		// 			['program_description', 'like', "$value->program"]
+		// 		]
+		// 	]);
 
-			$info['miscellanous'] = Model_Miscellanou::find('all', [
-				'where' => [
-					['program_id', 'like', "$program->id"]
-				]
-			]);
+		// }
 
-		}
-		$miscellaneous_total = 0;
-		foreach ($info['miscellanous'] as $miscinfo) {
-			$miscellaneous_total = $miscellaneous_total + $miscinfo->amount;
-		}
-		echo $miscellaneous_total;
+		// foreach ($info['programs'] as $program) {
+
+		// 	$info['miscellanous'] = Model_Miscellanou::find('all', [
+		// 		'where' => [
+		// 			['program_id', 'like', "$program->id"]
+		// 		]
+		// 	]);
+
+		// }
+		// $miscellaneous_total = 0;
+		// foreach ($info['miscellanous'] as $miscinfo) {
+		// 	$miscellaneous_total = $miscellaneous_total + $miscinfo->amount;
+		// }
+		// echo $miscellaneous_total;
 	
 
 		date_default_timezone_set("Asia/Manila");
 		if ($val->run())
 		{
+			// start check what is the discount of the student
+			$mis_dis = 0;
+			$tui_dis = 0;
+
+			$student->scholarship_id = Input::post('scholarship_id');
+
+			$scholardiscount = Model_Scholarship::find('all', [
+				'where' => [
+					['id', 'like', "$student->scholarship_id"]
+				]
+			]);
+
+			foreach ($scholardiscount as $scholardis) {
+				$mis_dis = $scholardis->dis_misc;
+				$tui_dis = $scholardis->dis_tuition;
+			}
+
+			// end check what is the discount of the student
 
 			$student->student_id = Input::post('student_id');
-			$student->scholarship_id = Input::post('scholarship_id');
-			$student->dis_misc = Input::post('dis_misc');
-			$student->dis_tuition = Input::post('dis_tuition');
+			
 			$student->program = Input::post('program');
 			$student->year = Input::post('year');
 			$student->tuition_fee = Input::post('tuition_fee');
-			$student->misc = $miscellaneous_total;
-			$student->down_payment = $student->down_payment + Input::post('down_payment');
-			$discount_tuition = $student->tuition_fee - (($student->tuition_fee / 100) *  ($student->dis_tuition));
-			$discount_misc = $student->misc - (($student->misc / 100) * ($student->dis_misc));
-			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
-			$student->balance = ($discount_tuition + $discount_misc) - $student->down_payment;
+			$student->misc = Input::post('misc');
+			$student->dis_misc = ($mis_dis/100) * $student->misc;
 
+			$student->dis_tuition = ($tui_dis/100) * $student->tuition_fee;
+			$student->total_assessment = $student->tuition_fee + $student->misc;
+
+			$student->down_payment = $student->down_payment + Input::post('down_payment');
+
+			// $discount_tuition = $student->tuition_fee - (($student->tuition_fee / 100) *  ($student->dis_tuition));
+
+			// $discount_misc = $student->misc - (($student->misc / 100) * ($student->dis_misc));
+			$student->breakdown = ($student->tuition_fee + $student->misc) / 4;
+			// echo $student->down_payment;die;
+			$student->balance = $student->total_assessment - ($student->dis_tuition + $student->dis_misc + $student->down_payment);
+			
 			$balance = $student->balance;
 			if($balance < 0){
 
@@ -408,14 +438,15 @@ class Controller_Admin_Cashiers extends Controller_Admin
 			$student->history[] = Model_Studhistorie::forge(array(
 					'studenthistory_id'=> $id,
 					'program_description' => $student->program,
-					'tuition_fee' => Input::post('tuition_fee'),
-					'misc' => Input::post('misc'),
+					'total_assessment' => $student->total_assessment,
+					'tuition_fee' => $student->tuition_fee,
+					'misc' => $student->misc,
 					'down_payment' => Input::post('down_payment'),
 					'payment' => $student->down_payment,
 					'breakdown' => ($student->tuition_fee + $student->misc) / 4,
 					'dis_tuition' => $student->dis_tuition,
 					'dis_misc' => $student->dis_misc,
-					'balance' => ($student->tuition_fee + $student->misc) - $student->down_payment,
+					'balance' => $student->balance,
 					'date_time' => date('D d M Y') . " " . date("h:i:s"),
                     
 			));
@@ -437,8 +468,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		{
 			if (Input::method() == 'POST')
 			{
-				$student->student_id = Input::post('student_id');		
-				
+				$student->student_id = Input::post('student_id');
 				$student->course = Input::post('course');
 				$student->tuition_fee = Input::post('tuition_fee');
 				$student->misc = Input::post('misc');
@@ -456,26 +486,80 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 	}
 
+
+
 	public function action_edit_misc($id = null)
 	{
+		$misc = Model_Miscellanou::find($id);
+
+		$student['students'] = Model_Student::find('all');
+
+		$program['programs'] = Model_Program::find('all', [
+			'where' => [
+				['id', 'like', "$id"]
+			]
+		]);
+		// var_dump($program['programs']->program_description);die;
+		
+		// $student = Model_Student::find($id);
+		// die;
+		// var_dump($program['programs']);
+		// die;
+
+		// var_dump($student['students']);die;
+
+
+		$program['programs'] = Model_Program::find('all');
+
 
 		$view = View::forge('admin/cashiers/edit_misc');
 		$view->programs = Model_Program::find('all');
-		$misc = Model_Miscellanou::find($id);
+		
 		$val = Model_Miscellanou::validate('edit');
+
 		if ($val->run())
 		{
 
 			$misc->program_id = Input::post('program_id');	
 			$misc->type = Input::post('type');
+			$tempmisc = $misc->amount;
+
+			foreach ($program['programs'] as $pro) {
+				foreach ($student['students'] as $stud) {
+					if($stud->program == $pro->program_description){
+						$formula_dis_misc = 0;
+						$estudyantes = Model_Student::find($stud->id);
+						$estudyantes->misc = $estudyantes->misc - $tempmisc;
+						$estudyantes->save();
+					}
+				}
+			}
+
 			$misc->amount = Input::post('amount');
+
+			foreach ($program['programs'] as $pro) {
+				foreach ($student['students'] as $stud) {
+					if($stud->program == $pro->program_description){
+						$estudyantes = Model_Student::find($stud->id);
+						
+						$formula_dis_misc = ($estudyantes->dis_misc / ($estudyantes->misc + $tempmisc)) * 100;
+						$estudyantes->misc = $estudyantes->misc + $misc->amount;
+						$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
+						$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+
+						// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
+						$estudyantes->balance = $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc);
+						$estudyantes->save();
+					}
+				}
+			}
 
 			if ($misc->save())
 			{
 
 				Session::set_flash('success', e('Updated misc #' . $id));
 				
-				Response::redirect('admin/cashiers/view_misc/'. $id);
+				Response::redirect('admin/cashiers/view_misc/'. $misc->program_id);
 			}
 
 			else
@@ -488,6 +572,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		{
 			if (Input::method() == 'POST')
 			{
+
 				$misc->program_id = Input::post('program_id');	
 				$misc->type = Input::post('type');
 				$misc->amount = Input::post('amount');
@@ -504,21 +589,298 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 	}
 
-	public function action_delete_misc($id = null)
-	{
-		if ($misc = Model_Miscellanou::find($id))
-		{
-			$misc->delete();
 
-			Session::set_flash('success', e('Delete miscellanous #'.$id));
+	/*
+	* Editing miscellaneous for Basic Education 
+	*
+	*
+	*/
+
+	public function action_edit_basic_misc($id = null)
+	{
+		$misc = Model_Basicmiscellanou::find($id);
+
+		$student['students'] = Model_Student::find('all');
+
+		$program['programs'] = Model_Basicprogram::find('all', [
+			'where' => [
+				['id', 'like', "$id"]
+			]
+		]);
+		// var_dump($program['programs']->program_description);die;
+		
+		// $student = Model_Student::find($id);
+		// die;
+		// var_dump($program['programs']);
+		// die;
+
+		// var_dump($student['students']);die;
+		
+		$program['programs'] = Model_Basicprogram::find('all');
+
+
+
+		$view = View::forge('admin/cashiers/edit_basic_misc');
+		$view->programs = Model_Basicprogram::find('all');
+		
+		$val = Model_Basicmiscellanou::validate('edit');
+
+		if ($val->run())
+		{
+
+			$misc->basic_program_id = Input::post('basic_program_id');	
+			$misc->type = Input::post('type');
+			$tempmisc = $misc->amount;
+
+
+			foreach ($program['programs'] as $pro) {
+				foreach ($student['students'] as $stud) {
+					if($stud->program == $pro->basic_program_description){
+						$formula_dis_misc = 0;
+						$estudyantes = Model_Student::find($stud->id);
+
+						if ($estudyantes->misc < $tempmisc) {
+							$estudyantes->misc = $tempmisc - $estudyantes->misc;
+						}else{
+							$estudyantes->misc = $estudyantes->misc - $tempmisc;
+						}	
+						$estudyantes->save();
+					}
+				}
+			}
+
+						// echo $estudyantes->dis_misc;	
+						// if($estudyantes->dis_misc == 0){
+						// 	$formula_dis_misc = 0;
+						// }else{
+						// 	$formula_dis_misc = ($estudyantes->dis_misc / ($estudyantes->misc + $tempmisc)) * 100;
+						// }
+			$arrscholar = array();
+			$misc->amount = Input::post('amount');
+
+			foreach ($program['programs'] as $pro) {
+				foreach ($student['students'] as $stud) {
+					if($stud->program == $pro->basic_program_description){
+						
+						// check scholarship acquired
+						$scholarships = Model_Scholarship::find('all', [
+							'where' => [
+								['id', 'like', "$estudyantes->scholarship_id"]
+							]
+						]);
+						
+						foreach ($scholarships as $scholar) {
+							
+						}
+					    $scholar->dis_misc;
+						// var_dump($arrscholar[0]);die;
+
+						// check scholarship acquired
+						$estudyantes = Model_Student::find($stud->id);
+						$counter = 0;
+						
+						// echo $misc->amount;
+						
+						
+
+						// echo $formula_dis_misc;
+						
+						// for editing student miscellaneous
+						$estudyantes->misc = $estudyantes->misc + $misc->amount;
+						// end for editing student miscellaneous
+
+						// for editing student Total Assessment
+						$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
+						// end for editing student Total Assessment
+
+						// echo $formula_dis_misc;
+						// for editing student Discount Miscellaneous
+						$estudyantes->dis_misc = ($scholar->dis_misc/100) * $misc->amount;
+						// echo $estudyantes->dis_misc;
+						// end for editing student Discount Miscellaneous
+
+						// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
+
+						$estudyantes->balance = $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc);
+						// echo $estudyantes->balance;
+						$estudyantes->save();
+					}
+				}
+			}
+			
+			if ($misc->save())
+			{
+
+				Session::set_flash('success', e('Updated misc #' . $id));
+				
+				Response::redirect('admin/cashiers/view_basic_misc/'. $misc->basic_program_id);
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update misc #' . $id));
+			}
 		}
 
 		else
 		{
-			Session::set_flash('error', e('Could not delete miscellanous #'.$id));
+			if (Input::method() == 'POST')
+			{
+
+				$misc->basic_program_id = Input::post('basic_program_id');	
+				$misc->type = Input::post('type');
+				$misc->amount = Input::post('amount');
+				
+				
+				Session::set_flash('error', $val->error());
+			}
+
+			$this->template->set_global('miscellanou', $misc, false);
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Basicprogram::find('all'), 'id', 'basic_program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+
+
+
+
+	public function action_add_miscellanous()
+	{
+		$view = View::forge('admin/cashiers/create_miscellanous');
+ 		$view->programs = Model_Program::find('all');
+ 		$program['programs'] = Model_Program::find('all');
+ 		$student['students'] = Model_Student::find('all');
+		if (Input::method() == 'POST')
+		{
+			$val = Model_Miscellanou::validate('create');
+
+			if ($val->run())
+			{
+				$miscellanou = Model_Miscellanou::forge(array(
+					'program_id' => Input::post('program_id'),
+					'type' => Input::post('type'),
+					'amount' => Input::post('amount')
+				));
+
+
+				foreach ($program['programs'] as $pro) {
+					foreach ($student['students'] as $stud) {
+						if($stud->program == $pro->program_description){
+							$formula_dis_misc = 0;
+							$estudyantes = Model_Student::find($stud->id);
+							$temp_misc = $estudyantes->misc;
+							// echo $temp_misc; 
+							$estudyantes->misc = $estudyantes->misc + $miscellanou->amount;
+							 // echo $estudyantes->dis_misc . "<br>";
+
+							$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+
+							// echo $formula_dis_misc;
+							$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
+
+							$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+							// echo $estudyantes->dis_misc . "<br>";
+
+							// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
+							$estudyantes->balance = $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc);
+
+
+
+							$estudyantes->save();
+						}
+					}
+				}
+
+				if ($miscellanou->save())
+				{
+					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
+
+					Response::redirect('admin/cashiers');
+				}
+					else
+					{
+						Session::set_flash('error', e('Could not save user.'));
+					}
+			}	
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$this->template->title = "New Miscellanous";
+		$this->template->content = $view;
+		// $data['programs'] = DB::select('*')->from('programs')->where('id', '=', $program_id)->as_object()->execute();
+	}
+
+
+
+	public function action_delete_misc($id = null)
+	{
+		// echo $id;
+		$data_misc = Model_Miscellanou::find('all', [
+			'where' => [
+				['id', 'like', "$id"]
+			]
+		]);
+		$misc_program_id = 0;
+		$misc_program_amount = 0;
+		$course_compare = "";
+		foreach ($data_misc as $mischeck) {
+			$misc_program_id = $mischeck['program_id'];
+			$misc_program_amount = $mischeck['amount'];
+		}
+		echo $misc_program_amount;
+		echo $misc_program_id;
+		$data_program = Model_Program::find('all', [
+			'where' => [
+				['id', 'like', "$misc_program_id"]
+			]
+		]);
+
+		foreach ($data_program as $prog) {
+			$course_compare = $prog->program_description;
+		}
+		$data_stud = Model_Student::find('all', [
+			'where' => [
+				['program', 'like', "$course_compare"]
+			]
+		]);
+
+		
+
+
+		if ($misc = Model_Miscellanou::find($id))
+		{
+
+			$misc->delete();
+
+			foreach ($data_stud as $stud_data) {
+				$percentage_disc = ($stud_data->dis_misc / $stud_data->misc) *100;
+				
+				
+				$stud_data->misc = $stud_data->misc - $misc_program_amount;
+				
+				$stud_data->total_assessment = $stud_data->misc + $stud_data->tuition_fee;
+
+				$stud_data->dis_misc = $stud_data->misc * ("0." . $percentage_disc);
+				$stud_data->balance = $stud_data->total_assessment - ($stud_data->down_payment + $stud_data->dis_misc);
+
+				$stud_data->save();
+			}
+
+				Session::set_flash('success', e('Delete miscellanous #'.$id));
+			}
+
+		else
+		{
+			Session::set_flash('error', e('Could not delete miscellanous #'. $id));
 		}
 
-		Response::redirect('admin/cashiers/view_misc/' . $id);
+		Response::redirect('admin/cashiers/view_misc/' . $misc_program_id);
 
 	}
 

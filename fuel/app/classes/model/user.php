@@ -14,6 +14,7 @@ class Model_User extends \Orm\Model_Soft
 		'role',
 		'created_at',
 		'updated_at',
+		'send_at',
 		'deleted_at',
 		// 'deleted',
 
@@ -76,6 +77,8 @@ class Model_User extends \Orm\Model_Soft
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
 		$val->add_field('role', 'Role', 'required|valid_string[numeric]');
+		$val->add_field('send_at', 'Send at', 'valid_string[numeric]');
+
 		return $val;
 	}
 

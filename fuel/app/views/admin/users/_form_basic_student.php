@@ -2,30 +2,41 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 
 	<fieldset>
+		<div class="row">
+			<div class="col-sm-6">	
+				<div class="form-group floating-label">
+					<?php echo Form::label('Username', 'username', array('class'=>'control-label')); ?>
+						
+						<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username', 'required' )); ?>
 
-		<div class="form-group floating-label">
-			<?php echo Form::label('Username', 'username', array('class'=>'control-label')); ?>
-				
-				<?php echo Form::input('username', Input::post('username', isset($user) ? $user->username : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Username', 'required' )); ?>
+				</div>
+			</div>
+			<div class="col-sm-6">	
+				<div class="form-group floating-label">
+					<?php echo Form::label('Firstname', 'firstname', array('class'=>'control-label')); ?>
 
+						<?php echo Form::input('firstname', Input::post('firstname', isset($user) ? $user->firstname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Firstname', 'required' )); ?>
+
+				</div>
+			</div>
 		</div>
-		<div class="form-group floating-label">
-			<?php echo Form::label('Firstname', 'firstname', array('class'=>'control-label')); ?>
+		<div class="row">
+			<div class="col-sm-6">	
+				<div class="form-group floating-label">
+					<?php echo Form::label('Middlename / Middle Initial', 'middlename', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('firstname', Input::post('firstname', isset($user) ? $user->firstname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Firstname', 'required' )); ?>
+						<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
 
-		</div>
-		<div class="form-group floating-label">
-			<?php echo Form::label('Middlename / Middle Initial', 'middlename', array('class'=>'control-label')); ?>
+				</div>
+			</div>
+			<div class="col-sm-6">	
+				<div class="form-group floating-label">
+					<?php echo Form::label('Lastname', 'lastname', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
+						<?php echo Form::input('lastname', Input::post('lastname', isset($user) ? $user->lastname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Lastname', 'required')); ?>
 
-		</div>
-		<div class="form-group floating-label">
-			<?php echo Form::label('Lastname', 'lastname', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('lastname', Input::post('lastname', isset($user) ? $user->lastname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Lastname', 'required')); ?>
-
+				</div>
+			</div>
 		</div>
 		<div class="form-group floating-label">
 			<?php echo Form::label('Password', 'password', array('class'=>'control-label')); ?>

@@ -106,6 +106,31 @@ class Controller_Site extends Controller_Base
 		// $view['histories'] = Model_Studhistorie::find('all');
 		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
 		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		
+		//START CHECK IF BASIC EDUCATION STUDENT 
+		$user_id = Auth::get('id');
+		$basic['basicstudents'] = Model_Student::find('all', [
+			'where' => [
+				['student_id', 'like', "$user_id"]
+			]
+		]);
+
+		// if(count($basic['basicstudents']))
+		foreach ($basic['basicstudents'] as $basicstud) {
+
+			$basic['basicprograms'] = Model_Basicprogram::find('all', [
+				'where' => [
+					['basic_program_description', 'like', "$basicstud->program"]
+				]
+			]);
+		}
+		$count_exist_basicprogram = count($basic['basicprograms']);
+		if($count_exist_basicprogram > 0){
+			Response::redirect('site/index_basic');
+		}
+		//END CHECK IF BASIC EDUCATION STUDENT 
+		die;
+		$basic['basicprograms'] = Model_Basicprogram::find('all');
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Miscellanou::find('all');
 		$view['programs'] = Model_Program::find('all');
@@ -124,6 +149,31 @@ class Controller_Site extends Controller_Base
 		$this->template->title = 'Dashboard';
 		$this->template->content = View::forge('site/dashboard', $view);
 	}
+
+	public function action_index_basic($id = null)
+	{
+		// $view['histories'] = Model_Studhistorie::find('all');
+		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
+		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+		$view['misc'] = Model_Basicmiscellanou::find('all');
+		$view['programs'] = Model_Basicprogram::find('all');
+		$view['students'] = Model_Student::find('all', [
+		'related' => array(
+			'user', 'history' => array(
+				'order_by' => [
+					'id' => 'desc'
+					]
+				)
+			),
+		'where' => array(
+			'student_id' => Auth::get('id')
+			)
+		]);
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('site/index_basic', $view);
+	}
+
 	public function action_index_parent($id = null)
 	{
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
