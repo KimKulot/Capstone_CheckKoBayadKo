@@ -73,10 +73,10 @@
 				
 				<!-- START SEMAPHORE SEND SMS NOTIFICATION -->
 				<?php 
-					
+					$arrstatus = array();
 					$x=0;
 				?>
-
+			
 					<?php 
 					 	foreach($arrnumber as $mynumber)
 						{
@@ -117,7 +117,7 @@
 									Response::redirect('admin/cashiers');
 								}
 								$fields['status'] = $varjson->status;
-
+								array_push($arrstatus, $fields['status']);
 								// if status == sucses
 									// save
 

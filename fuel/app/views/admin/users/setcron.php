@@ -4,7 +4,7 @@
 		    <section>
 		        <div class="section-header">
 		            <ol class="breadcrumb"> 
-		                <li class="active">Setting Time and Date</li>
+		                <li class="active">Setting Exam Schedule</li>
 		            </ol>
 		        </div>
 
@@ -17,7 +17,7 @@
 							<fieldset>
 
 								<div class="form-group floating-label">
-									<?php echo Form::label('Time and date of exam', 'date_time', array('class'=>'control-label')); ?>
+									<?php echo Form::label('Date of exam', 'date_time', array('class'=>'control-label')); ?>
 										
 										<?php echo Form::input('date_time', Input::post('date_time', isset($accountantcron) ? $accountantcron->date_time : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Date', 'id' => 'datetimepicker', 'required')); ?>
 								</div>

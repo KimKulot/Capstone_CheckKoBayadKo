@@ -91,7 +91,7 @@
 								<td><span>&#8369</span><?php echo " " . number_format($item->balance,2);?></td>
 								
 								<td>
-									<?php echo Html::anchor('admin/cashiers/view/'.$item->id, 'View', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
+									<?php echo Html::anchor('admin/cashiers/view/'.$item->student_id, 'View', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> 
 								</td>
 								<?php if ($current_user->role != 6): ?>
 									<td>

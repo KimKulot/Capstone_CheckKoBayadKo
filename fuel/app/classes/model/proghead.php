@@ -1,5 +1,5 @@
 <?php 	
-class Model_Progdean extends \Orm\Model_Soft
+class Model_Proghead extends \Orm\Model_Soft
 {
 
 	protected static $_properties = array(
@@ -21,12 +21,6 @@ class Model_Progdean extends \Orm\Model_Soft
 			'key_to'   => 'id',
 			'cascade_delete' => false,
 		),
-		// 'parent_user' => array(
-		// 	'model_to' => 'Model_User',
-		// 	'key_from' => 'parent_id',
-		// 	'key_to'   => 'id',
-		// 	'cascade_delete' => false,
-		// ),
 	);
 
 	
@@ -46,8 +40,8 @@ class Model_Progdean extends \Orm\Model_Soft
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
-		$val->add_field('program_id', 'Program id',  'valid_string[numeric]');
-		$val->add_field('user_id', 'Dean id',  'valid_string[numeric]');
+		$val->add_field('program_id', 'Program id',  'required|valid_string[numeric]');
+		$val->add_field('user_id', 'Dean id',  'required|valid_string[numeric]');
 		return $val;
 	}
 }

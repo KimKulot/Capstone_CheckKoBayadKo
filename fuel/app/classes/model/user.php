@@ -12,6 +12,7 @@ class Model_User extends \Orm\Model_Soft
 		'group',
 		'email',
 		'role',
+		'image',
 		'created_at',
 		'updated_at',
 		'send_at',
@@ -39,6 +40,17 @@ class Model_User extends \Orm\Model_Soft
 			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
+		'head_program' => array(
+			'model_to' => 'Model_Proghead',
+			'key_from' => 'id',
+			'key_to' => 'user_id',
+			'cascade_delete' => false,
+			'cascade_save' => true,
+		),
+
+	);
+	protected static $_has_many = array(
+		
 		'dean_program' => array(
 			'model_to' => 'Model_Progdean',
 			'key_from' => 'id',
@@ -48,7 +60,6 @@ class Model_User extends \Orm\Model_Soft
 		),
 
 	);
-
 	// public function get_full_name () {
 	// 	return $this->'firstname' . ' ' . $this->'lastname';
 	// 	static::method_exists(object, method_name());
@@ -77,6 +88,7 @@ class Model_User extends \Orm\Model_Soft
 		$val->add_field('group', 'Group', 'required|valid_string[numeric]');
 		$val->add_field('email', 'Email', 'required|valid_email|max_length[255]');
 		$val->add_field('role', 'Role', 'required|valid_string[numeric]');
+		$val->add_field('image', 'Image', 'max_length[250]');
 		$val->add_field('send_at', 'Send at', 'valid_string[numeric]');
 
 		return $val;

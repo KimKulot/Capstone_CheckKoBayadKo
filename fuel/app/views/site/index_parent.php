@@ -23,11 +23,12 @@
 						
 						<thead>
 								<tr>
-									<th>Student name</th>		
+									<th>Student name</th>
+									<th>Total Assessment</th>	
 									<th>Tuition fee</th>
 									<th>Miscellaneous</th>
-									<th>Down Payment</th>
-									<th>Amount per Exam</th>
+									<th>Payment</th>
+									<th>Overall Discount</th>
 									<th>Balance</th>
 									
 								</tr>
@@ -44,10 +45,11 @@
 											<?php if ($studparent->student_id == $student->id): ?>
 											  <tr>
 											  	<td><?php echo $user->lastname . ", " . $user->firstname . " " . $user->middlename; ?></td>
+											  	<td><?php echo $student->total_assessment ?></td>
 												<td><?php echo $student->tuition_fee ?></td>
 												<td><?php echo $student->misc; ?></td>
 												<td><?php echo $student->down_payment; ?></td>
-												<td><?php echo $student->breakdown; ?></td>
+												<td><?php echo $student->dis_misc + $student->dis_tuition; ?></td>
 												<td><?php echo $student->balance; ?></td>
 											 </tr>
 											<?php endif ?>

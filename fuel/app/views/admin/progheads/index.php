@@ -1,5 +1,5 @@
 <?php 
-		if ($current_user->role != 1 && $current_user->role != 10 && $current_user->role != 6) {
+		if ($current_user->role != 2 && $current_user->role != 10 && $current_user->role != 6) {
 			Response::redirect('/');
 		}
  ?>
@@ -37,8 +37,8 @@
 					</thead>
 					<tbody>	
 				<?php $count = 0; ?>
-				<?php foreach ($progdeans as $progdean): ?>
-					<?php if ($current_user->id == $progdean->user_id): ?>
+				<?php foreach ($progheads as $proghead): ?>
+					<?php if ($current_user->id == $proghead->user_id): ?>
 							<?php foreach ($students as $item): ?>
 								<?php 
 									$boolchecker = true;
@@ -46,7 +46,7 @@
 								?>
 
 								<?php foreach ($programs as $program): ?>
-									<?php if ($program->id == $progdean->program_id): ?>
+									<?php if ($program->id == $proghead->program_id): ?>
 										<?php if ($item->program == $program->program_description): ?>
 											<tr>
 												<?php foreach ($users as $key): ?>

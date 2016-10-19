@@ -94,14 +94,10 @@ class Controller_Admin_Users extends Controller_Admin
 
 												  $total = $student->tuition_fee + $student->misc; 
 
-												  $messages = "Parent Name:" . $use->lastname . ", " .  $use->firstname . " " . $use->middlename . 
-												" Mobile Number: " . $use->mobile_number . " " . 
-												"Hello! The date of exam will be: " . $date->date_time;
+												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam will be on: " . $date->date_time;
 
 												if($student->balance != 0){
-													$messages .= "Your total payment is: " . $total .
-													" Your payment: " . $student->down_payment .
-													" Your Outstanding Balance: " . $student->balance ; 
+													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
 												}
 												array_push($arrmessage, $messages);
 												array_push($useNumber, $use->mobile_number);
@@ -112,15 +108,12 @@ class Controller_Admin_Users extends Controller_Admin
 									 }
 								 } 
 								
-									  $total = $student->tuition_fee + $student->misc; 
+									  $total = $student->total_assessment; 
 
 									
-									  $message = "Name:" .  $user->lastname . ", " . $user->firstname. " " . $user->middlename . "Mobile Number: " . $user->mobile_number . 
-									"Hello! The date of exam will be: " . $date->date_time ;
+									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam will be on: " . $date->date_time ;
 									if($student->balance != 0){
-										$message .= "Your total payment is: " . $total . 
-										"Your payment: " . $student->down_payment . 
-										"Your Outstanding Balance: " . $student->balance; 
+										$message .= "Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
 
 									}
 									array_push($arruser_id, $user->id);
@@ -155,7 +148,8 @@ class Controller_Admin_Users extends Controller_Admin
 				}
  	
 			}
-
+$arrcheck_status = array();
+$arruser_id_success = array();
 $x=0;
 foreach($useNumber as $mynumber)
 {
@@ -197,21 +191,16 @@ foreach($useNumber as $mynumber)
 		// if status == sucses
 			// save
 		
-		if($fields['status'] != 'failure');
-		{	
-			echo $fields['message'] . "<br>" . $fields['user_id'];
+		// if($fields['status'] == 'success');
+		// {	
+			// echo $fields['message'] . "" . $fields['user_id'];
 			$id = $fields['user_id'];
-			$edit_data['users'] = Model_User::find('all', [
-				'where' => [
-					['id', 'like', "$id"]
-				]
-			]);
-			foreach ($edit_data['users'] as $edit_user) {
-				$edit_user->send_at = 1;
-				$edit_user->save(); 
-			}
 			
-		} 
+			array_push($arruser_id_success, $id);
+			array_push($arrcheck_status, $fields['status']);
+			
+			
+		// } 
 		
 
 		$resultArray[] = $fields;
@@ -220,8 +209,52 @@ foreach($useNumber as $mynumber)
 	$x++;
 
 }
+// var_dump($arrcheck_status , $arruser_id_success);
 
-	// print_r($resultArray);
+$count_y = 0;
+$user_id_length = count($arruser_id_success);
+$datauser['users'] = Model_User::find('all');
+for ($i=0; $i < count($arruser_id_success); $i++) { 
+	// echo $arruser_id_success[$i];
+	$id =  $arruser_id_success[$i];
+	$user_status = $arrcheck_status[$i];
+
+	if($user_status == 'success'){
+		// $edit_data['users'] = Model_User::find('all', [
+		// 	'where' => [
+		// 		['id', 'like', "$id"]
+		// 	]
+		// ]);
+		foreach ($datauser['users'] as $user_in) {
+			if ($user_in->id == $id) {
+				// echo $user_in->firstname;
+				$user_in->send_at = 1;
+				$user_in->save();
+			}
+		}
+	}
+
+}
+
+
+	
+	
+
+
+// foreach ($edit_data['users'] as $edit_user) {
+// 	// echo $edit_user->firstname;
+// 	var_dump($edit_user);
+// 	// $edit_user->send_at = 1;
+// 	// $edit_user->save();
+
+// }
+
+
+
+
+// die;
+
+// print_r($resultArray);
  // simple print output....
 
 // END SEMAPHORE SEND SMS NOTIFICATION 
@@ -302,6 +335,12 @@ foreach($useNumber as $mynumber)
 	public function action_setcron(){
 
  		$view['dates'] = Model_Accountantcron::find('all');
+ 		$data['users'] = Model_User::find('all', [
+			'where' => [
+				['send_at', 'like', "1"]
+			]
+		]);
+
 		if (Input::method() == 'POST')
 		{  	
 			$val = Model_Accountantcron::validate('create');
@@ -312,7 +351,15 @@ foreach($useNumber as $mynumber)
 				$newuser = Model_Accountantcron::forge(array(
 					'date_time'=> Input::post('date_time'),
 				));
+				
 				if($newuser->save()){
+					// START Default the send flag for users
+						foreach ($data['users'] as $user) {
+							$user->send_at = 0;
+							$user->save(); 
+						}
+					// END Default the send flag for users
+					
 					Session::set_flash('success', e('Set exam schedule'));
 				 	Response::redirect('admin/users');
 				}
@@ -416,6 +463,55 @@ foreach($useNumber as $mynumber)
 
 	}
 	//END DEAN CREATION
+
+	//START PROGRAM HEAD CREATION
+	public function action_create_proghead($id = null){
+		$view = View::forge('admin/users/create_proghead');
+		$view->proghead = Model_User::find($id);
+		$view->programs = Model_Program::find('all');
+
+		if (Input::method() == 'POST')
+		{
+			$val = Model_User::validate('create');
+
+			
+				if ($val->run())
+				{
+					$newuser = Model_User::forge(array(
+						'username'=> Input::post('username'),
+						'firstname' =>Input::post('firstname'),
+						'middlename'=> Input::post('middlename'),
+						'lastname'=> Input::post('lastname'),
+						'password'=> Auth::instance()->hash_password(Input::post('password')),
+						'mobile_number'=> Input::post('mobile_number'),
+						'group'=> Input::post('group'),
+						'email'=> Input::post('email'),
+						'role'=> Input::post('role'),
+					));
+					$newuser->head_program = Model_Proghead::forge(array(
+						'program_id'=> Input::post('program_id'),	
+
+					));
+					if($newuser->save()){
+						Session::set_flash('success', e('Added user'));
+					 	Response::redirect('admin/users');		
+				}
+
+			// }catch(Exception $e){
+
+			// 		Session::set_flash('error', e('Empty fields not allowed or email is already exist'));
+			 }
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+	//END PROGRAM HEAD CREATION
 
 
 

@@ -101,6 +101,7 @@ class Controller_Site extends Controller_Base
 	 * @access  public
 	 * @return  void
 	 */
+
 	public function action_index($id = null)
 	{
 		// $view['histories'] = Model_Studhistorie::find('all');
@@ -109,12 +110,13 @@ class Controller_Site extends Controller_Base
 		
 		//START CHECK IF BASIC EDUCATION STUDENT 
 		$user_id = Auth::get('id');
+
 		$basic['basicstudents'] = Model_Student::find('all', [
 			'where' => [
 				['student_id', 'like', "$user_id"]
 			]
 		]);
-
+		// var_dump($basic['basicstudents']);die;
 		// if(count($basic['basicstudents']))
 		foreach ($basic['basicstudents'] as $basicstud) {
 
@@ -129,7 +131,7 @@ class Controller_Site extends Controller_Base
 			Response::redirect('site/index_basic');
 		}
 		//END CHECK IF BASIC EDUCATION STUDENT 
-		die;
+		// die;
 		$basic['basicprograms'] = Model_Basicprogram::find('all');
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Miscellanou::find('all');
@@ -183,6 +185,73 @@ class Controller_Site extends Controller_Base
 		$this->template->title = 'Dashboard';
 		$this->template->content = View::forge('site/index_parent', $view);
 	}
+
+	/**
+	 * The upload image.
+	 *
+	 * @access  public
+	 * @return  void
+	 */
+
+	public function action_upload_image($id = null)
+	{
+		$val = Model_User::validate('edit');
+		$user = Model_User::find($id);
+		if (Input::method() == 'POST'){
+			// echo $_POST['username'];
+			// echo $_POST['password'];
+			// echo $_POST['mobile_number'];
+			// die;
+			 $config = array(
+		    'path' => 'assets/img/uploads',
+		    'randomize' => true,
+		    'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
+		    );
+
+		    Upload::process($config);
+		    if(Upload::is_valid()) {
+		    	
+		      Upload::save();
+
+		       $file = Upload::get_files(); 
+		       var_dump($file);
+		       $id = Auth::get('id');
+		    	 foreach ($file as $savefile) {
+		    	 	$data['users'] = Model_User::find('all', [
+						'where' => [
+							['id', 'like', "$id"]
+						]
+					]);
+		    	 	foreach ($data['users'] as $user) {
+		    	 		if ($savefile['saved_as'] == null){
+		    	 			$user->image = $user->image;
+		    	 		}
+		    	 		$user->image = $savefile['saved_as'];
+		    	 		$user->username = $_POST['username'];
+		    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
+		    	 		$user->mobile_number = $_POST['mobile_number'];
+		    	 		$user->save();
+		    	 	}
+		    	 }
+		    }
+		    $data = array();
+		    $data['errors'] = '';
+		    $ii = 0;
+		    foreach(Upload::get_errors() as $file) {
+		      $data['errors'][$ii] = $file['errors'];
+		      ++$ii;
+		    }
+		    if (Auth::get('role') == 9) {
+		    	Response::redirect('site/index_parent');
+		    }
+		    Response::redirect('site/index');
+		}
+		$this->template->set_global('user', $user, false);
+		$this->template->title = "Upload image";
+		$this->template->content = View::forge('site/upload_image');
+
+	}
+
 
 }
 

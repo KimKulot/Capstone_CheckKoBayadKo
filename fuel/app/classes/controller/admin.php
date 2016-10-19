@@ -97,6 +97,90 @@ class Controller_Admin extends Controller_Base
 		$this->template->content = View::forge('admin/dashboard');
 	}
 
+	public function action_upload_image($id = null)
+	{
+
+		$val = Model_User::validate('edit');
+		$user = Model_User::find($id);
+
+		if (Input::method() == 'POST'){
+
+			// echo $_POST['username'];
+			// echo $_POST['password'];
+			// echo $_POST['mobile_number'];
+			// die;
+			$file_img = null; 
+			 $config = array(
+		    'path' => 'assets/img/uploads',
+		    'randomize' => true,
+		    'ext_whitelist' => array('img', 'jpg', 'jpeg', 'gif', 'png'),
+		    );
+		    Upload::process($config);
+		    if(Upload::is_valid()) {
+		    	
+		      Upload::save();
+
+		       $file = Upload::get_files(); 
+		       // var_dump($file);
+		       $id = Auth::get('id');
+
+		    	foreach ($file as $savefile) {
+		    	 	
+				}
+				$file_img = $savefile['saved_as'];
+		    	 	
+		    }
+		    echo $file_img;
+		   
+		   
+		    $data = array();
+		    $data['errors'] = '';
+		    $ii = 0;
+		    foreach(Upload::get_errors() as $file) {
+		      $data['errors'][$ii] = $file['errors'];
+		      ++$ii;
+		    }
+		    // if (Auth::get('role') == 9) {
+		    // 	Response::redirect('site/index_parent');
+		    // }
+		    $id = Auth::get('id');
+		    $data['users'] = Model_User::find('all', [
+				'where' => [
+					['id', 'like', "$id"]
+				]
+			]);
+		    foreach ($data['users'] as $user) {
+		    	// if ($file_img == null) {
+		    	// 	echo "empty";
+		    	// }else{
+		    	// 	echo "hello";
+		    	// }
+		    	// die;
+		 		if ($file_img == null){
+		 			// echo 'hello';
+		 			$user->image = $user->image;
+	    	 		$user->username = $_POST['username'];
+	    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
+	    	 		$user->mobile_number = $_POST['mobile_number'];
+	    	 		$user->save();
+	    	 	
+		 		}else{
+	    	 		$user->image = $file_img;
+	    	 		$user->username = $_POST['username'];
+	    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
+	    	 		$user->mobile_number = $_POST['mobile_number'];
+	    	 		$user->save();
+	    	 	}
+	    	 	
+	    	}
+		    Response::redirect('admin');
+		}
+		$this->template->set_global('user', $user, false);
+		$this->template->title = "Upload image";
+		$this->template->content = View::forge('admin/upload_image');
+
+	}
+
 }
 
 /* End of file admin.php */

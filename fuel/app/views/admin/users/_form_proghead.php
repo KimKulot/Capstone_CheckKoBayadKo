@@ -81,7 +81,7 @@
 		<div class="form-group">
 			<?php echo Form::label('', 'role', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : '1'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Group', 'type'=>'hidden', 'required')); ?>
+				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : '2'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Group', 'type'=>'hidden', 'required')); ?>
 
 		</div>
 

@@ -95,7 +95,12 @@
                     <div id="userbox" class="userbox">
                         <a href="#" data-toggle="dropdown">
                             <figure class="profile-picture">
-                              <?php echo Asset::img('default_icon.png') ?>
+                            <?php if ($current_user->image == null){ ?>
+                                <?php echo Asset::img('default_icon.png') ?>
+                            <?php }else{ ?>
+                              
+                              <?php echo Asset::img('uploads/'. $current_user->image); 
+                              }?>
                                 <!-- <img src="assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg" /> -->
                             </figure>
                             <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
@@ -110,7 +115,8 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-user"></i> My Profile</a>
+                                    <!-- <a role="menuitem" tabindex="-1" href="#"><i class="fa fa-user"></i> My Profile</a> -->
+                                    <?php echo Html::anchor('site/upload_image/' . $current_user->id, '<i class="fa fa-user"></i> Update Profile') ?>
                                 </li>
                                 <li>
                                    <?php echo Html::anchor('admin/logout', '<i class="fa fa-fw fa-power-off text-danger"></i> Logout') ?>

@@ -98,10 +98,19 @@
             <ul class="header-nav header-nav-profile">
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
-                    	<?php echo Asset::img('default_icon.png') ?>
+                    <?php if ($current_user->image == null){ ?>
+                        <?php echo Asset::img('default_icon.png') ?>
+                    <?php }else{ ?>
+                      
+                      <?php echo Asset::img('uploads/'. $current_user->image); 
+                      }?>
+                    	
                      	<?php echo " " . $current_user->username?> 		
                     </a>
                     <ul class="dropdown-menu animation-dock">
+                    	 <li>
+                             <?php echo Html::anchor('admin/upload_image/' . $current_user->id, '<i class="fa fa-user"></i> Update Profile') ?>
+                          </li>
                         <li> <?php echo Html::anchor('admin/logout', '<i class="fa fa-fw fa-power-off text-danger"></i> Logout') ?></li>
                     </ul><!--end .dropdown-menu -->
                 </li><!--end .dropdown -->
@@ -190,9 +199,18 @@
 								if ($section_segment == "deans" ): 
 									$section_title = "Dean / Program head"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+										<ul>
+											<li><?php echo Html::anchor('admin/'.$section_segment, '<span class="title">' . 'Users List' . '</span>'); ?>
+											</li>
+											<li><?php echo Html::anchor('admin/deans/view', '<span class="title">' . 'Deans' . '</span>'); ?>
+											</li>
+											<li><?php echo Html::anchor('admin/deans/view_proghead', '<span class="title">' . 'Program Heads' . '</span>'); ?>
+											</li>
+										</ul>
 									</li>
+									
 								<?php endif ?>
 								<!-- END DEAN -->
 
@@ -241,11 +259,16 @@
 											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
 											</li>
 
-											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Dean / Program Head </span>'); ?>
+											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Add Dean</span>'); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/users/create_proghead', '<span class="title">Add Program Head </span> '); ?>
 											</li>
 
 											<li> <?php echo Html::anchor('admin/users/graveyard', '<span class="title">Deactivated Users</span> '); ?>
 											</li>
+
+											
 											
 										</ul><!--end /submenu -->
 									</li>
@@ -387,6 +410,15 @@
 											
 											<li> <?php echo Html::anchor('admin/cashiers/index_miscellanous', '<span class="title">Miscellaneous</span> '); ?>
 											</li>
+
+											<li> <?php echo Html::anchor('admin/cashiers/index_basic_miscellanous', '<span class="title">Basic Program Miscellaneous</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="title">New Miscellaneous (Program)</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/cashiers/add_basic_miscellanous', '<span class="title">New Miscellaneous (Basic Program)</span> '); ?>
+											</li>
 											
 										</ul>
 									</li>
@@ -396,17 +428,46 @@
 
 
 							<?php 
-							//START DEAN / PROGRAM -->
-							if($current_user->role == 1 || $current_user->role == 2):
+							//START DEAN -->
+							if($current_user->role == 1):
 								if ($section_segment == "deans" ): 
-									$section_title = "Dean / Program head"; 
+									$section_title = "Dean"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+									<li class=" gui-folder  <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+										<ul>
+											<li>
+												<?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Listing of Students</span> '); ?>
+											</li>
+											<!-- <li> <?php echo Html::anchor('admin/accountants/index_scholarship', '<span class="title">Scholarship</span> '); ?>
+											</li> -->
+										</ul>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
 							<!--END DEAN / PROGRAM -->
+
+							<?php 
+							//START DEAN / PROGRAM -->
+							if($current_user->role == 2):
+								if ($section_segment == "heads" ): 
+									$section_title = "Program Head"; 
+									?>
+									<li class=" gui-folder  <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+										<ul>
+											<li>
+												<?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Listing of Students</span> '); ?>
+											</li>
+											<!-- <li> <?php echo Html::anchor('admin/accountants/index_scholarship', '<span class="title">Scholarship</span> '); ?>
+											</li> -->
+										</ul>
+									</li>
+								<?php endif ?>
+							<?php endif ?>
+							<!--END DEAN / PROGRAM -->
+
+
 
 
 
@@ -455,7 +516,10 @@
 											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
 											</li>
 
-											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Dean / Program head</span>'); ?>
+											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Add Dean</span>'); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/users/create_proghead', '<span class="title">Add Program Head </span> '); ?>
 											</li>
 
 											<li> <?php echo Html::anchor('admin/users/graveyard', '<span class="title">Deactivated Users</span> '); ?>
