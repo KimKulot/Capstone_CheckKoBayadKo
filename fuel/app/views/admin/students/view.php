@@ -2,7 +2,28 @@
     <section>
         <div class="section-header">
             <ol class="breadcrumb"> 
-                <li class="active">Student View</li>
+                <li class="active">
+					<?php 
+						$mobile_number = ""; 
+						$course = ""; 
+						$email = ""; 
+						$image = ""; 
+					?>
+
+                	<?php foreach ($user as $users): ?>
+						<?php if($student->student_id == $users->id){ ?>
+							
+							<?php echo ucwords($users->firstname . " " . $users->middlename . ", " . $users->lastname); ?>
+								<!-- <?php var_dump($users->image); ?> -->
+							<?php $mobile_number = $users->mobile_number; ?>
+							<?php $course = $student->program; ?>
+							<?php $email = $users->email; ?>
+							<?php $image = $users->image; ?>
+						<?php } ?>
+
+					<?php endforeach ?>
+							
+				</li>
                 
             </ol>
         </div><!--end .section-header -->
@@ -17,20 +38,33 @@
 							</p>
 					</div>
 
-					<h2>Viewing #<?php echo $student->id; ?></h2>
-					 
+					<h2>
+
+						
+						<?php if ($image == null){ ?>
+						<div class="img-responsive" alt="image" style="width: auto; max-width: 100%; height: auto;">
+                        	<?php echo Asset::img('default_icon.png'); ?>
+                        </div>
+                   		<?php }else{ ?>
+                      		<?php echo Asset::img('uploads/'. $image); 
+                      	}?>
+					</h2>
+					
+
 					<p>
 						<strong>Course:</strong>
-						<?php echo $student->program; ?></p>
-					<p>
+						<?php echo $course; ?></p>
+					<!-- <p>
 						<strong>User Id:</strong>
-						<?php echo $student->student_id; ?></p>
+						<?php echo $student->student_id; ?></p> -->
 					<p>
-					<?php foreach ($user as $users): ?>
-						<?php if($student->student_id == $users->id){ ?>
-							<?php echo $users->username ?>
-						<?php } ?>
-					<?php endforeach ?>
+						<strong>Mobile Number:</strong>
+						<?= $mobile_number; ?>
+					</p>
+
+					<p>
+						<strong>Email:</strong>
+						<?= $email; ?>
 					</p>
 				</div>
 			</div>

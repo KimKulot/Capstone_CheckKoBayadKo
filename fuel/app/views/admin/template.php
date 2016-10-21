@@ -496,6 +496,22 @@
 										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-perm-contact-cal"></i></div> <span class="title">'.  $section_title). '</span>'?>
 									</li>
 									<?php
+									}elseif($section_segment == "deans" ){
+
+									$section_title = "Dean / Program head"; 
+									?>
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
+										<ul>
+											<li><?php echo Html::anchor('admin/'.$section_segment, '<span class="title">' . 'Users List' . '</span>'); ?>
+											</li>
+											<li><?php echo Html::anchor('admin/deans/view', '<span class="title">' . 'Deans' . '</span>'); ?>
+											</li>
+											<li><?php echo Html::anchor('admin/deans/view_proghead', '<span class="title">' . 'Program Heads' . '</span>'); ?>
+											</li>
+										</ul>
+									</li>
+									<?php
 									}elseif($section_segment == "users"){
 										$section_title = "Users";
 									?>
@@ -621,6 +637,21 @@
             </div>
         </div>
     </footer> -->
+<script>
+ var password = document.getElementById("password")
+  , confirm_password = document.getElementById("confirm_password");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Password Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
 
 <?php echo Asset::js(array(
 		'libs/jquery/jquery-1.11.2.min.js',

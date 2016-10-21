@@ -106,7 +106,7 @@
 																	<!-- <td><span>&#8369</span><?php echo " " . number_format($history->breakdown, 2); ?></td> -->
 
 																	<!-- <?php $history->breakdown = $history->breakdown + ($resultmisc / 4); ?>  -->
-																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc + $history->payment)) / 4; ?>
+																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc /*+ $history->payment*/)) / 4; ?>
 																	<!-- <?= $breakdown; ?> -->
 																	<!-- <?php echo $breakdown; ?> -->
 																	<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
@@ -146,6 +146,7 @@
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
 																				<td>
+
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
 
@@ -167,6 +168,7 @@
 																				<td>
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
+
 																				<td>
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
@@ -227,11 +229,11 @@
 																	
 																	<?php endif ?>
 
-																	<!-- <?php if($history->payment <= $breakdown): 
+																	<?php if($history->payment <= $breakdown): 
 
 																	?>
 																		<td>
-																			<span>&#8369</span><?php echo " " . number_format($breakdown,  2) ; ?>
+																			<span>&#8369</span><?php echo " " . number_format($breakdown - ($history->payment + $history->dis_misc + $history->dis_tuition),  2) ; ?>
 																		</td>
 																		<td>
 																			<span>&#8369</span><?php echo " " . number_format($breakdown,2) ; ?>
@@ -243,10 +245,10 @@
 																			<span>&#8369</span><?php echo " " . number_format($breakdown,2) ; ?>
 																		</td>
 
-																	<?php endif ?> -->
-																	<!-- END BREAKDOWN -->
 																<?php endif ?>
-																<!-- END DISPLAY -->
+																<!-- END BREAKDOWN -->
+															<?php endif ?>
+															<!-- END DISPLAY -->
 														 </tr>
 													<?php endforeach ?>	
 												<?php endforeach ?>

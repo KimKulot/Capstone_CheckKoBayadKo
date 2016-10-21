@@ -31,8 +31,11 @@ class Controller_Admin_Deans extends Controller_Admin
 // 		select distinct on field1 *
 // 		from table
 // DB::select('')->from('progdeans')->distinct(true)->as_object()->execute();
-		// DB::select('id','name')->from('users')->execute();
-		$data['progdeans'] = Model_Progdean::find('all');
+		// DB::select('id','name')->from 0 ('users')->execute();
+		$data['progdeans'] = Model_Progdean::find('all', [
+			'group_by' => ['user_id']
+		]);
+
 		// var_dump($data['progdeans']);die;
 		$data ['users'] = Model_User::find('all');
 		$data['programs'] = Model_Program::find('all');

@@ -1,5 +1,3 @@
-
-
 <div id="content">
 	<div class="card contain-sm style-transparent">
         <div class="row">

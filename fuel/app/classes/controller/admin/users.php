@@ -41,7 +41,7 @@ class Controller_Admin_Users extends Controller_Admin
 		}
 		// $data['users'] = DB::select('*')->from('users')->where('username', 'like', "%search%")->as_object()->execute();
 		$data['users'] = Model_User::find_deleted('all', [
-			'where' => [
+			'where' => [	
 				['username', 'like', "%$search%"]
 			]
 		]);
@@ -51,10 +51,36 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/graveyard', $data);
 	}
 
-	public function action_cron_message()
-	{ 	
-
+public function action_cron_message(){ 	
+	// DB::select('*')->from('basicprograms')->where('basic_program_description','=', $basic_program_description)->as_object()->execute();
+	// 	SELECT * FROM `basicaccountantcrons` WHERE `education_level` LIKE 'Gradeschool' order by `id` desc limit 1
+		$arrdate = array();
+		$arrlevel =array();
 		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+		// $data['basicaccountant'] = Model_Basicaccountantcron::find('all', [
+		// 	'group_by' => ['education_level']
+		// ]);
+		$data['programs'] = Model_Program::find('all');
+		$data['distinct_level'] = DB::select('education_level')->from('basicaccountantcrons')->distinct(true)->execute();
+		foreach ($data['distinct_level'] as $level) {
+
+			$education = $level['education_level'];
+			$data['basic_dates'] = DB::select('date_time')->from('basicaccountantcrons')->where('education_level', '=', $education)->order_by('id','desc')->limit(1)->as_object()->execute();
+
+			foreach ($data['basic_dates'] as $basic_date) {
+				 $basic_date->date_time;
+			}
+
+			array_push($arrdate, $basic_date->date_time);
+			array_push($arrlevel, $education);
+		}
+		// echo max($arrdate);die;
+		// echo $arrdate[1] . "<br>" . $arrlevel[1];
+
+		// var_dump($data['basic_dates']);
+
+		// die;
+
 		$data['studparents'] = Model_Studparent::find('all');
 		$data['users'] = Model_User::find('all', [
 			'where' => [
@@ -65,6 +91,13 @@ class Controller_Admin_Users extends Controller_Admin
 		/*where 
 		*/
 
+//-----------------------------------------------------------------------------
+/**
+* COLLEGE
+*START SENDING SMS NOTIFICATION FOR COLLEGE EDUCATION
+* @param $data['students'], $data['users'], $data['programs'];
+* @return success and failed to send users
+*/
 		// BEGIN DATE FORMULA
 		 date_default_timezone_set('Asia/Manila');
 			$date_Counter = 7; 
@@ -85,7 +118,12 @@ class Controller_Admin_Users extends Controller_Admin
 					 
 
 					  foreach ($data['students'] as $student){
+				  	    foreach ($data['programs'] as $program) {
+					  		if ($student->program == $program->program_description) {
+					  		// die;
+					  		// echo $student->program;die;
 						  foreach ($data['users'] as $user){ 
+
 						 	 if ($student->student_id == $user->id){ 
 								 foreach ($data['studparents'] as $studparent){ 
 									 if ($studparent->student_id == $student->id){ 
@@ -94,7 +132,11 @@ class Controller_Admin_Users extends Controller_Admin
 
 												  $total = $student->tuition_fee + $student->misc; 
 
-												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam will be on: " . $date->date_time;
+												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for college: " . $date->date_time;
+												  // for ($i=0; $i < count($arrlevel) ; $i++) { 
+												  // 	$messages .= $arrlevel[$i] . ": " . $arrdate[$i];
+												  // 	// echo $arrlevel[$i] . ": " . $arrdate[$i];
+												  // }
 
 												if($student->balance != 0){
 													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
@@ -111,31 +153,19 @@ class Controller_Admin_Users extends Controller_Admin
 									  $total = $student->total_assessment; 
 
 									
-									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam will be on: " . $date->date_time ;
+									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam will be on: " . $date->date_time;
+									   // for ($i=0; $i < count($arrlevel) ; $i++) { 
+										  // 	$message .= $arrlevel[$i] . ": " . $arrdate[$i];
+										  // 	// echo $arrlevel[$i] . ": " . $arrdate[$i];
+										  // }
 									if($student->balance != 0){
-										$message .= "Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
+										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
 
 									}
 									array_push($arruser_id, $user->id);
 									array_push($arrmessage, $message); 
 									array_push($useNumber, $user->mobile_number);
-								// START SEMAPHORE SEND SMS NOTIFICATION 
-							// $numberTmp = explode("/", str_replace(array("-","+"),"",str_replace(",","/",$_REQUEST['to'])));
-							// $resultArray = array();
-
 							
-							// foreach( $numberTmp as $tmp)
-							// {
-							// 	$tmp = trim($tmp);
-							// 	if(  strlen($tmp) == "12" && substr($tmp,0,2) == "63" )
-							// 	{
-							// 	 $useNumber[] = $tmp;
-							// 	}
-							// 	else if( strlen($tmp) == "11" && substr($tmp,0,2) == "09"  )
-							// 	{
-							// 	 $useNumber[] = "63" . substr($tmp,1,10);
-							// 	}
-							// }
 							
 
 								 }
@@ -146,8 +176,9 @@ class Controller_Admin_Users extends Controller_Admin
 				 
 					}
 				}
- 	
-			}
+ 			}
+		}
+	}
 $arrcheck_status = array();
 $arruser_id_success = array();
 $x=0;
@@ -236,28 +267,182 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 
 }
 
-
+/**
+* COLLEGE
+* END SENDING SMS NOTIFICATION FOR COLLEGE EDUCATION
+* @param $data['students'], $data['users'], $data['programs'];
+* @return success and failed to send users
+*/
 	
-	
+//---------------------------------------------------------------------------------------
 
 
-// foreach ($edit_data['users'] as $edit_user) {
-// 	// echo $edit_user->firstname;
-// 	var_dump($edit_user);
-// 	// $edit_user->send_at = 1;
-// 	// $edit_user->save();
+/**
+* BASIC EDUCATION
+*START SENDING SMS NOTIFICATION FOR COLLEGE EDUCATION
+* @param $data['students'], $data['users'], $data['programs'];
+* @return success and failed to send users
+*/
+	// array_push($arrdate, $basic_date->date_time);
+	// array_push($arrlevel, $education);
+		// BEGIN DATE FORMULA
 
-// }
+	$data['basic_programs'] = Model_Basicprogram::find('all');
+		 date_default_timezone_set('Asia/Manila');
+		 $date_Counter2 = 7; 
+		 $diff2 = 0;
+		 $useNumber2 = array();
+		 $arrmessage2 = array(); 
+		 $arruser_id2 = array();
+
+		 foreach ($data['dates'] as $date){
+			
+			$subdate2 = 0;
+			$currentDate2 = date('m/d/Y', strtotime("+". $date_Counter2. " days"));
+			// var_dump((trim(max($arrdate))));die;
+			$var_date2 = trim(min($arrdate));
+
+				if ($currentDate2 == $var_date2) {
+
+					  foreach ($data['students'] as $student){
+				  	    foreach ($data['basic_programs'] as $program) {
+					  		if ($student->program == $program->basic_program_description) {
+					  		// die;
+					  		// echo $student->program;die;
+						  foreach ($data['users'] as $user){ 
+
+						 	 if ($student->student_id == $user->id){ 
+								 foreach ($data['studparents'] as $studparent){ 
+									 if ($studparent->student_id == $student->id){ 
+										 foreach ($data['users'] as $use){ 
+											 if ($studparent->parent_id == $use->id){ 
+
+												  $total = $student->tuition_fee + $student->misc; 
+
+												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for: ";
+													  for ($i=0; $i < count($arrlevel) ; $i++) { 
+													  	$messages .= $arrlevel[$i] . ": " . $arrdate[$i];
+													  	echo $arrlevel[$i] . ": " . $arrdate[$i];
+													  }
+
+												if($student->balance != 0){
+													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
+												}
+												array_push($arrmessage2, $messages);
+												array_push($useNumber2, $use->mobile_number);
+												array_push($arruser_id2, $use->id);
+
+											 }
+										 } 
+									 }
+								 } 
+								
+									  $total = $student->total_assessment; 
+
+									
+									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam for: ";
+										  for ($i=0; $i < count($arrlevel) ; $i++) { 
+										  	$message .= $arrlevel[$i] . ": " . $arrdate[$i];
+										  	echo $arrlevel[$i] . ": " . $arrdate[$i];
+										  }
+									if($student->balance != 0){
+										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
+
+									}
+									array_push($arruser_id2, $user->id);
+									array_push($arrmessage2, $message); 
+									array_push($useNumber2, $user->mobile_number);
+							
+
+								 }
+							}
+					 	 
 
 
+				 
+					}
+				}
+ 			}
+		}
+	}
+$arrcheck_status2 = array();
+$arruser_id_success2 = array();
+$x=0;
+foreach($useNumber2 as $mynumber)
+{
 
+		$url = 'http://api.semaphore.co/api/sms';
+		 $fields = array(
+	        'api' => 'LVpxU61qZzU4pEW2czJc',
+	        'number' => $mynumber,
+	        'message' => $arrmessage2[$x],
+	        'user_id' => $arruser_id2[$x],
+	        'status' => ''
+	    );
+		
+		 
+		$fields_string = "";
+		foreach($fields as $key=>$value)
+	    {
+	        $fields_string .= $key.'='.$value.'&';
+	    }
 
-// die;
-
-// print_r($resultArray);
- // simple print output....
-
+	    rtrim($fields_string, '&');
+		$ch = curl_init();
+		// set url
+		curl_setopt($ch,CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_POST, count($fields));
+		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+		//return the transfer as a string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// $output contains the output  string
+		$output = curl_exec($ch);
+		// close curl resource to free up system resources
+		curl_close($ch);
+		$varjson = json_decode($output);
+		
+		$fields['status'] = $varjson->status;
+		$id = $fields['user_id'];
+		array_push($arruser_id_success2, $id);
+		array_push($arrcheck_status2, $fields['status']);
+		$resultArray[] = $fields;
+	$x++;
+}
 // END SEMAPHORE SEND SMS NOTIFICATION 
+
+$count_y2 = 0;
+$user_id_length2 = count($arruser_id_success2);
+$datauser['users'] = Model_User::find('all');
+for ($i=0; $i < count($arruser_id_success2); $i++) { 
+	// echo $arruser_id_success[$i];
+	$id2 =  $arruser_id_success2[$i];
+	$user_status2 = $arrcheck_status2[$i];
+
+	if($user_status2 == 'success'){
+		// $edit_data['users'] = Model_User::find('all', [
+		// 	'where' => [
+		// 		['id', 'like', "$id"]
+		// 	]
+		// ]);
+		foreach ($datauser['users'] as $user_in) {
+			if ($user_in->id == $id) {
+				// echo $user_in->firstname;
+				$user_in->send_at = 1;
+				$user_in->save();
+			}
+		}
+	}
+
+}
+
+/**
+* BASIC EDUCATION
+* END SENDING SMS NOTIFICATION FOR COLLEGE EDUCATION
+* @param $data['students'], $data['users'], $data['programs'];
+* @return success and failed to send users
+*/
+
+//-------------------------------------------------------------------------------------------
 
  echo header('Content-Type: application/json'); 
 
@@ -266,6 +451,8 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 
 		 $this->template= null;
 }
+
+//----------------------------------------------------------------------------------------
 
 
 
@@ -351,7 +538,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 				$newuser = Model_Accountantcron::forge(array(
 					'date_time'=> Input::post('date_time'),
 				));
-				
+
 				if($newuser->save()){
 					// START Default the send flag for users
 						foreach ($data['users'] as $user) {
@@ -393,10 +580,10 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 			{
 				$newuser = Model_Basicaccountantcron::forge(array(
 					'date_time'=> Input::post('date_time'),
-					'basic_program' => Input::post('basic_program'),
+					'education_level' => Input::post('education_level'),
 				));
 				if($newuser->save()){
-					Session::set_flash('success', e('Set exam schedule'));
+					Session::set_flash('success', e('Set basic education exam schedule'));
 				 	Response::redirect('admin/users');
 				}
 			}
@@ -408,7 +595,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 			
 		}
 		
-		$view->set_global('programs', Arr::assoc_to_keyval(Model_Basicprogram::find('all'), 'id', 'basic_program_description'));
+		// $view->set_global('programs', Arr::assoc_to_keyval(Model_Basicprogram::find('all'), 'id', 'basic_program_description'));
 		$this->template->title = "Setting up Cron Job";
 		$this->template->content = $view;
 	}
@@ -656,6 +843,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 					'password'=> Auth::instance()->hash_password(Input::post('password')),
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
+					'send_at' => Input::post('send_at'),
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
 				));
@@ -764,6 +952,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 					'password'=> Auth::instance()->hash_password(Input::post('password')),
 					'mobile_number'=> 63 . Input::post('mobile_number'),
 					'group'=> Input::post('group'),
+					'send_at' => Input::post('send_at'),
 					'email'=> Input::post('email'),
 					'role'=> Input::post('role'),
 				));

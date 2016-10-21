@@ -106,7 +106,7 @@
 																	<!-- <td><span>&#8369</span><?php echo " " . number_format($history->breakdown, 2); ?></td> -->
 
 																	<!-- <?php $history->breakdown = $history->breakdown + ($resultmisc / 4); ?>  -->
-																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc + $history->payment)) / 4; ?>
+																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc /* + $history->payment */)) / 4; ?>
 																	<!-- <?= $breakdown; ?> -->
 																	<!-- <?php echo $breakdown; ?> -->
 																	<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->

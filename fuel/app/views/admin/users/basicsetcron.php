@@ -22,12 +22,19 @@
 										<?php echo Form::input('date_time', Input::post('date_time', isset($accountantcron) ? $accountantcron->date_time : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Date', 'id' => 'datetimepicker', 'required')); ?>
 								</div>
 
-								<div class="form-group floating-label">
-								     <?php echo Form::label('Basic Program', 'basic_program', array('class'=>'control-label')); ?>
-								 
-								     <?php echo Form::select('basic_program', Input::post('basic_program', isset($student) ? $user->basic_program : ''),$programs, array('class' => 'span6')); ?>
-								 
-								</div>
+								
+									<div class="form-group floating-label">
+									    <?php echo Form::label('Education Level', 'education_level', array('class'=>'control-label')); ?>
+									 	<?php 
+										 	echo Form::select('education_level', Input::post('education_level', isset($student) ? $user->education_level : ''), array(
+											    'Education Level' => array( 
+											        'Highschool' => 'Highschool',
+											        'Gradeschool' => 'Gradeschool',
+											        'Preschool' => 'Preschool',
+											    ),
+											));
+										?>
+									</div>
 							
 								
 								<div class="form-group floating-label" style="margin-top:25px">

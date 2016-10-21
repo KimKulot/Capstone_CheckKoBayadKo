@@ -120,7 +120,11 @@ class Controller_Admin_Cashiers extends Controller_Admin
 							// echo $formula_dis_misc;
 							$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
 
-							$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+							if (($estudyantes->misc * ('0.'. $formula_dis_misc)) == 0) {
+								$estudyantes->dis_misc = 0;
+							}else{
+								$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+							}
 							// echo $estudyantes->dis_misc . "<br>";
 
 							// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
@@ -869,8 +873,6 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	}
 
 
-
-
 	public function action_add_miscellanous()
 	{
 		$view = View::forge('admin/cashiers/create_miscellanous');
@@ -901,18 +903,27 @@ class Controller_Admin_Cashiers extends Controller_Admin
 					foreach ($student['students'] as $stud) {
 						if($stud->program == $pro->program_description){
 							$formula_dis_misc = 0;
+							
 							$estudyantes = Model_Student::find($stud->id);
+							// var_dump($stud->id);
+							// var_dump($estudyantes->balance);
 							$temp_misc = $estudyantes->misc;
+
 							// echo $temp_misc; 
 							$estudyantes->misc = $estudyantes->misc + $miscellanou->amount;
 							 // echo $estudyantes->dis_misc . "<br>";
-
+							
 							$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
 
 							// echo $formula_dis_misc;
 							$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
-
-							$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+						
+							if (($estudyantes->misc * ('0.'. $formula_dis_misc)) == 0) {
+								$estudyantes->dis_misc = 0;
+							}else{
+								$estudyantes->dis_misc = $estudyantes->misc - ($estudyantes->misc * ('0.'. $formula_dis_misc));
+							}
+							// var_dump($estudyantes->dis_misc);
 							// echo $estudyantes->dis_misc . "<br>";
 
 							// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
@@ -924,7 +935,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 						}
 					}
 				}
-
+				// die;
 				if ($miscellanou->save())
 				{
 					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
