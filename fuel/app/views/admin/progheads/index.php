@@ -15,8 +15,7 @@
         <div class="section-body">
             <div class="card">
                 <div class="card-body">
-
-				 
+				<?php echo "Program(s) you handle: "; ?>
 				<?php if ($students): ?>
 				<table class="table table-striped">
 					<thead>
@@ -24,13 +23,13 @@
 							<th>Full Name</th>
 							<th>Program</th>
 							<th>Year Level</th>
-							<th>Total Assesment</th>
 							<th>Tuition Fee</th>
 							<th>Misc</th>
+							<th>Total Assesment</th>
 							<th>Total Payment</th>
-							<th>Amount per exam</th>
+							<!-- <th>Amount per exam</th>
 							<th>Tuition Discount</th>
-							<th>Miscellaneous Discount</th>
+							<th>Miscellaneous Discount</th> -->
 							<th>Balance</th>
 							<th></th>
 						</tr>
@@ -71,16 +70,17 @@
 												<?php endif ?>
 												<?php if ($boolchecker==false): ?>
 
-												<td><?php echo $item->program; ?></td>
-												<td><?php echo $item->year; ?></td>
-												<td><?php echo number_format(($item->tuition_fee + $item->misc)) ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
+												<td align="center"><?php echo $item->program; ?></td>
+												<td align="center"><?php echo $item->year; ?></td>
+												
+												<td align="center"><span>&#8369</span><?php echo " " . number_format($item->tuition_fee); ?></td>
+												<td align="center"><span>&#8369</span><?php echo " " . number_format($item->misc); ?></td>
+												<td align="center"><?php echo number_format(($item->tuition_fee + $item->misc)) ?></td>
+												<td align="center"><span>&#8369</span><?php echo " " . number_format($item->down_payment); ?></td>
+												<!-- <td><span>&#8369</span><?php echo " " . number_format($item->breakdown); ?></td>
 												<td><span>&#8369</span><?= " " . number_format(($item->tuition_fee / 100) * ($item->dis_tuition)); ?></td>
-												<td><span>&#8369</span><?= " " . number_format(($item->misc / 100) * ('0.' . $item->dis_misc)); ?></td>
-												<td><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
+												<td><span>&#8369</span><?= " " . number_format(($item->misc / 100) * ('0.' . $item->dis_misc)); ?></td> -->
+												<td align="center"><span>&#8369</span><?php echo " " . number_format($item->balance); ?></td>
 												<?php endif; ?>
 											</tr>
 										<?php endif ?>

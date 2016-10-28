@@ -42,7 +42,7 @@
 		
 							<fieldset>
 								
-								<div class="col-sm-9">
+							<!-- 	<div class="col-sm-9">
 								<br>
 									<div class="form-group ">
 											
@@ -51,7 +51,7 @@
 
 									</div>
 								</div>
-
+ -->
 								<div class="col-sm-9">
 								<br>
 									<div class="form-group ">

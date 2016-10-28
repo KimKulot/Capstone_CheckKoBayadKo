@@ -21,8 +21,7 @@
 					</thead>
 					<tbody>
 					
-						
-
+						<?php echo "Program(s) you handle: "; ?>
 						<?php foreach ($progdeans as $deans): ?>
 							<?php foreach ($users as $user): ?>
 								<?php if ($deans->user_id == $user->id): ?>

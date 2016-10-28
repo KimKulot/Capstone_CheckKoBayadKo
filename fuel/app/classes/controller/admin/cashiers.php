@@ -10,15 +10,16 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	// }
 	public function action_index()
 	{
-		//$view->users = Model_User::find('all');
+		//$view->users = Model_U ser::find('all');
 	
 
 	
 		$search = "";
 		if (Input::method() == 'POST')
 		{
-			
+				
 			$search = Input::post('search');
+
 		}
 
 		$view['users'] = Model_User::find('all', [
@@ -26,9 +27,18 @@ class Controller_Admin_Cashiers extends Controller_Admin
 				['firstname', 'like', "%$search%"]
 			]
 		]);
+
+		// $view['users'] = Model_User::find('all', [
+		// 	'where' => [
+		// 		['firstname', 'like', "%$search%"]
+		// 	]
+		// ]);
+
+		
+		
 	
 		
-		$view['users'] = Model_User::find('all');
+		// $view['users'] = Model_User::find('all');
 		$view['miscellaneous'] = Model_Miscellanou::find('all');
 		$view['basic_miscellaneous'] = Model_Basicmiscellanou::find('all');
 		$view['programs'] = Model_Program::find('all');
@@ -114,12 +124,22 @@ class Controller_Admin_Cashiers extends Controller_Admin
 							// echo $temp_misc; 
 							$estudyantes->misc = $estudyantes->misc + $miscellanou->amount;
 							 // echo $estudyantes->dis_misc . "<br>";
+							// var_dump($estudyantes->dis_misc);die;
 
-							$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+							if ($temp_misc == 0) {
+								$formula_dis_misc = 0;
+							}else{
+								$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+							}
+
+							// $formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+
+
+
 
 							// echo $formula_dis_misc;
 							$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
-
+							
 							if (($estudyantes->misc * ('0.'. $formula_dis_misc)) == 0) {
 								$estudyantes->dis_misc = 0;
 							}else{
@@ -129,14 +149,16 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 							// echo $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc) . "<br>";
 							$estudyantes->balance = $estudyantes->total_assessment - ($estudyantes->down_payment + $estudyantes->dis_misc);
-							$estudyantes->save();
+
+							// $estudyantes->save();
 						}
 					}
 				}
 
+				// die;
 				if ($miscellanou->save())
 				{
-					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
+					Session::set_flash('success', e('Added miscellaneous ' . $miscellanou->id.'.'));
 
 					Response::redirect('admin/cashiers');
 				}
@@ -340,7 +362,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 											  $message = "Good Day! " . $use->lastname. ", " . $use->firstname . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
 
 											if($student->balance != 0){
-												$message .= " Good day! Your overall payment is: Php " . $total . " Your downpayment: Php " . $student->down_payment . " Your Balance: Php " . $student->balance . " Thank you!"; 
+												$message .= " Your student " . $user->firstname . " total assessment is: Php " . $total . " Your downpayment: Php " . $student->down_payment . " Your Balance: Php " . $student->balance . " Thank you!"; 
 											}
 											
 												
@@ -419,11 +441,12 @@ class Controller_Admin_Cashiers extends Controller_Admin
 				// close curl resource to free up system resources
 				curl_close($ch);
 
-				$varjson = json_decode($output);
-				if ($varjson == null) {
-					Session::set_flash('failed', e('Please Check your Internet connection'));
-					
+				if (json_decode($output) == null) {
+					Session::set_flash('error', e('Message failed Please Check your Internet connection'));
+					Response::redirect('admin/cashiers');
 				}
+				$varjson = json_decode($output);
+				
 				$fields['status'] = $varjson->status;
 				array_push($arrstatus, $fields['status']);
 				// if status == sucses
@@ -456,25 +479,6 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		// $this->template= null;
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public function action_edit($id = null)
 	{
@@ -912,8 +916,12 @@ class Controller_Admin_Cashiers extends Controller_Admin
 							// echo $temp_misc; 
 							$estudyantes->misc = $estudyantes->misc + $miscellanou->amount;
 							 // echo $estudyantes->dis_misc . "<br>";
-							
-							$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+							// var_dump($temp_misc);die;
+							if ($temp_misc == 0) {
+								$formula_dis_misc = 0;
+							}else{
+								$formula_dis_misc = ($estudyantes->dis_misc / $temp_misc) * 100;
+							}
 
 							// echo $formula_dis_misc;
 							$estudyantes->total_assessment =  $estudyantes->tuition_fee + $estudyantes->misc;
@@ -938,7 +946,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 				// die;
 				if ($miscellanou->save())
 				{
-					Session::set_flash('success', e('Added miscellanou'.$miscellanou->id.'.'));
+					Session::set_flash('success', e('Added miscellaneous to course: ' . $pro->program_description . '.'));
 
 					Response::redirect('admin/cashiers');
 				}

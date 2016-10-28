@@ -24,7 +24,7 @@
 			<div class="form-group">
 				<?php echo Form::label('Middlename', 'middlename', array('class'=>'control-label')); ?>
 
-					<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
+					<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename')); ?>
 
 			</div>
 		</div>
@@ -69,9 +69,13 @@
 
 			<?php echo Form::label('Confirm Password', 'confirm_password', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('confirm_password', Input::post('confirm_password', isset($user) ? $user->confirm_password : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
+				<?php echo Form::input('confirm_password', '', array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
 		</div>
 
+
+		<?php
+			if(isset($user->program)){ 
+		?>
 		<div class="form-group">
 		    <div class="col-sm-4">
 				<div class="form-group floating-label">
@@ -82,6 +86,8 @@
 				</div>
 			</div>
 		</div>
+		<?php } ?>
+
 		<div class="form-group">
 			<?php echo Form::label('', 'group', array('class'=>'control-label')); ?>
 
@@ -97,7 +103,12 @@
 
 		</div>
 
-		
+		<div class="form-group floating-label">
+			<?php echo Form::label('', 'send_at', array('class'=>'control-label')); ?>
+
+				<?php echo Form::input('send_at', Input::post('send_at', isset($user) ? $user->send_at : '0'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Sent at' ,'readonly'=>'readonly', 'type'=>'hidden')); ?>
+
+		</div>
 		
 
 		<div class="form-group">

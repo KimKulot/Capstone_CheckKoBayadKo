@@ -105,7 +105,7 @@
                       <?php echo Asset::img('uploads/'. $current_user->image); 
                       }?>
                     	
-                     	<?php echo " " . $current_user->username?> 		
+                     	<?php echo " " . $current_user->firstname . " " . $current_user->lastname;?> 		
                     </a>
                     <ul class="dropdown-menu animation-dock">
                     	 <li>
@@ -253,7 +253,10 @@
 											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
 											</li>
 
-											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Basic Education Student</span>'); ?>
+											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Add Basic Education Student</span>'); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create', '<span class="title">Add Official User</span>'); ?>
 											</li>
 
 											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
@@ -503,8 +506,8 @@
 									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
 										<ul>
-											<li><?php echo Html::anchor('admin/'.$section_segment, '<span class="title">' . 'Users List' . '</span>'); ?>
-											</li>
+											<!-- <li><?php echo Html::anchor('admin/'.$section_segment, '<span class="title">' . 'Users List' . '</span>'); ?>
+											</li> -->
 											<li><?php echo Html::anchor('admin/deans/view', '<span class="title">' . 'Deans' . '</span>'); ?>
 											</li>
 											<li><?php echo Html::anchor('admin/deans/view_proghead', '<span class="title">' . 'Program Heads' . '</span>'); ?>
@@ -526,7 +529,10 @@
 											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
 											</li>
 
-											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Basic Education Student</span>'); ?>
+											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Add Basic Education Student</span>'); ?>
+											</li>
+
+											<li><?php echo Html::anchor('admin/users/create', '<span class="title">Add Official User</span>'); ?>
 											</li>
 
 											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
@@ -656,7 +662,7 @@ confirm_password.onkeyup = validatePassword;
 <?php echo Asset::js(array(
 		'libs/jquery/jquery-1.11.2.min.js',
 		'libs/jquery/jquery-migrate-1.2.1.min.js',
-		'libs/bootstrap/bootstrap.min.js',
+		// 'libs/bootstrap/bootstrap.min.js',
 		'libs/spin.js/spin.min.js',
 		'libs/autosize/jquery.autosize.min.js',
 		'libs/nanoscroller/jquery.nanoscroller.min.js',

@@ -110,6 +110,7 @@
 																	<!-- <?= $breakdown; ?> -->
 																	<!-- <?php echo $breakdown; ?> -->
 																	<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
+																	<!-- <?php echo $history->payment; ;?> -->
 																	<?php $result = ($history->payment + $history->dis_misc + $history->dis_tuition)/$breakdown; ?>
 																	<!-- <?= $result; ?> -->
 

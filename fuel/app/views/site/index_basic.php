@@ -48,7 +48,8 @@
 												<!-- //START STUDENT PROFILE -->
 												<?php 
 													$count = 0;
-													$student_course = "";	 
+													$student_course = "";
+													$tmp_scholarship = "";
 												?>
 
 												<?php foreach ($students as $student): ?>
@@ -60,13 +61,18 @@
 														  		<?php $count++; ?>
 														  			<?php
 														  			 $student_course = $student->program;
-														  			 echo "<h3>Course: " . $student->program. " " . $student->year .  "</h3>"; ?>
+														  			  ?>
 														  			 	<?php $resultmisc = 0; ?>
+														  			 <?php foreach ($scholarships as $scholarship): ?>
+															  			<?php if ($student->scholarship_id == $scholarship->id): ?>
+															  				<?php echo "<h3>Course: " . $student->program. " " . $student->year . " / " . $scholarship->scholarship_provider . "</h3>"; ?> 
+															  			<?php endif ?>
+														  			 <?php endforeach ?>
 																	<!-- get  -->
 																	<?php foreach ($misc as $mis): ?>
 																		<?php foreach ($programs as $program): ?>
 																			<?php if ($program->basic_program_description == $student_course): ?>
-																				<?php if($mis->program_id == $program->id): ?>
+																				<?php if($mis->basic_program_id == $program->id): ?>
 																				  		<!-- START DISPLAY -->
 
 																							<?php $resultmisc = $resultmisc + $mis->amount; ?> 
@@ -78,7 +84,7 @@
 																	<?php endforeach ?>
 
 																	<!-- Total Assessment -->
-														  			<td><span>&#8369</span><?php echo " " . number_format($history->total_assessment, 2) ?></td>
+														  			<td><span>&#8369</span><?php echo " " . number_format($student->total_assessment, 2) ?></td>
 														  			<!-- end Total Asessment -->
 																	
 																	<!-- Tuition fee  -->
@@ -106,12 +112,14 @@
 																	<!-- <td><span>&#8369</span><?php echo " " . number_format($history->breakdown, 2); ?></td> -->
 
 																	<!-- <?php $history->breakdown = $history->breakdown + ($resultmisc / 4); ?>  -->
-																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc /* + $history->payment */)) / 4; ?>
+																	<!-- <?php echo $history->dis_tuition; ?> -->
+																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc /*+ $history->payment*/)) / 4; ?>
 																	<!-- <?= $breakdown; ?> -->
 																	<!-- <?php echo $breakdown; ?> -->
 																	<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
-																	<?php $result = ($history->payment + $history->dis_misc + $history->dis_tuition)/$breakdown; ?>
-																	<!-- <?= $result; ?> -->
+																	
+																	<?php $result = ($history->payment)/$breakdown; ?>
+																	<!-- <?=  $result; ?> -->
 
 																	<?php $overall_payment = $history->payment + $history->dis_misc + $history->dis_tuition; ?>
 																	<!-- <?php 	echo $overall_payment; ?> -->
@@ -124,18 +132,22 @@
 																		echo $result2; 
 																	?> -->
 																	<?php $result2 = $history->total_assessment - ($history->payment + $history->dis_misc + $history->dis_tuition); ?>
-																	<?= $result2; ?>
-																	
-																	<?php echo $history->payment; ?>
+																	<!-- <?= $result2; ?> -->
+																	<!-- 
+																	<?php echo $history->payment; ?> -->
 
-
+																	<!-- <?php 
+																		echo "<br>" . $result . "<br>";
+																		echo $breakdown;
+																	 ?> -->
 																	<!-- BEGIN BREAKDOWN -->
 																	<?php if ($overall_payment >= $breakdown): ?>
 																			<!-- BEGIN PRELIM CHECK RESULT -->
 																			<?php if ($result < 1): ?>
 																				<?php $indicate_breakdown =  $overall_payment - (0 * $breakdown);  ?>
+																			<!-- 	// <?php var_dump($breakdown) ?> -->
 																				<td>
-																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $indicate_breakdown , 2)); ?>
+																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $history->payment , 2)); ?>
 																				</td>
 
  																				<td>
@@ -146,6 +158,7 @@
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
 																				<td>
+
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
 
@@ -167,6 +180,7 @@
 																				<td>
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
+
 																				<td>
 																					<span>&#8369</span><?php echo " " . number_format($breakdown, 2) ; ?>
 																				</td>
@@ -174,7 +188,7 @@
 																			<?php endif ?>
 																			<!-- END MIDTERM CHECK RESULT -->
 																			<?php if ($result >= 2 && $result < 3): ?>
-
+																				
 																				<td>
 																					Paid
 																				</td>
@@ -227,11 +241,11 @@
 																	
 																	<?php endif ?>
 
-																	<!-- <?php if($history->payment <= $breakdown): 
+																	<?php if($overall_payment <= $breakdown): 
 
 																	?>
 																		<td>
-																			<span>&#8369</span><?php echo " " . number_format($breakdown,  2) ; ?>
+																			<span>&#8369</span><?php echo " " . number_format($breakdown - ($history->payment + $history->dis_misc + $history->dis_tuition),  2) ; ?>
 																		</td>
 																		<td>
 																			<span>&#8369</span><?php echo " " . number_format($breakdown,2) ; ?>
@@ -243,10 +257,10 @@
 																			<span>&#8369</span><?php echo " " . number_format($breakdown,2) ; ?>
 																		</td>
 
-																	<?php endif ?> -->
-																	<!-- END BREAKDOWN -->
 																<?php endif ?>
-																<!-- END DISPLAY -->
+																<!-- END BREAKDOWN -->
+															<?php endif ?>
+															<!-- END DISPLAY -->
 														 </tr>
 													<?php endforeach ?>	
 												<?php endforeach ?>
@@ -274,7 +288,7 @@
 										</div>
 						
 										<h2 class="panel-title"> 
-											Miscellanous
+											Miscellaneous
 										</h2>
 									</header>
 									<div class="panel-body">
@@ -290,11 +304,9 @@
 											<!-- //START STUDENT PROFILE -->
 
 											<?php foreach ($misc as $mis): ?>
-												<!-- <?php var_dump($mis); ?> -->
 												<?php foreach ($programs as $program): ?>
-													<!-- <?php var_dump($student_course); ?> -->
 													<?php if ($program->basic_program_description == $student_course): ?>
-														<?php if($mis->program_id == $program->id): ?>
+														<?php if($mis->basic_program_id == $program->id): ?>
 														  <tr>
 														  		<!-- START DISPLAY -->
 																<td><?php echo $mis->type; ?></td> 

@@ -156,17 +156,18 @@ class Controller_Admin extends Controller_Base
 		    	// 	echo "hello";
 		    	// }
 		    	// die;
+
 		 		if ($file_img == null){
 		 			// echo 'hello';
 		 			$user->image = $user->image;
-	    	 		$user->username = $_POST['username'];
+	    	 		// $user->username = $_POST['username'];
 	    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
 	    	 		$user->mobile_number = $_POST['mobile_number'];
 	    	 		$user->save();
 	    	 	
 		 		}else{
 	    	 		$user->image = $file_img;
-	    	 		$user->username = $_POST['username'];
+	    	 		$user->usedrname = $_POST['username'];
 	    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
 	    	 		$user->mobile_number = $_POST['mobile_number'];
 	    	 		$user->save();

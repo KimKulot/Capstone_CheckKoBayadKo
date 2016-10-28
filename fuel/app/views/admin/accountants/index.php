@@ -51,9 +51,10 @@
 							<?php endforeach ?>
 							<?php $total = $paid + $unpaid + $partial; ?>
 								<?php if($total != 0){ ?>
-									<td><?php echo 100 * $paid / $total . "%"; ?></td>
-									<td><?php echo 100 * $unpaid / $total . "%" ?></td>
-									<td><?php echo 100 * $partial / $total . "%"; ?></td>
+
+									<td><?php echo number_format(100 * $paid / $total, 2) . "%"; ?></td>
+									<td><?php echo number_format(100 * $unpaid / $total, 2) . "%" ?></td>
+									<td><?php echo number_format(100 * $partial / $total, 2) . "%"; ?></td>
 									<td> <?php echo Html::anchor('admin/accountants/view_basic/'.$program->basic_program_description, 'Students Financial Assessment', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> </td>
 									
 									

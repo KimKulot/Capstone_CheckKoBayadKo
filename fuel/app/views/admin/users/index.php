@@ -32,6 +32,7 @@
             <div class="card">
                 <div class="card-body">
 				<?php if ($users): ?>
+					
 				<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/users')); ?>
 						<fieldset>
 							<div class="form-group ">
@@ -106,13 +107,45 @@
 										<?php if ($item->role == 1): ?>
 											<?php echo Html::anchor('admin/users/edit_dean/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
 										<?php endif ?>
-										<?php if ($item->role == 8): ?>
-											<?php echo Html::anchor('admin/users/edit_student/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
+
+										<?php if ($item->role == 2): ?>
+											<?php echo Html::anchor('admin/users/edit_proghead/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
 										<?php endif ?>
+
+										<?php if ($item->role == 8): ?>
+											
+											<?php $count =0; ?>
+											<?php foreach ($students as $student): ?>
+												<?php if ($student->student_id == $item->id): ?>
+													<?php foreach ($programs as $program): ?>
+														<?php if ($count == 0): ?>
+
+															<?php if ($program->basic_program_description == $student->year ){ ?>
+															<?php $count++; ?>
+																<!-- <?php echo $student->program; ?> -->
+																<?php echo Html::anchor('admin/users/edit_basic_student/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
+															<?php } ?>
+															<?php foreach ($college_programs as $college_program): ?>
+																<?php if($college_program->program_description == $student->program){ ?>
+																	<?php $count++; ?>
+																	<!-- <?php echo $program->basic_program_description . " = " . $student->year; ?> -->
+																	<?php echo Html::anchor('admin/users/edit_student/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
+																<?php } ?>
+															<?php endforeach ?>
+															
+															
+														<?php endif ?>
+													<?php endforeach ?>
+												<?php endif ?>
+											<?php endforeach ?>
+											
+
+										<?php endif ?>
+
 										<?php if ($item->role == 9): ?>
 											<?php echo Html::anchor('admin/users/edit_parent/'.$item->id, 'Edit', array('class' => 'btn btn-primary btn-sm')); ?>
 										<?php endif ?>	
-
+						
 
 									<?php echo Html::anchor('admin/users/delete/'.$item->id, 'Deactivate', array('onclick' => "return confirm('Are you sure?')",'class' => 'btn btn-danger btn-sm' )); ?>
 

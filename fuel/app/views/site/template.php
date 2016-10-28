@@ -62,14 +62,12 @@
 
 	<?php if ($current_user): ?>
 <!-- trydaw -->
-
-<section class="body">
-
             <!-- start: header -->
             <header class="header">
                 <div class="logo-container">
                     <a href="#" class="logo">
-                        <!-- <?php //echo Asset::img('default_icon.png', 55, 20) ?> -->
+                     <figure class="profile-picture">
+                       <!-- <?php echo Asset::img('logs.jpg') ?>  -->
                     </a>
                     <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
                         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
@@ -79,14 +77,14 @@
                 <!-- start: search & user box -->
                 <div class="header-right">
             
-                    <form action="#" class="search nav-form">
+                    <!-- <form action="#" class="search nav-form">
                         <div class="input-group input-search">
                             <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
-                    </form>
+                    </form> -->
             
                     <span class="separator"></span>
             
@@ -151,19 +149,68 @@
                                         <?php echo Html::anchor('admin/', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">Home</span>') ?> 
                                     </li>  -->
                                     <?php
-                                        $files = new GlobIterator(APPPATH.'classes/controller/site/*.php');
+                                        $files = new GlobIterator(APPPATH.'classes/controller/*.php');
 
                                         foreach($files as $file)
                                         {
                                             $section_segment = $file->getBasename('.php');
                                             $section_title = Inflector::humanize($section_segment);
                                             ?>
-                                            );die; ?>
-                                            <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                            <!-- );die; ?> -->
+                                            <!-- <?php var_dump($section_segment) ?> -->
+                                            <!-- ======================================================================== -->
+                                           <!--  //START SUPER ADMIN -->
+
+                                           <?php 
+                                            if($current_user->role == 8):
+
+                                                // BEGIN DEAN
+                                                if ($section_segment == "site" ): 
+                                                    $section_title = "Assessment"; 
+                                                    ?>
+                                                    <li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                                        <?php echo Html::anchor('site/home','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                                    </li>
+
+                                                    <li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                                        <?php echo Html::anchor('site','<span class="gui-icon"><i class="fa fa-dedent (alias)"></i></span> <span class="title">'.   $section_title). '</span>'?>
+                                                    </li>
+                                                    
+                                                <?php endif ?>
+                                                <!-- END DEAN -->
+                                            <?php endif ?>
+                                            <!--  //END SUPER ADMIN -->
+                                            <!-- ==========================================================================-->
+
+                                            <?php 
+                                            if($current_user->role == 9):
+
+                                                // BEGIN DEAN
+                                                if ($section_segment == "site" ): 
+                                                    $section_title = "Assessment"; 
+                                                    ?>
+                                                    <li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                                        <?php echo Html::anchor('site/home','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                                    </li>
+
+                                                    <li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                                        <?php echo Html::anchor('site/index_parent','<span class="gui-icon"><i class="fa fa-dedent (alias)"></i></span> <span class="title">'.   $section_title). '</span>'?>
+                                                    </li>
+                                                    
+                                                <?php endif ?>
+                                                <!-- END DEAN -->
+                                            <?php endif ?>
+                                            <!--  //END SUPER ADMIN -->
+
+
+
+                                            <!-- ======================================================================== -->
+
+                                            <!-- <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
                                                 <?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title) . '</span>' ?>
                                             </li>
-
-
+                                                    -->     
+                                            <!-- ==========================================================================-->
 
                                             <?php
                                         }

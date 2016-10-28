@@ -66,7 +66,7 @@
 																	<?php foreach ($misc as $mis): ?>
 																		<?php foreach ($programs as $program): ?>
 																			<?php if ($program->basic_program_description == $student_course): ?>
-																				<?php if($mis->program_id == $program->id): ?>
+																				<?php if($mis->basic_program_id == $program->id): ?>
 																				  		<!-- START DISPLAY -->
 
 																							<?php $resultmisc = $resultmisc + $mis->amount; ?> 
@@ -294,7 +294,7 @@
 												<?php foreach ($programs as $program): ?>
 													<!-- <?php var_dump($student_course); ?> -->
 													<?php if ($program->basic_program_description == $student_course): ?>
-														<?php if($mis->program_id == $program->id): ?>
+														<?php if($mis->basic_program_id == $program->id): ?>
 														  <tr>
 														  		<!-- START DISPLAY -->
 																<td><?php echo $mis->type; ?></td> 

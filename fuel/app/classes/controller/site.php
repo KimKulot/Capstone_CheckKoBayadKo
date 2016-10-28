@@ -52,13 +52,14 @@ class Controller_Site extends Controller_Base
 							{
 								// credentials ok, go right in
 								$current_user = Model\Auth_User::find($id[1]);
-								Session::set_flash('success', e('Welcome, '.$current_user->username));
+								Session::set_flash('success', e('Welcome, '.$current_user->firstname . " " . $current_user->lastname));
 								if($current_user->role == 8)
 								{
-									Response::redirect('site');
+									Response::redirect('site/home');
+									
 								}elseif($current_user->role == 9)
 								{
-									Response::redirect('site/index_parent');
+									Response::redirect('site/home');
 								} else {
 									Response::redirect('admin');
 								}
@@ -94,6 +95,20 @@ class Controller_Site extends Controller_Base
 		Auth::logout();
 		Response::redirect('site');
 	}
+
+	/**
+	 * The landing page action.
+	 *
+	 * @access  public
+	 * @return  void
+	 */
+
+	public function action_home()
+	{
+		$this->template->title = 'Home';
+		$this->template->content = View::forge('site/home');
+	}
+
 
 	/**
 	 * The index action.
@@ -136,7 +151,8 @@ class Controller_Site extends Controller_Base
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Miscellanou::find('all');
 		$view['programs'] = Model_Program::find('all');
-		$view['students'] = Model_Student::find('all', [
+		$view['scholarships'] = Model_Scholarship::find('all');
+ 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
 			'user', 'history' => array(
 				'order_by' => [
@@ -160,6 +176,7 @@ class Controller_Site extends Controller_Base
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Basicmiscellanou::find('all');
 		$view['programs'] = Model_Basicprogram::find('all');
+		$view['scholarships'] = Model_Scholarship::find('all');
 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
 			'user', 'history' => array(
@@ -227,9 +244,20 @@ class Controller_Site extends Controller_Base
 		    	 			$user->image = $user->image;
 		    	 		}
 		    	 		$user->image = $savefile['saved_as'];
-		    	 		$user->username = $_POST['username'];
+
+		    	 		// if ($_POST['username'] == "") {
+		    	 		// 	$user->username = $user->username;
+		    	 		// }else{
+		    	 		// 	$user->username = $_POST['username'];
+		    	 		// }
+
 		    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
-		    	 		$user->mobile_number = $_POST['mobile_number'];
+		    	 		if ($_POST['mobile_number'] == "") {
+		    	 			$user->mobile_number = $user->mobile_number;
+		    	 		}else{
+		    	 			$user->mobile_number = 63 . $_POST['mobile_number'];
+		    	 		}
+		    	 		
 		    	 		$user->save();
 		    	 	}
 		    	 }
@@ -250,6 +278,83 @@ class Controller_Site extends Controller_Base
 		$this->template->title = "Upload image";
 		$this->template->content = View::forge('site/upload_image');
 
+	}
+
+
+	public function action_view($id = null)
+	{
+
+		//START CHECK IF BASIC EDUCATION STUDENT 
+		$user_id = $id;		$basic['basicstudents'] = Model_Student::find('all', [
+			'where' => [
+				['student_id', 'like', "$user_id"]
+			]
+		]);
+
+		// if(count($basic['basicstudents']))
+		foreach ($basic['basicstudents'] as $basicstud) {
+
+			$basic['basicprograms'] = Model_Basicprogram::find('all', [
+				'where' => [	
+					['basic_program_description', 'like', "$basicstud->program"]
+				]
+			]);
+			
+		}
+	
+		
+		// $count_exist_basicprogram = count($basic['basicprograms']);
+		if(count($basic['basicstudents']) > 0){
+			Response::redirect('site/view_basic/'. $id);
+		}
+		//END CHECK IF BASIC EDUCATION STUDENT 
+		// die;
+		
+		$basic['basicprograms'] = Model_Program::find('all');
+		// var_dump($id);die;
+		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+		$view['misc'] = Model_Miscellanou::find('all');
+		$view['programs'] = Model_Program::find('all');
+		$view['students'] = Model_Student::find('all', [
+		'related' => array(
+			'user', 'history' => array(
+				'order_by' => [
+					'id' => 'desc'
+					]
+				)
+			),
+		'where' => array(
+			'student_id' => $id
+			)
+		]);
+		// var_dump($view['students']);die;
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('site/view', $view);
+
+	}
+
+	public function action_view_basic($id = null)
+	{
+		// $view['histories'] = Model_Studhistorie::find('all');
+		// $view ['histories'] = DB::select('*')->from('studhistories')->order_by('id','desc')->as_object()->execute();
+		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
+		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+		$view['misc'] = Model_Basicmiscellanou::find('all');
+		$view['programs'] = Model_Basicprogram::find('all');
+		$view['students'] = Model_Student::find('all', [
+		'related' => array(
+			'user', 'history' => array(
+				'order_by' => [
+					'id' => 'desc'
+					]
+				)
+			),
+		'where' => array(
+			'student_id' => $id
+			)
+		]);
+		$this->template->title = 'Dashboard';
+		$this->template->content = View::forge('admin/cashiers/view_basic', $view);
 	}
 
 

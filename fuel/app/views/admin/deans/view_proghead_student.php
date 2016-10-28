@@ -18,12 +18,13 @@
 						</tr>
 					</thead>
 					<tbody>
+					<?php echo  "The programs you've handled: " ?>
 					<?php $course = null; ?>
 						<?php foreach ($progheads as $progdean): ?>
 							<?php foreach ($programs as $program): ?>
 								<?php $course = $program->program_description; ?>
 								<?php if ($progdean->program_id == $program->id): ?>
-									<?php echo "<h1>" . $program->program_description . "</h1>"; ?>
+									<?php echo "" . $program->program_description . " / "; ?>
 								  <?php foreach ($students as $student): ?>
 								  	<?php foreach ($users as $user): ?>
 								  	<?php if ($user->id == $student->student_id): ?>

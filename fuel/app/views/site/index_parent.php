@@ -37,7 +37,7 @@
 						<!-- //START STUDENT PROFILE -->
 
 						<?php foreach ($studparents as $studparent): ?>
-
+		
 							<?php if ($current_user->id == $studparent->parent_id): ?>
 								<?php foreach ($students as $student): ?>
 									<?php foreach ($users as $user): ?>
@@ -51,6 +51,8 @@
 												<td><?php echo $student->down_payment; ?></td>
 												<td><?php echo $student->dis_misc + $student->dis_tuition; ?></td>
 												<td><?php echo $student->balance; ?></td>
+												<!-- <?php var_dump($user->id); ?> -->
+												<td><?php echo Html::anchor('site/view/'.$user->id, 'View', array('class' => 'btn btn-primary btn-sm ink-reaction ')); ?> </td>
 											 </tr>
 											<?php endif ?>
 										<?php endif ?>

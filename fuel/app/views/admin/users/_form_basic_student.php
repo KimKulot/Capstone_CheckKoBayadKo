@@ -25,7 +25,7 @@
 				<div class="form-group floating-label">
 					<?php echo Form::label('Middlename / Middle Initial', 'middlename', array('class'=>'control-label')); ?>
 
-						<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
+						<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename' )); ?>
 
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 
 			<?php echo Form::label('Confirm Password', 'confirm_password', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('confirm_password', Input::post('confirm_password', isset($user) ? $user->confirm_password : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
+				<?php echo Form::input('confirm_password', '', array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
 		</div>
 
 		<div class="form-group floating-label">
@@ -87,13 +87,22 @@
 				<?php echo Form::input('user_id', Input::post('user_id', isset($student) ? $user->user_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'user ID')); ?>
 		</div> -->
 
-
+		<?php 
+			$temp_scholar = ''; 
+			$temp_year = '';
+		?>
+		<?php if (isset($scholarship)): ?>
+			<?php foreach ($scholarship as $scholar) {
+				$temp_scholar = $scholar->scholarship_id;
+				$temp_year = $scholar->year;
+			} ?>
+		<?php endif ?>
 		
 
 		<div class="form-group floating-label">
 		     <?php echo Form::label('Basic Program', 'year', array('class'=>'control-label')); ?>
 		 
-		     <?php echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''),$basicprograms, array('class' => 'span6')); ?>
+		     <?php echo Form::select('year', Input::post('year', isset($student) ? $user->year : $temp_year),$basicprograms, array('class' => 'span6')); ?>
 		 
 		</div>
 		<?php $scholarshipss = Model_Scholarship::find('all'); ?>
@@ -112,10 +121,12 @@
 				    <?php echo Form::label('Scholarship Provider', 'scholarships', array('class'=>'control-label')); ?>
 				   
 
-					<?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $user->scholarships : ''),$arrscholarship, array('class' => 'span6')); ?>
+					<?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $user->scholarships : $temp_scholar),$arrscholarship, array('class' => 'span6')); ?>
 				</div>
 			</div>
 		</div>
+
+
 
 
 		<!-- <div class="form-group floating-label">

@@ -17,6 +17,7 @@
 
 						<?php echo Form::input('firstname', Input::post('firstname', isset($user) ? $user->firstname : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Firstname', 'required' )); ?>
 
+						
 				</div>
 			</div>
 		</div>
@@ -25,7 +26,7 @@
 				<div class="form-group floating-label">
 					<?php echo Form::label('Middlename / Middle Initial', 'middlename', array('class'=>'control-label')); ?>
 
-						<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename', 'required')); ?>
+						<?php echo Form::input('middlename', Input::post('middlename', isset($user) ? $user->middlename : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Middlename')); ?>
 
 				</div>
 			</div>
@@ -54,10 +55,10 @@
 
 
 		<div class="form-group floating-label">
-
+	
 			<?php echo Form::label('Confirm Password', 'confirm_password', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('confirm_password', Input::post('confirm_password', isset($user) ? $user->confirm_password : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
+			 <!-- Form::input('name', 'value', array('style' => 'border: 2px;')); -->
+				<?php echo Form::input('confirm_password', '', array('class' => 'col-md-4 form-control', 'placeholder'=>'Confirm Password', 'type' => 'password', 'id'=>'confirm_password', 'required')); ?>
 		</div>
 
 
@@ -72,17 +73,30 @@
 		<div class="form-group floating-label">
 			<?php echo Form::label('Email', 'email', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email', 'required')); ?>
+				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email', 'required', 'type'=>'email')); ?>
 		</div>
+
+		<?php 
+			$temp_scholar = ''; 
+			$temp_program = '';
+			$temp_year = '';
+		?>
+		<?php if (isset($scholarship)): ?>
+			<?php foreach ($scholarship as $scholar) {
+				$temp_scholar = $scholar->scholarship_id;
+				$temp_program = $scholar->program;
+				$temp_year = $scholar->year;
+			} ?>
+		<?php endif ?>
 
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group floating-label">
 				     <?php echo Form::label('Program', 'program', array('class'=>'control-label')); ?>
 				 
-				     <?php echo Form::select('program', Input::post('program', isset($student) ? $user->program : ''),$programs, array('class' => 'span6')); ?>
-				 
+				     <?php echo Form::select('program', Input::post('program', isset($student) ? $user->program : $temp_program),$programs, array('class' => 'span6')); ?>
 				</div>
+				
 			</div>
 
 			
@@ -90,7 +104,7 @@
 				<div class="form-group floating-label">
 				    <?php echo Form::label('Year', 'year', array('class'=>'control-label')); ?>
 				 	<?php 
-					 	echo Form::select('year', Input::post('year', isset($student) ? $user->year : ''), array(
+					 	echo Form::select('year', Input::post('year', isset($student) ? $user->year : $temp_year), array(
 						    'Year' => array( 
 						        'I Year' => 'First',
 						        'II Year' => 'Second',
@@ -110,9 +124,11 @@
 			$temparray = array($schol => $value->scholarship);
 			array_push($arrscholarship, $temparray);
 		} 
-		
+		// var_dump($arrscholarship);
 			//print_r($arrscholarship);
-		?>  
+		?> 
+
+
 		
 		<div class="row">
 			<div class="col-sm-4">
@@ -120,7 +136,7 @@
 				    <?php echo Form::label('Scholarship Provider', 'scholarships', array('class'=>'control-label')); ?>
 				   
 
-					<?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $user->scholarships : ''),$arrscholarship, array('class' => 'span6')); ?>
+					<?php echo Form::select('scholarships', Input::post('scholarships', isset($student) ? $scholar->scholarship_id : $temp_scholar ),$arrscholarship, array('class' => 'span6')); ?>
 				</div>
 			</div>
 		</div>
@@ -131,6 +147,7 @@
 
 				<?php echo Form::input('role', Input::post('role', isset($user) ? $user->role : '8'), array('class' => 'col-md-4 form-control', 'placeholder'=>'Role', 'type'=>'hidden')); ?>
 
+				
 		</div>
 		
 		<!-- <div class="form-group floating-label">

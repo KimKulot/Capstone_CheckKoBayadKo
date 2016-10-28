@@ -47,10 +47,6 @@ class Model_User extends \Orm\Model_Soft
 			'cascade_delete' => false,
 			'cascade_save' => true,
 		),
-
-	);
-	protected static $_has_many = array(
-		
 		'dean_program' => array(
 			'model_to' => 'Model_Progdean',
 			'key_from' => 'id',
@@ -60,6 +56,11 @@ class Model_User extends \Orm\Model_Soft
 		),
 
 	);
+		// protected static $_has_one = array(
+			
+			
+
+		// );
 	// public function get_full_name () {
 	// 	return $this->'firstname' . ' ' . $this->'lastname';
 	// 	static::method_exists(object, method_name());

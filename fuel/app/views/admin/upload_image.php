@@ -21,16 +21,7 @@
 		
 							<fieldset>
 								
-								<div class="col-sm-9">
-								<br>
-									<div class="form-group ">
-											
-											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'text', 'placeholder'=>'Username', 'name' => 'username', 'value' =>  $user["username"], 'required' ));  
-											?>
-
-									</div>
-								</div>
-
+								
 								<div class="col-sm-9">
 								<br>
 									<div class="form-group ">

@@ -12,11 +12,14 @@ class Controller_Admin_Users extends Controller_Admin
 
 		$data['users'] = Model_User::find('all', [
 			'where' => [
+				['firstname', 'like', "%$search%"],
 				['username', 'like', "%$search%"]
 			]
 		]);
-
-		$data['roles'] = Model_Role::find('all');
+		$data['students'] = Model_Student::find('all');
+		$data['programs'] = Model_Basicprogram::find('all');
+		$data['college_programs'] = Model_Program::find('all');
+ 		$data['roles'] = Model_Role::find('all');
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
@@ -51,7 +54,9 @@ class Controller_Admin_Users extends Controller_Admin
 		$this->template->content = View::forge('admin/users/graveyard', $data);
 	}
 
+
 public function action_cron_message(){ 	
+	set_time_limit(0);
 	// DB::select('*')->from('basicprograms')->where('basic_program_description','=', $basic_program_description)->as_object()->execute();
 	// 	SELECT * FROM `basicaccountantcrons` WHERE `education_level` LIKE 'Gradeschool' order by `id` desc limit 1
 		$arrdate = array();
@@ -74,12 +79,12 @@ public function action_cron_message(){
 			array_push($arrdate, $basic_date->date_time);
 			array_push($arrlevel, $education);
 		}
-		// echo max($arrdate);die;
+		// echo max($arrdate);
 		// echo $arrdate[1] . "<br>" . $arrlevel[1];
 
 		// var_dump($data['basic_dates']);
 
-		// die;
+		// 
 
 		$data['studparents'] = Model_Studparent::find('all');
 		$data['users'] = Model_User::find('all', [
@@ -120,7 +125,7 @@ public function action_cron_message(){
 					  foreach ($data['students'] as $student){
 				  	    foreach ($data['programs'] as $program) {
 					  		if ($student->program == $program->program_description) {
-					  		// die;
+					  		// 
 					  		// echo $student->program;die;
 						  foreach ($data['users'] as $user){ 
 
@@ -170,10 +175,6 @@ public function action_cron_message(){
 
 								 }
 							}
-					 	 
-
-
-				 
 					}
 				}
  			}
@@ -182,8 +183,10 @@ public function action_cron_message(){
 $arrcheck_status = array();
 $arruser_id_success = array();
 $x=0;
+
 foreach($useNumber as $mynumber)
 {
+
 
 	/*foreach ($arrmessage as $messages) 
 	{*/
@@ -219,21 +222,10 @@ foreach($useNumber as $mynumber)
 		
 		$fields['status'] = $varjson->status;
 
-		// if status == sucses
-			// save
-		
-		// if($fields['status'] == 'success');
-		// {	
-			// echo $fields['message'] . "" . $fields['user_id'];
 			$id = $fields['user_id'];
 			
 			array_push($arruser_id_success, $id);
 			array_push($arrcheck_status, $fields['status']);
-			
-			
-		// } 
-		
-
 		$resultArray[] = $fields;
 		
 	/*}*/
@@ -301,6 +293,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 			$currentDate2 = date('m/d/Y', strtotime("+". $date_Counter2. " days"));
 			// var_dump((trim(max($arrdate))));die;
 			$var_date2 = trim(min($arrdate));
+			// var_dump($var_date2);die;
 
 				if ($currentDate2 == $var_date2) {
 
@@ -310,6 +303,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 					  		// die;
 					  		// echo $student->program;die;
 						  foreach ($data['users'] as $user){ 
+
 
 						 	 if ($student->student_id == $user->id){ 
 								 foreach ($data['studparents'] as $studparent){ 
@@ -322,7 +316,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for: ";
 													  for ($i=0; $i < count($arrlevel) ; $i++) { 
 													  	$messages .= $arrlevel[$i] . ": " . $arrdate[$i];
-													  	echo $arrlevel[$i] . ": " . $arrdate[$i];
+													  	// echo $arrlevel[$i] . ": " . $arrdate[$i];
 													  }
 
 												if($student->balance != 0){
@@ -343,7 +337,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam for: ";
 										  for ($i=0; $i < count($arrlevel) ; $i++) { 
 										  	$message .= $arrlevel[$i] . ": " . $arrdate[$i];
-										  	echo $arrlevel[$i] . ": " . $arrdate[$i];
+										  	// echo $arrlevel[$i] . ": " . $arrdate[$i];
 										  }
 									if($student->balance != 0){
 										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
@@ -367,7 +361,7 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 	}
 $arrcheck_status2 = array();
 $arruser_id_success2 = array();
-$x=0;
+$x2=0;
 foreach($useNumber2 as $mynumber)
 {
 
@@ -375,8 +369,8 @@ foreach($useNumber2 as $mynumber)
 		 $fields = array(
 	        'api' => 'LVpxU61qZzU4pEW2czJc',
 	        'number' => $mynumber,
-	        'message' => $arrmessage2[$x],
-	        'user_id' => $arruser_id2[$x],
+	        'message' => $arrmessage2[$x2],
+	        'user_id' => $arruser_id2[$x2],
 	        'status' => ''
 	    );
 		
@@ -406,7 +400,7 @@ foreach($useNumber2 as $mynumber)
 		array_push($arruser_id_success2, $id);
 		array_push($arrcheck_status2, $fields['status']);
 		$resultArray[] = $fields;
-	$x++;
+	$x2++;
 }
 // END SEMAPHORE SEND SMS NOTIFICATION 
 
@@ -425,8 +419,9 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 		// 	]
 		// ]);
 		foreach ($datauser['users'] as $user_in) {
-			if ($user_in->id == $id) {
+			if ($user_in->id == $id2) {
 				// echo $user_in->firstname;
+
 				$user_in->send_at = 1;
 				$user_in->save();
 			}
@@ -444,6 +439,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 
 //-------------------------------------------------------------------------------------------
 
+// var_dump($resultArray);die;
  echo header('Content-Type: application/json'); 
 
 	 echo json_encode($resultArray);	
@@ -522,12 +518,8 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 	public function action_setcron(){
 
  		$view['dates'] = Model_Accountantcron::find('all');
- 		$data['users'] = Model_User::find('all', [
-			'where' => [
-				['send_at', 'like', "1"]
-			]
-		]);
-
+ 		$data['users'] = Model_User::find('all');
+ 		$data['programs'] = Model_Program::find('all');
 		if (Input::method() == 'POST')
 		{  	
 			$val = Model_Accountantcron::validate('create');
@@ -541,10 +533,23 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 
 				if($newuser->save()){
 					// START Default the send flag for users
-						foreach ($data['users'] as $user) {
-							$user->send_at = 0;
-							$user->save(); 
+					foreach ($data['programs'] as $program) {
+						$data['students'] = Model_Student::find('all', [
+							'where' => [
+								['program', 'like', $program->program_description]
+							]
+						]);
+						foreach ($data['students'] as $student) {
+							// echo $student->student_id;
+							foreach ($data['users'] as $user) {
+								if ($user->id == $student->student_id) {
+									 $user->send_at = 0;
+									 $user->save();
+								} 
+							}
 						}
+					}
+
 					// END Default the send flag for users
 					
 					Session::set_flash('success', e('Set exam schedule'));
@@ -568,6 +573,8 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 	
 	public function action_basicsetcron(){
 		$view = View::forge('admin/users/basicsetcron');
+		$data['programs'] = Model_Basicprogram::find('all');
+		$data['users'] = Model_User::find('all');
 		// $view->programs = Model_Basicprogram::find('all');
  		$view->dates = Model_Basicaccountantcron::find('all');
  		
@@ -583,6 +590,24 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'education_level' => Input::post('education_level'),
 				));
 				if($newuser->save()){
+
+					foreach ($data['programs'] as $program) {
+						$data['students'] = Model_Student::find('all', [
+							'where' => [
+								['program', 'like', $program->basic_program_description]
+							]
+						]);
+						foreach ($data['students'] as $student) {
+							// echo $student->student_id;
+							foreach ($data['users'] as $user) {
+								if ($user->id == $student->student_id) {
+									 $user->send_at = 0;
+									 $user->save();
+								} 
+							}
+						}
+						
+					}
 					Session::set_flash('success', e('Set basic education exam schedule'));
 				 	Response::redirect('admin/users');
 				}
@@ -612,7 +637,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 		{
 			$val = Model_User::validate('create');
 
-			
+				
 				if ($val->run())
 				{
 					$newuser = Model_User::forge(array(
@@ -625,13 +650,19 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 						'group'=> Input::post('group'),
 						'email'=> Input::post('email'),
 						'role'=> Input::post('role'),
+						'send_at' => Input::post('send_at'),
 					));
-					$newuser->dean_program = Model_Progdean::forge(array(
+					if (Input::post('program_id') == null) {
+						
+					}else{
+						$newuser->dean_program = Model_Progdean::forge(array(
 						'program_id'=> Input::post('program_id'),	
 
-					));
+						));
+					}
+					
 					if($newuser->save()){
-						Session::set_flash('success', e('Added user'));
+						Session::set_flash('success', e('Added user: ' . $newuser['firstname'] . " " . $newuser['lastname']));
 					 	Response::redirect('admin/users');
 				}
 
@@ -674,6 +705,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 						'group'=> Input::post('group'),
 						'email'=> Input::post('email'),
 						'role'=> Input::post('role'),
+						'send_at' => Input::post('send_at'),
 					));
 					$newuser->head_program = Model_Proghead::forge(array(
 						'program_id'=> Input::post('program_id'),	
@@ -751,6 +783,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 							'group'=> Input::post('group'),
 							'email'=> Input::post('email'),
 							'role'=> Input::post('role'),
+							'send_at' => Input::post('send_at'),
 						));
 						$newuser->parent_student = Model_Studparent::forge(array(
 							'student_id'=> $id,
@@ -759,7 +792,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 							Session::set_flash('success', e('Added user'));
 						 	Response::redirect('admin/users');
 						}
-					}
+					}	
 				 }else{
 					Session::set_flash('error', $val->error());
 				}
@@ -935,6 +968,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 			if ($val->run())
 			{
 				$amount = 0;
+				// var_dump(Input::post('program'));die;
 				$data = DB::select('id')->from('programs')->where('program_description', '=', Input::post('program'))->as_object()->execute();
 				foreach ($data as $programid) {
 					$program_result = DB::select('amount')->from('miscellanous')->where('program_id', '=', $programid->id)->as_object()->execute();
@@ -974,7 +1008,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'balance' => $discount_balance,
 				));
 				if($newuser->save()){
-					Session::set_flash('success', e('Added user'));
+					Session::set_flash('success', e('Added user: ' . $newuser['firstname'] . " " . $newuser['lastname']));
 				 	Response::redirect('admin/users');
 				}
 				// }catch(Exception $e){
@@ -1111,6 +1145,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'group' => Input::post('group'),
 					'email' => Input::post('email'),
 					'role'=> Input::post('role'),
+					'send_at' => Input::post('send_at'),
 				));
 
 				$check_user= DB::select('username')->from('users')->where('username','=', $user->username)->as_object()->execute();
@@ -1121,7 +1156,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					
 				if ($user->save())
 				{
-					Session::set_flash('success', e('Added user'.$user->id.'.'));
+					Session::set_flash('success', e('Added user: ') . $user['firstname'] . " " . $user['lastname']);
 
 					Response::redirect('admin/users');
 				}
@@ -1265,6 +1300,7 @@ public function action_create_basic_program()
 
 	//END CREATE PROGRAM
 
+
 	public function action_edit($id = null)
 	{
 		$view = View::forge('admin/users/edit');
@@ -1400,13 +1436,24 @@ public function action_create_basic_program()
 	}
 	//END EDIT DEAN
 
-	// BEGIN EDIT STUDENT
-	public function action_edit_student($id = null)
+
+
+	// BEGIN EDIT DEAN
+	public function action_edit_proghead($id = null)
 	{
-		$view = View::forge('admin/users/edit_student');
+		$view = View::forge('admin/users/edit_proghead');
+		$prog =   Model_Proghead::find('all', [
+			'where' => [
+				['user_id', 'like', "$id"]
+			]
+		]);
+		foreach ($prog as $pro) {
+			echo $pro->id;
+		}
+		$programdean = Model_Proghead::find($pro->id);
 		$user = Model_User::find($id);
 		$val = Model_User::validate('edit');
-
+		
 		if ($val->run())
 		{
 			if ($user->password != Input::post('password')) {
@@ -1417,21 +1464,23 @@ public function action_create_basic_program()
 			$user->firstname = Input::post('firstname');
 			$user->middlename = Input::post('middlename');
 			$user->lastname = Input::post('lastname');
-			$user->mobile_number = 63 . Input::post('mobile_number');
+			$user->mobile_number = Input::post('mobile_number');
 			$user->group = Input::post('group');
 			$user->email = Input::post('email');
 			$user->user_id = Input::post('user_id');
+			$programdean->program_id = Input::post('program_id');
+			if($programdean->save()){
+				if ($user->save())
+				{ 
+					Session::set_flash('success', e('Updated user #' . $id));
 
-			if ($user->save())
-			{
-				Session::set_flash('success', e('Updated user #' . $id));
+					Response::redirect('admin/users');
+				}
 
-				Response::redirect('admin/users');
-			}
-
-			else
-			{
-				Session::set_flash('error', e('Could not update user #' . $id));
+				else
+				{
+					Session::set_flash('error', e('Could not update user #' . $id));
+				}
 			}
 		}
 
@@ -1456,12 +1505,420 @@ public function action_create_basic_program()
 
 			$this->template->set_global('user', $user, false);
 		}
+		$view->programs = Model_Program::find('all');
 		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'id', 'program_description'));
 		$this->template->title = "Users";
 		$this->template->content = $view;
 
 	}
+	//END EDIT DEAN
+
+
+
+	/**
+	* START
+	* This function edit student
+	* @param $id ('int')
+	*/
+	public function action_edit_student($id = null)
+	{
+		$view = View::forge('admin/users/edit_student');
+		$user = Model_User::find($id);
+		$scholarship = Model_Student::find('all', [
+			'where' => [
+				['student_id', 'like', "$id"]
+			]
+		]);
+
+		$val = Model_User::validate('edit');
+		// $val = Model_Student::validate('edit');
+
+		if ($val->run())
+		{
+			
+
+			/**
+			* START
+			* CHECK USERNAME IF EXISTING
+			* @param $username ('string')
+			*/
+
+			$username = Input::post('username');
+			$data['users'] =  Model_User::find('all', [
+				'where' => [
+					['username', 'like', "$username"]
+				]
+			]);
+
+
+			$count = count($data['users']);
+			// echo $count;
+			if($count >= 2){
+				Session::set_flash('success', e('Added user'));
+				Response::redirect('admin/users/edit_student');
+			}
+
+			/**
+			* END
+			* CHECK USERNAME IF EXISTING
+			* @param $username ('string')
+			*/
+
+
+			/**
+			*
+			* FIND SCHOLARSHIP TYPE
+			* @param $username ('string')
+			*/
+
+			$scholarship_check = Input::post('scholarships');
+
+			$data['scholarships'] = Model_Scholarship::find('all', [
+				'where' => [
+					['id', 'like', "$scholarship_check"]
+				]
+			]);
+
+			/**
+			*
+			* SETTING DISCOUNT
+			* @param $username ('string')
+			*
+			*/
+
+			// BEGIN  DISCOUNT DECLARATIONS
+				$mdiscount = 0;
+				$tdiscount = 0;
+			// END DISCOUNT DECLARATIONS
+
+			foreach ($data['scholarships'] as $scholar) {
+				$mdiscount = $scholar->dis_misc;
+				$tdiscount = $scholar->dis_tuition;
+			}
+			var_dump($tdiscount);
+			/**
+			*
+			* SETTING MISCELLANOUS AMOUNT
+			* @param 
+			*
+			*/
+			// var_dump(Input::post('program'));die;
+			$amount = 0;
+			$data = DB::select('id')->from('programs')->where('program_description', '=', Input::post('program'))->as_object()->execute();
+			foreach ($data as $programid) {
+				$program_result = DB::select('amount')->from('miscellanous')->where('program_id', '=', $programid->id)->as_object()->execute();
+				// $amount += $program_result;
+			}	
+			foreach ($program_result as $key) {
+				$amount += $key->amount; 
+			}
+			// var_dump($amount);die;
+
+			/**
+			*
+			* ASSIGNING USER INPUTS
+			* @param 
+			*
+			*/
+				if ($user->password != Input::post('password')) {
+					$user->password = Auth::instance()->hash_password(Input::post('password'));
+				}
+				$user->username = Input::post('username');
+				// $user->password = Input::post('password');
+				$user->firstname = Input::post('firstname');
+				$user->middlename = Input::post('middlename');
+				$user->lastname = Input::post('lastname');
+				$user->mobile_number = 63 . Input::post('mobile_number');
+				$user->group = Input::post('group');
+				$user->email = Input::post('email');
+				// $user->user_id = Input::post('user_id');
+
+			/**
+			*
+			* ASSIGNING STUDENT TABLE USER INPUTS
+			* @param 
+			*
+			*/
+			
+			$discount_balance = $amount - (($mdiscount/100) * $amount); // assign discounted balance
+
+			// var_dump($id);die;
+			$estudents = Model_Student::find('all', [
+				'where' => [
+					['student_id', 'like', "$id"]
+				]
+			]);
+			foreach ($estudents as $estudent) {
+				$estudent->program = Input::post('program');
+				$estudent->year = Input::post('year');
+				$estudent->scholarship_id =Input::post('scholarships');
+				$estudent->total_assessment = $estudent->tuition_fee + $amount;
+				$estudent->tuition_fee = $estudent->tuition_fee;
+				$estudent->misc = $amount;
+				$estudent->down_payment = $estudent->down_payment;
+				$estudent->breakdown = 0;
+				$estudent->dis_tuition = ($tdiscount/100) * $estudent->tuition_fee;
+				
+				$estudent->dis_misc = ($mdiscount/100) * $amount;
+				$estudent->balance = $estudent->total_assessment - ($estudent->dis_misc + $estudent->dis_tuition + $estudent->down_payment);
+
+			}
+			// $user->student = Model_Student::forge(array(
+			// 	'program' =>Input::post('program'),
+			// 	'year' =>Input::post('year'),
+			// 	'scholarship_id' =>Input::post('scholarships'),
+			// 	'total_assessment' => 'tuition_fee' + $amount,
+			// 	'tuition_fee' => 'tuition_fee' + 0,
+			// 	'misc' => $amount,
+			// 	'down_payment' => 'down_payment' + 0,
+			// 	'breakdown' => 0,
+			// 	'dis_tuition' => ($tdiscount/100) * $amount,
+			// 	'dis_misc' => ($mdiscount/100) * $amount,
+			// 	'balance' => $discount_balance,
+			// ));
+			// var_dump($estudents);die;
+			// var_dump($user->student);die;
+
+
+			if ($user->save())
+			{
+				$estudent->save();
+				Session::set_flash('success', e('Updated student ' . $user->firstname . " " . $user->lastname));
+
+				Response::redirect('admin/users');
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update student ' . $user->firstname . " " . $user->lastname));
+			}
+		}
+
+		else
+		{
+
+			if (Input::method() == 'POST')
+			{
+				$user->username = $val->validated('username');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				}
+				$user->firstname = $val->validated('firstname');
+				$user->middlename = $val->validated('middlename');
+				$user->lastname = $val->validated('lastname');
+				$user->mobile_number = $val->validated('mobile_number');
+				$user->group = $val->validated('group');
+				$user->email = $val->validated('email');
+
+				Session::set_flash('error', $val->error());
+			}
+
+
+			$this->template->set_global('user', $user, false);
+			$this->template->set_global('scholarship', $scholarship, false);
+		}
+		$view->set_global('programs', Arr::assoc_to_keyval(Model_Program::find('all'), 'program_description', 'program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
 	//END EDIT STUDENT
+
+
+	/**
+	* START
+	* This function edit Basic education student
+	* @param $id ('int')
+	*/
+	public function action_edit_basic_student($id = null)
+	{
+		$view = View::forge('admin/users/edit_basic_student');
+		$user = Model_User::find($id);
+		$scholarship = Model_Student::find('all', [
+			'where' => [
+				['student_id', 'like', "$id"]
+			]
+		]);
+		$val = Model_User::validate('edit');
+		// $val = Model_Student::validate('edit');
+
+		if ($val->run())
+		{
+			
+
+			/**
+			* START
+			* CHECK USERNAME IF EXISTING
+			* @param $username ('string')
+			*/
+
+			$username = Input::post('username');
+			$data['users'] =  Model_User::find('all', [
+				'where' => [
+					['username', 'like', "$username"]
+				]
+			]);
+
+
+			$count = count($data['users']);
+			// echo $count;
+			if($count >= 2){
+				Session::set_flash('success', e('Added user'));
+				Response::redirect('admin/users/create_basic_student');
+			}
+
+			/**
+			*
+			* FIND SCHOLARSHIP TYPE
+			* @param $username ('string')
+			*/
+
+			$scholarship_check = Input::post('scholarships');
+
+			$data['scholarships'] = Model_Scholarship::find('all', [
+				'where' => [
+					['id', 'like', "$scholarship_check"]
+				]
+			]);
+
+			/**
+			*
+			* SETTING DISCOUNT
+			* @param $username ('string')
+			*
+			*/
+
+			// BEGIN  DISCOUNT DECLARATIONS
+				$mdiscount = 0;
+				$tdiscount = 0;
+			// END DISCOUNT DECLARATIONS
+
+			foreach ($data['scholarships'] as $scholar) {
+				$mdiscount = $scholar->dis_misc;
+				$tdiscount = $scholar->dis_tuition;
+			}
+			var_dump($tdiscount);
+			/**
+			*
+			* SETTING MISCELLANOUS AMOUNT
+			* @param 
+			*
+			*/
+			// var_dump(Input::post('program'));die;
+			$amount = 0;
+			$data = DB::select('id')->from('basicprograms')->where('basic_program_description', '=', Input::post('year'))->as_object()->execute();
+
+			foreach ($data as $programid) {
+				$program_result = DB::select('amount')->from('basicmiscellanous')->where('basic_program_id', '=', $programid->id)->as_object()->execute();
+				// $amount += $program_result;
+			}	
+			foreach ($program_result as $key) {
+				$amount += $key->amount; 
+			}
+			// var_dump($amount);die;
+
+			/**
+			*
+			* ASSIGNING USER INPUTS
+			* @param 
+			*
+			*/
+				if ($user->password != Input::post('password')) {
+					$user->password = Auth::instance()->hash_password(Input::post('password'));
+				}
+				$user->username = Input::post('username');
+				// $user->password = Input::post('password');
+				$user->firstname = Input::post('firstname');
+				$user->middlename = Input::post('middlename');
+				$user->lastname = Input::post('lastname');
+				$user->mobile_number = 63 . Input::post('mobile_number');
+				$user->group = Input::post('group');
+				$user->email = Input::post('email');
+				// $user->user_id = Input::post('user_id');
+
+			/**
+			*
+			* ASSIGNING STUDENT TABLE USER INPUTS
+			* @param 
+			*
+			*/
+
+			$discount_balance = $amount - ($mdiscount/100) * $amount; // assign discounted balance
+
+			// var_dump($id);die;
+			$estudents = Model_Student::find('all', [
+				'where' => [
+					['student_id', 'like', "$id"]
+				]
+			]);
+			foreach ($estudents as $estudent) {
+				$estudent->program = Input::post('year');
+				$estudent->year = Input::post('year');
+				$estudent->scholarship_id =Input::post('scholarships');
+				$estudent->total_assessment = $estudent->tuition_fee + $amount;
+				$estudent->tuition_fee = $estudent->tuition_fee;
+				$estudent->misc = $amount;
+				$estudent->down_payment = $estudent->down_payment;
+				$estudent->breakdown = 0;
+				$estudent->dis_tuition = ($tdiscount/100) * $estudent->tuition_fee;
+				
+				$estudent->dis_misc = ($mdiscount/100) * $amount;
+				$estudent->balance = $discount_balance;
+
+			}
+
+			if ($user->save())
+			{
+				$estudent->save();
+				Session::set_flash('success', e('Updated student ' . $user->firstname . " " . $user->lastname));
+
+				Response::redirect('admin/users');
+			}
+
+			else
+			{
+				Session::set_flash('error', e('Could not update student ' . $user->firstname . " " . $user->lastname));
+			}
+		}
+
+		else
+		{
+
+			if (Input::method() == 'POST')
+			{
+				$user->username = $val->validated('username');
+				//$user->password = $val->validated('password');
+				if ($user->password != Input::post('password')) {
+					$user->password = $val->validated(Auth::instance()->hash_password(Input::post('password')));
+				} 
+				$user->firstname = $val->validated('firstname');
+				$user->middlename = $val->validated('middlename');
+				$user->lastname = $val->validated('lastname');
+				$user->mobile_number = $val->validated('mobile_number');
+				$user->group = $val->validated('group');
+				$user->email = $val->validated('email');
+
+				Session::set_flash('error', $val->error());
+			}
+
+
+			$this->template->set_global('user', $user, false);
+			$this->template->set_global('scholarship', $scholarship, false);
+		}
+		$view->set_global('basicprograms', Arr::assoc_to_keyval(Model_Basicprogram::find('all'), 'basic_program_description', 'basic_program_description'));
+		$this->template->title = "Users";
+		$this->template->content = $view;
+
+	}
+	//END EDIT BASIC STUDENT
+
+
+	/**
+	* START
+	* This function edit parent
+	* @param $id ('int')
+	*/
 
 	// BEGIN EDIT PARENT
 	public function action_edit_parent($id = null)

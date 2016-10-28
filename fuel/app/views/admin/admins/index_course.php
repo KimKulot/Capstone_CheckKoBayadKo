@@ -56,9 +56,9 @@
 							<?php endforeach ?>
 							<?php $total = $paid + $unpaid + $partial; ?>
 								<?php if($total != 0){ ?>
-									<td><?php echo 100 * $paid / $total . "%"; ?></td>
-									<td><?php echo 100 * $unpaid / $total . "%" ?></td>
-									<td><?php echo 100 * $partial / $total . "%"; ?></td>
+									<td><?php echo number_format(100 * $paid / $total, 2) . "%"; ?></td>
+									<td><?php echo number_format(100 * $unpaid / $total, 2) . "%" ?></td>
+									<td><?php echo number_format(100 * $partial / $total, 2) . "%"; ?></td>
 
 										<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
 									<?php foreach ($view ['pros'] as $pro): ?>
