@@ -167,9 +167,16 @@ class Controller_Admin extends Controller_Base
 	    	 	
 		 		}else{
 	    	 		$user->image = $file_img;
-	    	 		$user->usedrname = $_POST['username'];
-	    	 		$user->password = Auth::instance()->hash_password($_POST['password']);
-	    	 		$user->mobile_number = $_POST['mobile_number'];
+	    	 		if (Input::post('password') == null) {
+					
+					}else{
+	    	 			$user->password = Auth::instance()->hash_password($_POST['password']);
+	    	 		}
+	    	 		if ($user->mobile_number == $_POST['mobile_number']) {
+	    	 			
+	    	 		}else{
+	    	 			$user->mobile_number = 63 . $_POST['mobile_number'];
+	    	 		}
 	    	 		$user->save();
 	    	 	}
 	    	 	

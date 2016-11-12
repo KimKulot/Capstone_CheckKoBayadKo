@@ -14,7 +14,7 @@
 				        <div class="section-body">
 				            <div class="card card-bordered style-primary">
 				                <div class="card-head">
-				                    <header><i class="fa fa-fw fa-tag"></i>New Student</header>
+				                    <header><i class="fa fa-fw fa-tag"></i>Update Profile</header>
 				                </div>
 				                <div class="card-body style-default-bright">
 						<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/upload_image', 'enctype' => 'multipart/form-data')); ?>
@@ -26,8 +26,9 @@
 								<br>
 									<div class="form-group ">
 										<?php $search = ""; ?>
-											
-											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'password', 'placeholder'=>'Password' , 'name' => 'password', 'id' => 'password', 'required' ));  
+											<?php echo Form::label('Password', 'password', array('class'=>'control-label')); ?>
+
+											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'password', 'placeholder'=>'Password' , 'name' => 'password', 'id' => 'password' ));  
 											?>
 
 									</div>
@@ -37,8 +38,9 @@
 								<br>
 									<div class="form-group ">
 										<?php $search = ""; ?>
-											
-											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'password', 'placeholder'=>'Confirm Password' , 'name' => 'confirmpassword', 'id' => 'confirm_password', 'required'));  
+											<?php echo Form::label('Confirm Password', 'confirmpassword', array('class'=>'control-label')); ?>
+
+											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'password', 'placeholder'=>'Confirm Password' , 'name' => 'confirmpassword', 'id' => 'confirm_password'));  
 											?>
 
 									</div>
@@ -48,8 +50,10 @@
 								<br>
 									<div class="form-group ">
 										<?php $search = ""; ?>
-											
-											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'number', 'placeholder'=>'Mobile number', 'name' => 'mobile_number', 'value' => $user["mobile_number"], 'required'));  
+
+											<?php echo Form::label('Mobile number (+63)', 'mobile_number', array('class'=>'control-label')); ?>
+
+											<?php echo Form::input(array('class' => 'col-md-4 form-control', 'type'=>'number', 'placeholder'=>'Mobile number', 'name' => 'mobile_number', 'value' => $user["mobile_number"]));  
 											?>
 
 									</div>

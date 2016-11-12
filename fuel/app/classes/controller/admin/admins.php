@@ -38,6 +38,16 @@ class Controller_Admin_Admins extends Controller_Admin
 		$this->template->title = "Course";
 		$this->template->content = View::forge('admin/admins/index_course', $view);
 	}
+
+	public function action_basic_index()
+	{
+		$view['basicprograms'] = Model_Basicprogram::find('all');
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
+		$this->template->title = "Basic Program";
+		$this->template->content = View::forge('admin/admins/index', $view);
+	}
+
 	public function action_view($program_description = null)
 	{	
 

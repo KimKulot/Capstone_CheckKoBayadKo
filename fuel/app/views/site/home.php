@@ -1,7 +1,7 @@
 <div class="jumbotron">
 	<center><h1>Welcome!</h1>
 	<h2>CheckKoBayadKo</h2>
-	<p>A Web-based Application for Tracking Students' Financial Transaction with SMS Notification using Cronjob</p></center>
+	<p>A Web-based Application for Tracking Students' Financial Transaction with Scheduled SMS Notification using Cronjob</p></center>
 	
 </div>
 <div class="row">

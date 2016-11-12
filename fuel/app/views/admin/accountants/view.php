@@ -3,7 +3,7 @@
     <section>
         <div class="section-header">
             <ol class="breadcrumb"> 
-                <li class="active">Listing of Students</li>
+                <li class="active">List of Students</li>
                 <?php echo Html::anchor('admin/accountants/index', 'course', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
             </ol>
         </div><!--end .section-header -->
@@ -28,20 +28,40 @@
 	<tbody>
 
 <?php foreach ($students as $item): ?>
+	<?php 
+		$boolchecker = true;
+		$check = 1;
+	?>
 	<?php foreach ($programs as $program): ?>
 		<?php if ($program->program_description == $item->program): ?>
 			<tr>
+
+
+			<!-- Begin Algo for preventing error display -->
+
 				<?php foreach ($users as $key): ?>
 					<?php if($item->student_id == $key->id){ ?>
-						<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
-					<?php } ?>
+					<td><?php echo $key->lastname . ', ' . $key->firstname . ' ' . $key->middlename ?></td>
+
+				<?php
+					$check = 0;
+					 }
+					if ($check != 1) {
+					 	$boolchecker = false;
+					 } 
+				?>
 				<?php endforeach ?>
+				<?php if ($boolchecker==false): ?>
+			<!-- End Algo for preventing error display -->
+				
+				
 				<td><?php echo $item->program; ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->tuition_fee,2); ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->misc,2); ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->down_payment,2); ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->breakdown,2); ?></td>
 				<td><span>&#8369</span><?php echo " " . number_format($item->balance,2); ?></td>
+				<?php endif ?>
 			</tr>
 		<?php endif ?>
 	<?php endforeach ?>

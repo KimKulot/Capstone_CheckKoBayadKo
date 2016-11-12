@@ -8,12 +8,12 @@ class Controller_Admin_Users extends Controller_Admin
 		if (Input::method() == 'POST')
 		{
 			$search = Input::post('search');
+
 		} 
 
 		$data['users'] = Model_User::find('all', [
 			'where' => [
-				['firstname', 'like', "%$search%"],
-				['username', 'like', "%$search%"]
+				['lastname', 'like', "%$search%"],
 			]
 		]);
 		$data['students'] = Model_Student::find('all');
@@ -59,26 +59,14 @@ public function action_cron_message(){
 	set_time_limit(0);
 	// DB::select('*')->from('basicprograms')->where('basic_program_description','=', $basic_program_description)->as_object()->execute();
 	// 	SELECT * FROM `basicaccountantcrons` WHERE `education_level` LIKE 'Gradeschool' order by `id` desc limit 1
-		$arrdate = array();
-		$arrlevel =array();
+	
 		$data['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		// $data['basicaccountant'] = Model_Basicaccountantcron::find('all', [
 		// 	'group_by' => ['education_level']
 		// ]);
 		$data['programs'] = Model_Program::find('all');
-		$data['distinct_level'] = DB::select('education_level')->from('basicaccountantcrons')->distinct(true)->execute();
-		foreach ($data['distinct_level'] as $level) {
-
-			$education = $level['education_level'];
-			$data['basic_dates'] = DB::select('date_time')->from('basicaccountantcrons')->where('education_level', '=', $education)->order_by('id','desc')->limit(1)->as_object()->execute();
-
-			foreach ($data['basic_dates'] as $basic_date) {
-				 $basic_date->date_time;
-			}
-
-			array_push($arrdate, $basic_date->date_time);
-			array_push($arrlevel, $education);
-		}
+		
+		
 		// echo max($arrdate);
 		// echo $arrdate[1] . "<br>" . $arrlevel[1];
 
@@ -144,7 +132,7 @@ public function action_cron_message(){
 												  // }
 
 												if($student->balance != 0){
-													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
+													$messages .= " Your student " . $user->firstname . " total assessment is: " . $total . " Payment made is: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
 												}
 												array_push($arrmessage, $messages);
 												array_push($useNumber, $use->mobile_number);
@@ -164,7 +152,7 @@ public function action_cron_message(){
 										  // 	// echo $arrlevel[$i] . ": " . $arrdate[$i];
 										  // }
 									if($student->balance != 0){
-										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
+										$message .= " Your total assessment is: " . $total . " Payment made is: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
 
 									}
 									array_push($arruser_id, $user->id);
@@ -279,6 +267,9 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 	// array_push($arrlevel, $education);
 		// BEGIN DATE FORMULA
 
+	$data['basic_dates'] =  DB::select('date_time')->from('basicaccountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+
+
 	$data['basic_programs'] = Model_Basicprogram::find('all');
 		 date_default_timezone_set('Asia/Manila');
 		 $date_Counter2 = 7; 
@@ -287,12 +278,12 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 		 $arrmessage2 = array(); 
 		 $arruser_id2 = array();
 
-		 foreach ($data['dates'] as $date){
+		 foreach ($data['basic_dates'] as $basic_date){
 			
 			$subdate2 = 0;
 			$currentDate2 = date('m/d/Y', strtotime("+". $date_Counter2. " days"));
 			// var_dump((trim(max($arrdate))));die;
-			$var_date2 = trim(min($arrdate));
+			$var_date2 = trim($basic_date->date_time);
 			// var_dump($var_date2);die;
 
 				if ($currentDate2 == $var_date2) {
@@ -313,12 +304,8 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 
 												  $total = $student->tuition_fee + $student->misc; 
 
-												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for: ";
-													  for ($i=0; $i < count($arrlevel) ; $i++) { 
-													  	$messages .= $arrlevel[$i] . ": " . $arrdate[$i];
-													  	// echo $arrlevel[$i] . ": " . $arrdate[$i];
-													  }
-
+												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
+													 
 												if($student->balance != 0){
 													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
 												}
@@ -329,16 +316,13 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 											 }
 										 } 
 									 }
-								 } 
+								 }  
 								
-									  $total = $student->total_assessment; 
+									$total = $student->total_assessment; 
 
 									
-									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam for: ";
-										  for ($i=0; $i < count($arrlevel) ; $i++) { 
-										  	$message .= $arrlevel[$i] . ": " . $arrdate[$i];
-										  	// echo $arrlevel[$i] . ": " . $arrdate[$i];
-										  }
+									$message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
+										  
 									if($student->balance != 0){
 										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
 
@@ -362,13 +346,13 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 $arrcheck_status2 = array();
 $arruser_id_success2 = array();
 $x2=0;
-foreach($useNumber2 as $mynumber)
-{
 
+foreach($useNumber2 as $mynumber2)
+{
 		$url = 'http://api.semaphore.co/api/sms';
 		 $fields = array(
 	        'api' => 'LVpxU61qZzU4pEW2czJc',
-	        'number' => $mynumber,
+	        'number' => $mynumber2,
 	        'message' => $arrmessage2[$x2],
 	        'user_id' => $arruser_id2[$x2],
 	        'status' => ''
@@ -519,7 +503,9 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 
  		$view['dates'] = Model_Accountantcron::find('all');
  		$data['users'] = Model_User::find('all');
+ 		$data['parents'] = Model_Studparent::find('all');
  		$data['programs'] = Model_Program::find('all');
+ 		$data['students'] = Model_Student::find('all');
 		if (Input::method() == 'POST')
 		{  	
 			$val = Model_Accountantcron::validate('create');
@@ -542,10 +528,27 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 						foreach ($data['students'] as $student) {
 							// echo $student->student_id;
 							foreach ($data['users'] as $user) {
+
 								if ($user->id == $student->student_id) {
 									 $user->send_at = 0;
 									 $user->save();
 								} 
+								foreach($data['parents'] as $parent){
+									foreach ($data['students'] as $student) {
+										// var_dump($parent);
+										
+										if ($student->id == $parent->student_id) {
+											if ($parent->student_id == $student->id) {
+												if($parent->parent_id == $user->id){
+													
+													$user->send_at = 0;
+													$user->save();
+												}
+											}	
+										}
+									}
+								}
+								
 							}
 						}
 					}
@@ -575,6 +578,8 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 		$view = View::forge('admin/users/basicsetcron');
 		$data['programs'] = Model_Basicprogram::find('all');
 		$data['users'] = Model_User::find('all');
+		$data['programs'] = Model_Program::find('all');
+ 		$data['students'] = Model_Student::find('all');
 		// $view->programs = Model_Basicprogram::find('all');
  		$view->dates = Model_Basicaccountantcron::find('all');
  		
@@ -587,7 +592,6 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 			{
 				$newuser = Model_Basicaccountantcron::forge(array(
 					'date_time'=> Input::post('date_time'),
-					'education_level' => Input::post('education_level'),
 				));
 				if($newuser->save()){
 
@@ -604,6 +608,21 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 									 $user->send_at = 0;
 									 $user->save();
 								} 
+								foreach($data['parents'] as $parent){
+									foreach ($data['students'] as $student) {
+										// var_dump($parent);
+										
+										if ($student->id == $parent->student_id) {
+											if ($parent->student_id == $student->id) {
+												if($parent->parent_id == $user->id){
+													
+													$user->send_at = 0;
+													$user->save();
+												}
+											}	
+										}
+									}
+								}
 							}
 						}
 						
@@ -985,6 +1004,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'lastname'=> Input::post('lastname'),
 					'password'=> Auth::instance()->hash_password(Input::post('password')),
 					'mobile_number'=> 63 . Input::post('mobile_number'),
+					'gender' => Input::post('gender'),
 					'group'=> Input::post('group'),
 					'send_at' => Input::post('send_at'),
 					'email'=> Input::post('email'),
@@ -1148,7 +1168,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'send_at' => Input::post('send_at'),
 				));
 
-				$check_user= DB::select('username')->from('users')->where('username','=', $user->username)->as_object()->execute();
+				$check_user= DfB::select('username')->from('users')->where('username','=', $user->username)->as_object()->execute();
 
 				if (count($check_user) > 0) {
 					Session::set_flash('error', e('Username already exists .'));
@@ -1620,15 +1640,23 @@ public function action_create_basic_program()
 			* @param 
 			*
 			*/
+			if (Input::post('password') == null) {
+				
+			}else{
 				if ($user->password != Input::post('password')) {
 					$user->password = Auth::instance()->hash_password(Input::post('password'));
 				}
+			}
 				$user->username = Input::post('username');
 				// $user->password = Input::post('password');
 				$user->firstname = Input::post('firstname');
 				$user->middlename = Input::post('middlename');
 				$user->lastname = Input::post('lastname');
-				$user->mobile_number = 63 . Input::post('mobile_number');
+				if ($user->mobile_number == Input::post('mobile_number')) {
+					
+				}else{
+					$user->mobile_number = 63 . Input::post('mobile_number');
+				}
 				$user->group = Input::post('group');
 				$user->email = Input::post('email');
 				// $user->user_id = Input::post('user_id');
@@ -1798,7 +1826,7 @@ public function action_create_basic_program()
 				$mdiscount = $scholar->dis_misc;
 				$tdiscount = $scholar->dis_tuition;
 			}
-			var_dump($tdiscount);
+			// var_dump($tdiscount);
 			/**
 			*
 			* SETTING MISCELLANOUS AMOUNT
@@ -1824,15 +1852,23 @@ public function action_create_basic_program()
 			* @param 
 			*
 			*/
+			if (Input::post('password') == null) {
+				
+			}else{
 				if ($user->password != Input::post('password')) {
 					$user->password = Auth::instance()->hash_password(Input::post('password'));
 				}
+			}
 				$user->username = Input::post('username');
 				// $user->password = Input::post('password');
 				$user->firstname = Input::post('firstname');
 				$user->middlename = Input::post('middlename');
 				$user->lastname = Input::post('lastname');
+			if ($user->mobile_number == Input::post('mobile_number')) {
+					
+			}else{
 				$user->mobile_number = 63 . Input::post('mobile_number');
+			}
 				$user->group = Input::post('group');
 				$user->email = Input::post('email');
 				// $user->user_id = Input::post('user_id');
@@ -1929,6 +1965,7 @@ public function action_create_basic_program()
 
 		if ($val->run())
 		{
+
 			if ($user->password != Input::post('password')) {
 				$user->password = Auth::instance()->hash_password(Input::post('password'));
 			}
@@ -1944,7 +1981,7 @@ public function action_create_basic_program()
 
 			if ($user->save())
 			{
-				Session::set_flash('success', e('Updated user #' . $id));
+				Session::set_flash('success', e('Updated user ' . $user->firstname . " " . $user->lastname));
 
 				Response::redirect('admin/users');
 			}

@@ -87,6 +87,10 @@
 		<?php if (isset($user->role)): ?>
 			<?php $temp_role = $user->role; ?>
 		<?php endif ?>
+
+
+
+		
 		<div class="form-group">
 		    <?php echo Form::label('Role', 'role', array('class'=>'control-label')); ?>
 		 	<?php 

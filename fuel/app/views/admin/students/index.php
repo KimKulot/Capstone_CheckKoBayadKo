@@ -22,7 +22,7 @@
 							<th>Full Name</th>
 							<th>Program</th>
 							<th>Year</th>
-							<th>Student ID</th>
+							<!-- <th>Student ID</th> -->
 							
 							
 							<th></th>
@@ -56,7 +56,7 @@
 								<?php if ($boolchecker==false): ?>
 								<td><?php echo $item->program; ?></td>
 								<td><?php echo $item->year; ?></td>
-								<td><?php echo $item->student_id; ?></td>
+								<!-- <td><?php echo $item->student_id; ?></td> -->
 							
 							
 

@@ -5,17 +5,29 @@ class Controller_Admin_Accountants extends Controller_Admin
 	
 	public function action_index()
 	{	
+		$search = "";
+		if (Input::method() == 'POST')
+		{
+				
+			$search = Input::post('search');
 
-		$view = View::forge('admin/accountants/index_course');
-		$view->programs = Model_Program::find('all');
+		}
+
+		$view['programs'] = Model_Program::find('all', [
+			'where' => [
+				['program_description', 'like', "%$search%"]
+			]
+		]);
+
+		// $view->programs = Model_Program::find('all');
 		// $data['users'] = DB::select('*')->from('users')->where('username','=', $search)->as_object()->execute();
 		// $data['course_total']= DB::select( COUNT('id')->from('students')->where('course', '=', 'BSIT')->as_object()->execute();
 		// if(count($data->users) == 'BSIT'){
 		// }
-		$view->users = Model_User::find('all');
-		$view->students = Model_Student::find('all');
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
 		$this->template->title = "Course";
-		$this->template->content = $view;
+		$this->template->content = View::forge('admin/accountants/index_course', $view);
 	}
 	public function action_send_test()
 	{

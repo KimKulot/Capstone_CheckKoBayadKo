@@ -17,7 +17,7 @@
 										<div class="panel-actions">
 											<a href="#" class="fa fa-caret-down"></a>
 										</div>
-						
+					
 										<h2 class="panel-title"> 
 										<?php foreach ($dates as $date): ?>
 										<?php echo  "THE DATE OF EXAM WILL BE: " . $date->date_time; ?>
@@ -31,12 +31,13 @@
 											
 												<thead>
 														<tr>
-															
+															 
 															<th>Total Assessment</th>
 															<th>Tuition fee</th>
 															<th>Miscellaneous</th>
-															<th>Total Payment</th>
+															<th>Total Payment made</th>
 															<th>Overall Discount</th>
+															<th>Balance</th>
 															<!-- <th>Amount per Exam</th> -->
 															<th>Prelim</th>
 															<th>Midterm</th>
@@ -65,7 +66,12 @@
 														  			 	<?php $resultmisc = 0; ?>
 														  			 <?php foreach ($scholarships as $scholarship): ?>
 															  			<?php if ($student->scholarship_id == $scholarship->id): ?>
-															  				<?php echo "<h3>Course: " . $student->program. " " . $student->year . " / " . $scholarship->scholarship_provider . "</h3>"; ?> 
+															  				<?php echo "<h3>Course: " . $student->program. " " . $student->year . " / " . $scholarship->scholarship_provider . ""; ?>
+															  				<?php if ($scholarship->category != "N/A"){ ?>
+															  				 	<?php  echo "" . $scholarship->category . "</h3>";  ?>
+															  				 <?php }else{ ?>
+															  				 	
+															  				 <?php } ?> 
 															  			<?php endif ?>
 														  			 <?php endforeach ?>
 																	<!-- get  -->
@@ -88,40 +94,51 @@
 														  			<!-- end Total Asessment -->
 																	
 																	<!-- Tuition fee  -->
-																	<td><span>&#8369</span><?php echo " " . number_format($history->tuition_fee, 2); ?></td>
+																	<td><span>&#8369</span><?php echo " " . number_format($student->tuition_fee, 2); ?></td>
 																	<!-- end Tuition fee  -->
 
 																	<?php 
-																			$distuition = ($history->tuition_fee / 100) * ($history->dis_tuition);
-																			$dismisc = ($history->misc / 100) * ($history->dis_misc);
+																			$distuition = ($student->tuition_fee / 100) * ($student->dis_tuition);
+																			$dismisc = ($student->misc / 100) * ($student->dis_misc);
 																	?>
 																	
 																	<!-- Miscellaneous -->
-																	<td><span>&#8369</span><?php echo " " . number_format($history->misc , 2); ?></td>
+																	<td><span>&#8369</span><?php echo " " . number_format($student->misc , 2); ?></td>
 																	<!-- end Miscellaneous fee  -->
 
 																	<!-- Total Payment -->
-																	<td><span>&#8369</span><?php echo " " . number_format($history->payment , 2); ?></td>
+																	<td><span>&#8369</span><?php echo " " . number_format($student->down_payment , 2); ?></td>
 																	<!-- end Total Payment fee  -->
 																	
 																	<!-- Overall Discount -->
-																	<td><span>&#8369</span><?php echo " " . number_format($history->dis_misc + $history->dis_tuition , 2); ?></td>
+																	<td><span>&#8369</span><?php echo " " . number_format($student->dis_misc + $student->dis_tuition , 2); ?></td>
 																	<!-- end Overall Discount  -->
+
+																	<!-- Balance -->
+																	<td><span>&#8369</span><?php echo " " . number_format($student->balance, 2); ?></td>
+																	<!-- end Balance  -->
+																	
 
 														  			
 																	<!-- <td><span>&#8369</span><?php echo " " . number_format($history->breakdown, 2); ?></td> -->
 
 																	<!-- <?php $history->breakdown = $history->breakdown + ($resultmisc / 4); ?>  -->
 																	<!-- <?php echo $history->dis_tuition; ?> -->
-																	<?php $breakdown = ($history->total_assessment - ($history->dis_tuition + $history->dis_misc /*+ $history->payment*/)) / 4; ?>
+																	<?php $breakdown = ($student->total_assessment - ($student->dis_tuition + $student->dis_misc /*+ $student->payment*/)) / 4; ?>
 																	<!-- <?= $breakdown; ?> -->
 																	<!-- <?php echo $breakdown; ?> -->
 																	<!-- BEGIN DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
-																	
-																	<?php $result = ($history->payment)/$breakdown; ?>
+																	<?php 
+																		if ($breakdown == 0) {
+																			$result = 0;
+																		}else{
+																	?>
+																		<?php $result = ($student->down_payment)/$breakdown;
+																		} 
+																	?>
 																	<!-- <?=  $result; ?> -->
-
-																	<?php $overall_payment = $history->payment + $history->dis_misc + $history->dis_tuition; ?>
+																	
+																	<?php $overall_payment = $student->down_payment + $student->dis_misc + $student->dis_tuition; ?>
 																	<!-- <?php 	echo $overall_payment; ?> -->
 																																		
 																	<!-- END DIFFERENCE TOTAL PAYMENT / AMOUNT PER EXAM -->
@@ -131,10 +148,8 @@
 																	<?php 
 																		echo $result2; 
 																	?> -->
-																	<?php $result2 = $history->total_assessment - ($history->payment + $history->dis_misc + $history->dis_tuition); ?>
+																	<?php $result2 = $student->total_assessment - ($student->down_payment + $student->dis_misc + $student->dis_tuition); ?>
 																	<!-- <?= $result2; ?> -->
-																	<!-- 
-																	<?php echo $history->payment; ?> -->
 
 																	<!-- <?php 
 																		echo "<br>" . $result . "<br>";
@@ -147,7 +162,7 @@
 																				<?php $indicate_breakdown =  $overall_payment - (0 * $breakdown);  ?>
 																			<!-- 	// <?php var_dump($breakdown) ?> -->
 																				<td>
-																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $history->payment , 2)); ?>
+																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $student->down_payment , 2)); ?>
 																				</td>
 
  																				<td>
@@ -172,7 +187,7 @@
 																					Paid
 																				</td>
 
-																				<?php $indicate_breakdown =  $overall_payment - (1 * $breakdown);  ?>
+																				<?php $indicate_breakdown =  $student->down_payment - (1 * $breakdown);  ?>
 																				<!-- <?php 	echo $breakdown; ?> -->
 																				<td>
 																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $indicate_breakdown , 2)); ?>
@@ -195,7 +210,8 @@
 																				<td>
 																					Paid
 																				</td>
-																				<?php $indicate_breakdown =  $overall_payment - (2 * $breakdown);  ?>
+																				<?php echo (2 * $breakdown); ?>
+																				<?php $indicate_breakdown =  $student->down_payment - (2 * $breakdown);  ?>
 																				<td>
 																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $indicate_breakdown , 2)); ?>
 																				</td>
@@ -215,7 +231,7 @@
 																			<td>
 																				Paid
 																			</td>
-																			<?php $indicate_breakdown =  $overall_payment - (3 * $breakdown);  ?>
+																			<?php $indicate_breakdown =  $student->down_payment - (3 * $breakdown);  ?>
 																			<!-- <?php 	echo $indicate_breakdown; ?> -->
 																			<td>
 																				<span>&#8369</span>
@@ -245,7 +261,7 @@
 
 																	?>
 																		<td>
-																			<span>&#8369</span><?php echo " " . number_format($breakdown - ($history->payment + $history->dis_misc + $history->dis_tuition),  2) ; ?>
+																			<span>&#8369</span><?php echo " " . number_format($breakdown - ($student->down_payment + $student->dis_misc + $student->dis_tuition),  2) ; ?>
 																		</td>
 																		<td>
 																			<span>&#8369</span><?php echo " " . number_format($breakdown,2) ; ?>

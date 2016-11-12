@@ -12,6 +12,24 @@ class Controller_Admin_Vpaas extends Controller_Admin
 		$this->template->content = $view;
 	}
 
+	public function action_index_student()
+	{	
+		$view = View::forge('admin/vpaas/index');
+		$view->users = Model_User::find('all');
+		$view->students = Model_Student::find('all');
+		$this->template->title = "Students";
+		$this->template->content = $view;	
+	}	
+
+	public function action_basic_index()
+	{
+		$view['basicprograms'] = Model_Basicprogram::find('all');
+		$view['users'] = Model_User::find('all');
+		$view['students'] = Model_Student::find('all');
+		$this->template->title = "Basic Program";
+		$this->template->content = View::forge('admin/vpaas/index_basic', $view);
+	}
+
 	public function action_view($program_description = null)
 	{	
 
@@ -22,12 +40,15 @@ class Controller_Admin_Vpaas extends Controller_Admin
 			$this->template->content = View::forge('admin/vpaas/view', $data);
 	}
 
-	public function action_index_student()
+	public function action_view_basic($basic_program_description = null)
 	{	
-		$view = View::forge('admin/vpaas/index');
-		$view->users = Model_User::find('all');
-		$view->students = Model_Student::find('all');
-		$this->template->title = "Students";
-		$this->template->content = $view;	
-	}	
+
+			$data ['basicprograms'] = DB::select('*')->from('basicprograms')->where('basic_program_description','=', $basic_program_description)->as_object()->execute();
+			$data ['users'] = Model_User::find('all');
+			$data ['students'] = Model_Student::find('all');
+			$this->template->title = "Programs";
+			$this->template->content = View::forge('admin/vpaas/view_basic', $data);
+	}
+
+	
 }

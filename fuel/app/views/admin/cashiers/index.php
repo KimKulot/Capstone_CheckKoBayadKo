@@ -50,7 +50,7 @@
 							<th>Total Assessment</th>
 							<th>Tuition Fee</th>
 							<th>Misc</th>
-							<th>Total Payment</th>
+							<th>Total Payment made</th>
 							<th>Tuition Discount</th>
 							<th>Miscellaneous Discount</th>
 							<th>Balance</th>

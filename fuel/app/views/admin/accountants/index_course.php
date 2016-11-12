@@ -9,14 +9,24 @@
     <section>
         <div class="section-header">
             <ol class="breadcrumb"> 
-                <li class="active">Account List</li>
-                <?php echo Html::anchor('admin/accountants/index_student', 'Basic Education', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                <li class="active">College Statistical Report</li>
+               
             </ol>
         </div><!--end .section-header -->
         <div class="section-body">
             <div class="card">
                 <div class="card-body">
 				<?php if ($students): ?>
+					<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/accountants')); ?>
+						<fieldset>
+							<div class="form-group ">
+								<?php $search = ""; ?>
+									
+									<?php echo Form::input('search',  Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Search' ));  
+									?>
+							</div>	
+						</fieldset>
+					<?php echo Form::open(array("class"=>"form-horizontal")); ?>
 				<div class="table-responsive">	
 				<table class="table no-margin">
 					<thead>
@@ -25,6 +35,7 @@
 							<th>Fully Paid</th>
 							<th>Not Paid</th>
 							<th>With Partial Payment</th>
+							<th>Date Time</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -41,10 +52,10 @@
 							<?php foreach ($students as $student): ?>
 							<?php if($program->program_description == $student->program){ ?>
 								<?php 
-								if($student->down_payment == ($student->tuition_fee + $student->misc)){
+								if($student->balance == 0){
 									$paid++; 
 								}elseif ($student->down_payment == 0) {
-									$unpaid++;
+									$unpaid++; 
 								}else{
 									$partial++;
 								}
@@ -59,86 +70,16 @@
 									<td><?php echo number_format( 100 * $paid / $total, 2) . "%"; ?></td>
 									<td><?php echo number_format( 100 * $unpaid / $total, 2) . "%" ?></td>
 									<td><?php echo number_format( 100 * $partial / $total, 2) . "%"; ?></td>
+
+									<?php $view ['pros'] = DB::select(DB::expr('MAX(date_time) as lastdate'),'program_description')->from('studhistories')->where('program_description', '=', $program->program_description)->as_object()->execute(); ?>
+									<?php foreach ($view ['pros'] as $pro): ?>
+										<td><?php echo  $pro->lastdate; ?></td>
+									<?php endforeach; ?>
+
+
 									<td> <?php echo Html::anchor('admin/accountants/view/'.$program->program_description, 'Students Financial Assessment', array('class' => 'btn ink-reaction btn-primary btn-raised btn-sm')); ?> </td>
-									 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-									    <script type="text/javascript">
-
-									      // Load Charts and the corechart package.
-									      google.charts.load('current', {'packages':['corechart']});
-
-									      google.charts.setOnLoadCallback(paidStatisticalChart);
-
-									      google.charts.setOnLoadCallback(partialPaidStatisticalChart);
-
-									      google.charts.setOnLoadCallback(notPaidStatisticalChart);
-
-									      // BEGIN PAID STATISTICAL CHART
-									      function paidStatisticalChart() {
-
-									       var data = google.visualization.arrayToDataTable([
-									          ['Task', 'Hours per Day'],
-									          ['BSIT',   100],
-									          ['BSBA',      1000],
-									          ['BSCS',  300],
-									          ['BSED', 800],
-									          ['BSCE',    200]
-									        ]);
-
-									        var options = {
-									          title: 'Statistical Report (paid)',
-									          pieHole: 0.4,
-									        };
-
-									        var chart = new google.visualization.PieChart(document.getElementById('donutchart_paid'));
-									        chart.draw(data, options);
-									      }
-									      // END PAID STATISTICAL CHART
-
-									      // BEGIN PARTIAL PAID STATISTICAL CHART
-									      function partialPaidStatisticalChart() {
-
-									        var data = google.visualization.arrayToDataTable([
-									          ['Task', 'Hours per Day'],
-									          ['BSIT',     100],
-									          ['BSBA',      200],
-									          ['BSCS',  400],
-									          ['BSED', 800],
-									          ['BSCE',    8]
-									        ]);
-
-									        var options = {
-									          title: 'Statistical Report (Partially Paid)',
-									          pieHole: 0.4,
-									        };
-
-									        var chart = new google.visualization.PieChart(document.getElementById('donutchart_partialpaid'));
-									        chart.draw(data, options);
-									      }
-									       // END PARTIAL PAID STATISTICAL CHART
-
-									      // BEGIN NOT PAID STATISTICAL CHART
-									      function notPaidStatisticalChart() {
-
-									        var data = google.visualization.arrayToDataTable([
-									          ['Task', 'Hours per Day'],
-									          ['BSIT',     100],
-									          ['BSBA',      200],
-									          ['BSCS',  400],
-									          ['BSED', 800],
-									          ['BSCE',    8]
-									        ]);
-
-									        var options = {
-									          title: 'Statistical Report (Not Paid)',
-									          pieHole: 0.4,
-									        };
-
-									        var chart = new google.visualization.PieChart(document.getElementById('donutchart_notpaid'));
-									        chart.draw(data, options);
-									      }
-									      // END NOT PAID STATISTICAL CHART
-
-									    </script>
+									 
+									
 																
 										
 								<?php } ?>
@@ -163,11 +104,5 @@
 
 
 		   
-		    <!--Table and divs that hold the pie charts-->
-		 	<div class="card card-body">
-		       <div id="donutchart_paid" style="width: 900px; height: 500px;"></div>
-		       <div id="donutchart_partialpaid" style="width: 900px; height: 500px;"></div>
-		       <div id="donutchart_notpaid" style="width: 900px; height: 500px;"></div>
-		  	</div>
-
+		   
 

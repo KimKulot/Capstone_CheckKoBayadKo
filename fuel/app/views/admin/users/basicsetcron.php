@@ -23,18 +23,7 @@
 								</div>
 
 								
-									<div class="form-group floating-label">
-									    <?php echo Form::label('Education Level', 'education_level', array('class'=>'control-label')); ?>
-									 	<?php 
-										 	echo Form::select('education_level', Input::post('education_level', isset($student) ? $user->education_level : ''), array(
-											    'Education Level' => array( 
-											        'Highschool' => 'Highschool',
-											        'Gradeschool' => 'Gradeschool',
-											        'Preschool' => 'Preschool',
-											    ),
-											));
-										?>
-									</div>
+									
 							
 								
 								<div class="form-group floating-label" style="margin-top:25px">

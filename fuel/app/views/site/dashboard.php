@@ -31,11 +31,11 @@
 											
 												<thead>
 														<tr>
-															
+															 
 															<th>Total Assessment</th>
 															<th>Tuition fee</th>
 															<th>Miscellaneous</th>
-															<th>Total Payment</th>
+															<th>Total Payment made</th>
 															<th>Overall Discount</th>
 															<th>Balance</th>
 															<!-- <th>Amount per Exam</th> -->
@@ -187,8 +187,8 @@
 																					Paid
 																				</td>
 
-																				<?php $indicate_breakdown =  $overall_payment - (1 * $breakdown);  ?>
-																				<!-- <?php 	echo $breakdown; ?> -->
+																				<?php $indicate_breakdown =  $student->down_payment - (1 * $breakdown);  ?>
+																				<?php 	echo $overall_payment; ?>
 																				<td>
 																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $indicate_breakdown , 2)); ?>
 																				</td>
@@ -210,7 +210,7 @@
 																				<td>
 																					Paid
 																				</td>
-																				<?php var_dump(2 * $breakdown); ?>
+																				<!-- <?php echo (2 * $breakdown); ?> -->
 																				<?php $indicate_breakdown =  $student->down_payment - (2 * $breakdown);  ?>
 																				<td>
 																					<span>&#8369</span><?php echo " " . (number_format($breakdown - $indicate_breakdown , 2)); ?>
@@ -231,7 +231,7 @@
 																			<td>
 																				Paid
 																			</td>
-																			<?php $indicate_breakdown =  $overall_payment - (3 * $breakdown);  ?>
+																			<?php $indicate_breakdown =  $student->down_payment - (3 * $breakdown);  ?>
 																			<!-- <?php 	echo $indicate_breakdown; ?> -->
 																			<td>
 																				<span>&#8369</span>

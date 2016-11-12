@@ -38,7 +38,7 @@
 						?>
 
 						<h2 class="panel-title">
-						<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'site/upload_image', 'enctype' => 'multipart/form-data')); ?>
+						<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'site/upload_image', 'enctype' => 'multipart/form-data', 'value' => 'Upload Image')); ?>
 		
 							<fieldset>
 								

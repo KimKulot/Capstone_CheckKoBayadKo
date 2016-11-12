@@ -3,7 +3,7 @@
         <div class="section-header">
             <ol class="breadcrumb"> 
                 <li class="active">Listing of Students</li>
-                <?php echo Html::anchor('admin/vpaas/index', 'course', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+
             </ol>
         </div><!--end .section-header -->
         <div class="section-body">

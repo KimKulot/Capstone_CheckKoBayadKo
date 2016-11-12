@@ -340,6 +340,7 @@ class Controller_Site extends Controller_Base
 		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Basicmiscellanou::find('all');
+		$view['scholarships'] = Model_Scholarship::find('all');
 		$view['programs'] = Model_Basicprogram::find('all');
 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
@@ -354,7 +355,7 @@ class Controller_Site extends Controller_Base
 			)
 		]);
 		$this->template->title = 'Dashboard';
-		$this->template->content = View::forge('admin/cashiers/view_basic', $view);
+		$this->template->content = View::forge('site/view_basic', $view);
 	}
 
 

@@ -27,7 +27,7 @@
 									<th>Total Assessment</th>	
 									<th>Tuition fee</th>
 									<th>Miscellaneous</th>
-									<th>Payment</th>
+									<th>Total Payment made</th>
 									<th>Overall Discount</th>
 									<th>Balance</th>
 									

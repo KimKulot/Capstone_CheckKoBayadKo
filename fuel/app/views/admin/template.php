@@ -69,19 +69,19 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="headerbar-right">
-            <ul class="header-nav header-nav-options">
+            <!-- <ul class="header-nav header-nav-options">
                 <li>
                     <!-- Search form -->
-                    <form class="navbar-search" role="search">
+                    <!-- <form class="navbar-search" role="search">
                         <div class="form-group">
                             <input type="text" class="form-control" name="headerSearch" placeholder="Enter your keyword">
                         </div>
                         <button type="submit" class="btn btn-icon-toggle ink-reaction"><i class="fa fa-search"></i></button>
                     </form>
-                </li>
+                </li> -->
                
                 
-            </ul><!--end .header-nav-options -->
+<!--             </ul> --><!--end .header-nav-options --> 
 
             <div class="dropdown-menu">
                 <ul class="list-unstyled">
@@ -202,8 +202,7 @@
 									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('#','<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'.   $section_title). '</span>'?>
 										<ul>
-											<li><?php echo Html::anchor('admin/'.$section_segment, '<span class="title">' . 'Users List' . '</span>'); ?>
-											</li>
+											
 											<li><?php echo Html::anchor('admin/deans/view', '<span class="title">' . 'Deans' . '</span>'); ?>
 											</li>
 											<li><?php echo Html::anchor('admin/deans/view_proghead', '<span class="title">' . 'Program Heads' . '</span>'); ?>
@@ -225,6 +224,10 @@
 										<ul>
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Statistical Report</span> '); ?>
 											</li>
+
+											<li> <?php echo Html::anchor('admin/accountants/index_student', '<span class="title">Basic Education Statistical Report</span> '); ?>
+											</li>
+
 											<li> <?php echo Html::anchor('admin/accountants/index_scholarship', '<span class="title">Scholarship</span> '); ?>
 											</li>
 										</ul>
@@ -245,31 +248,33 @@
 										<ul>
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Users List</span> '); ?>
 											</li>
-											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Exam Schedule</span> '); ?>
-											</li>
-											<li> <?php echo Html::anchor('admin/users/basicsetcron', '<span class="title">Setting Exam for Basic Education</span> '); ?>
-											</li>
+											<?php if ($current_user->role != 6): ?>
+												<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Exam Schedule</span> '); ?>
+												</li>
+												<li> <?php echo Html::anchor('admin/users/basicsetcron', '<span class="title">Setting Exam for Basic Education</span> '); ?>
+												</li>
 
-											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
-											</li>
+												<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>
+												</li>
 
-											<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Add Basic Education Student</span>'); ?>
-											</li>
+												<li><?php echo Html::anchor('admin/users/create_basic_student', '<span class="title">Add Basic Education Student</span>'); ?>
+												</li>
 
-											<li><?php echo Html::anchor('admin/users/create', '<span class="title">Add Official User</span>'); ?>
-											</li>
+												<li><?php echo Html::anchor('admin/users/create', '<span class="title">Add Official User</span>'); ?>
+												</li>
 
-											<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
-											</li>
+												<li><?php echo Html::anchor('admin/users/create_program', '<span class="title">College Program</span>'); ?>
+												</li>
 
-											<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Add Dean</span>'); ?>
-											</li>
+												<li><?php echo Html::anchor('admin/users/create_dean', '<span class="title">Add Dean</span>'); ?>
+												</li>
 
-											<li> <?php echo Html::anchor('admin/users/create_proghead', '<span class="title">Add Program Head </span> '); ?>
-											</li>
+												<li> <?php echo Html::anchor('admin/users/create_proghead', '<span class="title">Add Program Head </span> '); ?>
+												</li>
 
-											<li> <?php echo Html::anchor('admin/users/graveyard', '<span class="title">Deactivated Users</span> '); ?>
-											</li>
+												<li> <?php echo Html::anchor('admin/users/graveyard', '<span class="title">Deactivated Users</span> '); ?>
+												</li>
+											<?php endif; ?>
 
 											
 											
@@ -297,12 +302,13 @@
 
 											<li> <?php echo Html::anchor('admin/cashiers/index_basic_miscellanous', '<span class="title">Basic Program Miscellaneous</span> '); ?>
 											</li>
+											<?php if ($current_user->role != 6): ?>
+												<li> <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="title">New Miscellaneous (Program)</span> '); ?>
+												</li>
 
-											<li> <?php echo Html::anchor('admin/cashiers/add_miscellanous', '<span class="title">New Miscellaneous (Program)</span> '); ?>
-											</li>
-
-											<li> <?php echo Html::anchor('admin/cashiers/add_basic_miscellanous', '<span class="title">New Miscellaneous (Basic Program)</span> '); ?>
-											</li>
+												<li> <?php echo Html::anchor('admin/cashiers/add_basic_miscellanous', '<span class="title">New Miscellaneous (Basic Program)</span> '); ?>
+												</li>
+											<?php endif; ?>
 											
 										</ul>
 									</li>
@@ -315,8 +321,15 @@
 								if ($section_segment == "principals"): 
 									$section_title = "Principal"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-person"></i></div> <span class="title">'.  $section_title). '</span>'?>
+									
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('#','<div class="gui-icon"><i class="md md-person"></i></div> <span class="title">'.  $section_title). '</span>'?>
+
+										<ul>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Statistical Report</span> '); ?>
+											</li>
+										</ul>
+
 									</li>
 								<?php endif ?>
 								<!-- END PRINCIPAL -->
@@ -326,9 +339,17 @@
 								if ($section_segment == "admins"): 
 									$section_title = "School Administrator"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 									
-									<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-account-box"></i></div> <span class="title">'. $section_title). '</span>'?>
+									<?php echo Html::anchor('#','<div class="gui-icon"><i class="md md-account-box"></i></div> <span class="title">'. $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">College Statistical Report</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/admins/basic_index', '<span class="title">Basic Education Statistical Report</span> '); ?>
+											</li>
+											
+										</ul>
 									</li>
 								<?php endif ?>
 								<!-- END ADMINS -->
@@ -338,10 +359,20 @@
 								if ($section_segment == "vpaas"): 
 									$section_title = "VPAA"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 			
-										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title). '</span>'?>
+										<?php echo Html::anchor('#', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class=	"title">'. $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">College Statistical Report</span> '); ?>
+											</li>
+
+											<li> <?php echo Html::anchor('admin/vpaas/basic_index', '<span class="title">Basic Education Statistical Report</span> '); ?>
+											</li>
+										
+										</ul>
 									</li>
+
 								<?php endif ?>
 								<!-- END VPAA -->
 							<?php endif ?>
@@ -362,9 +393,21 @@
 								if ($section_segment == "vpaas"): 
 									$section_title = "VPAA"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                        <?php echo Html::anchor('admin','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                    </li>
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 			
-										<?php echo Html::anchor('admin/'.$section_segment, '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title). '</span>'?>
+										<?php echo Html::anchor('#', '<div class="gui-icon"><i class="fa fa-user"></i></div> <span class="title">'. $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">College Statistical Report</span> '); ?>
+											</li>
+
+											<!-- <li> <?php echo Html::anchor('admin/vpaas/basic_index', '<span class="title">Basic Education Statistical Report</span> '); ?>
+											</li> -->
+										
+										</ul>
+
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -392,8 +435,15 @@
 								if ($section_segment == "principals"): 
 									$section_title = "Principal"; 
 									?>
-									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+									<li class="?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                        <?php echo Html::anchor('admin','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                    </li>
+									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('admin/'.$section_segment,'<div class="gui-icon"><i class="md md-person"></i></div> <span class="title">'.  $section_title). '</span>'?>
+										<ul>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Statistical Report</span> '); ?>
+											</li>
+										</ul>
 									</li>
 								<?php endif ?>
 							<?php endif ?>
@@ -405,6 +455,9 @@
 								if ($section_segment == "cashiers"): 
 									$section_title = "Cashier"; 
 									?>
+									<li class="?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                        <?php echo Html::anchor('admin','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                    </li>
 									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('#', '<div class="gui-icon"><i class="md md-attach-money"></i></div> <span class="title">'.  $section_title). '</span>'?>
 										<ul>
@@ -481,11 +534,19 @@
 									if($section_segment == "accountants"){
 										$section_title = "Accountant"; 
 									?>
+									<li class="?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+                                        <?php echo Html::anchor('admin','<span class="gui-icon"><i class="fa fa-home (alias)"></i></span> <span class="title">'.   "Home"). '</span>'?>
+                                    </li>
+
 									<li class="gui-folder <?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
 										<?php echo Html::anchor('#','<div class="gui-icon"><i class="md md-web"></i></div> <span class="title">'.  $section_title). '</span>'?>
 										<ul>
-											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Statistical Report</span> '); ?>
+											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">College Statistical Report</span> '); ?>
 											</li>
+
+											<li> <?php echo Html::anchor('admin/accountants/index_student', '<span class="title">Basic Education Statistical Report</span> '); ?>
+											</li>
+
 											<li> <?php echo Html::anchor('admin/accountants/index_scholarship', '<span class="title">Scholarship</span> '); ?>
 											</li>
 
@@ -524,6 +585,8 @@
 											<li> <?php echo Html::anchor('admin/'.$section_segment, '<span class="title">Users List</span> '); ?>
 											</li>
 											<li> <?php echo Html::anchor('admin/users/setcron', '<span class="title">Setting Exam Schedule</span> '); ?>
+											</li>
+											<li> <?php echo Html::anchor('admin/users/basicsetcron', '<span class="title">Setting Exam for Basic Education</span> '); ?>
 											</li>
 
 											<li><?php echo Html::anchor('admin/users/create_student', '<span class="title">Add College Student</span>'); ?>

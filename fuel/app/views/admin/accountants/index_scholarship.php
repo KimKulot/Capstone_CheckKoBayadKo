@@ -4,7 +4,10 @@
         <div class="section-header">
             <ol class="breadcrumb">
                 <li class="active">Scholarship</li>
-                <?php echo Html::anchor('admin/accountants/create_scholarship', 'Add Scholarship', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                <?php if ($current_user->role != 6): ?>
+                	<?php echo Html::anchor('admin/accountants/create_scholarship', 'Add Scholarship', array('class' => 'btn btn-sm btn-primary pull-right ink-reaction')); ?>
+                <?php endif; ?>
+
 
             </ol>
         </div><!--end .section-header -->

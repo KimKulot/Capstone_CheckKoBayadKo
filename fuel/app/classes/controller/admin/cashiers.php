@@ -24,7 +24,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 		$view['users'] = Model_User::find('all', [
 			'where' => [
-				['firstname', 'like', "%$search%"]
+				['lastname', 'like', "%$search%"]
 			]
 		]);
 
@@ -256,6 +256,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		// $view['users'] = DB::select('*')->from('users')->where(,'like', "%$search%")->as_object()->execute();
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
 		$view['misc'] = Model_Basicmiscellanou::find('all');
+		$view['scholarships'] = Model_Scholarship::find('all');
 		$view['programs'] = Model_Basicprogram::find('all');
 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
@@ -304,7 +305,9 @@ class Controller_Admin_Cashiers extends Controller_Admin
 		// die;
 		$basic['basicprograms'] = Model_Basicprogram::find('all');
 		$view['dates'] = DB::select('date_time')->from('accountantcrons')->order_by('id','desc')->limit(1)->as_object()->execute();
+		$view['scholarships'] = Model_Scholarship::find('all');
 		$view['misc'] = Model_Miscellanou::find('all');
+		$view['users'] = Model_User::find($id);
 		$view['programs'] = Model_Program::find('all');
 		$view['students'] = Model_Student::find('all', [
 		'related' => array(
@@ -333,7 +336,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 
 	public function action_pay_message($id = null)
 	{	
-		
+		date_default_timezone_set('Asia/Manila');
 		$data['studparents'] = Model_Studparent::find('all');
 		$data['users'] = Model_User::find('all');
 		$data['students'] = DB::select('*')->from('students')->where('id', '=', $id)->as_object()->execute();
@@ -358,19 +361,19 @@ class Controller_Admin_Cashiers extends Controller_Admin
 											
 											  $total = $student->tuition_fee + $student->misc; 
 
-											 // <!-- START MESSAGE TO BE EXECUTED -->
-											  $message = "Good Day! " . $use->lastname. ", " . $use->firstname . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
+					// <!-- START MESSAGE TO BE EXECUTED -->
+					$message = "Good Day! " . $use->lastname. ", " . $use->firstname . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
 
-											if($student->balance != 0){
-												$message .= " Your student " . $user->firstname . " total assessment is: Php " . $total . " Your downpayment: Php " . $student->down_payment . " Your Balance: Php " . $student->balance . " Thank you!"; 
-											}
-											
-												
-											 
-												array_push($arrnumber, $use->mobile_number);
-												array_push($arrmessage, $message);
-											
-											//  END MESSAGE TO BE EXECUTED 
+					if($student->balance != 0){
+						$message .= " Your student " . $user->firstname . " a " . $student->program . " " . $student->year . " total assessment is: Php " . $total . " Your downpayment: Php " . $student->down_payment . " Your outstanding Balance: Php " . $student->balance . " Thank you!"; 
+					}
+					
+						
+					 
+						array_push($arrnumber, $use->mobile_number);
+						array_push($arrmessage, $message);
+					
+					//  END MESSAGE TO BE EXECUTED 
 										
 										 	} 
 										 }
@@ -382,7 +385,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 								  $total = $student->tuition_fee + $student->misc; 
 									
 								// START MESSAGE TO BE EXECUTED 
-								  $messages = "Good Day! " . $user->lastname. ", " . $user->firstname . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
+								  $messages = "Good Day! " . $user->lastname. ", " . $user->firstname. " a " . $student->program . " " . $student->year . " You have paid: " . $studhistory->down_payment. " pesos " . "(" . date('d/M/y h:i:s') .")";
 									
 									if($student->balance != 0){
 										$messages .= " Your balance: " . $student->balance . " pesos. Thank You!"; 
@@ -560,7 +563,7 @@ class Controller_Admin_Cashiers extends Controller_Admin
 			$student->balance = $student->total_assessment - ($student->dis_tuition + $student->dis_misc + $student->down_payment);
 			
 			$balance = $student->balance;
-			if($balance < 0){
+			if($balance < 0){ 
 
 				Session::set_flash('error', e('Invalid amount of payment'));
 				

@@ -162,7 +162,7 @@
 				<?php endif; ?> 
 				<p>
 				<?php if ($current_user->role != 6): ?>
-					<?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?> 
+					<!-- <?php echo Html::anchor('admin/users/create', '<span class="glyphicon glyphicon-plus"></span> New User', array('class' => 'btn btn-primary btn-sm')); ?>  -->
 				<?php endif ?>
 				</p>
 				 </div>

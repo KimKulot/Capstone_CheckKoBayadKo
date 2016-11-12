@@ -4,7 +4,7 @@ class Model_Basicaccountantcron extends \Orm\Model
 	protected static $_properties = array(
 		'id',
 		'date_time',
-		'education_level',
+		// 'education_level',
 		'created_at',
 		'updated_at',
 
@@ -26,7 +26,7 @@ class Model_Basicaccountantcron extends \Orm\Model
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('date_time', 'Date and time', 'required|max_length[50]');
-		$val->add_field('education_level', 'Education Level', 'required|max_length[150]');
+		// $val->add_field('education_level', 'Education Level', 'required|max_length[150]');
 		return $val;
 	}
 

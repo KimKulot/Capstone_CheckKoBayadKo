@@ -19,6 +19,7 @@
 							<th>Fully Paid</th>
 							<th>Not Paid</th>
 							<th>With Partial Payment</th>
+							<th>Date Time</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -35,7 +36,7 @@
 							<?php foreach ($students as $student): ?>
 							<?php if($program->basic_program_description == $student->program){ ?>
 								<?php 
-								if($student->down_payment == ($student->tuition_fee + $student->misc)){
+								if($student->balance == 0){
 									$paid++; 
 								}elseif ($student->down_payment == 0) {
 									$unpaid++;

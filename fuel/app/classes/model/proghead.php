@@ -14,6 +14,10 @@ class Model_Proghead extends \Orm\Model_Soft
 	/**
 	 * @var array	belongs_to relationships
 	 */
+
+
+
+
 	protected static $_belongs_to = array(
 		'user' => array(
 			'model_to' => 'Model_User',
@@ -24,6 +28,8 @@ class Model_Proghead extends \Orm\Model_Soft
 	);
 
 	
+
+
 
 
 	protected static $_observers = array(

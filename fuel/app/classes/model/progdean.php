@@ -14,6 +14,10 @@ class Model_Progdean extends \Orm\Model_Soft
 	/**
 	 * @var array	belongs_to relationships
 	 */
+
+
+
+	
 	protected static $_belongs_to = array(
 		'user' => array(
 			'model_to' => 'Model_User',
@@ -21,12 +25,6 @@ class Model_Progdean extends \Orm\Model_Soft
 			'key_to'   => 'id',
 			'cascade_delete' => false,
 		),
-		// 'parent_user' => array(
-		// 	'model_to' => 'Model_User',
-		// 	'key_from' => 'parent_id',
-		// 	'key_to'   => 'id',
-		// 	'cascade_delete' => false,
-		// ),
 	);
 
 	
