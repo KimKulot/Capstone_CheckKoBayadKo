@@ -104,7 +104,7 @@ echo Form::radio('gender', 'Female'); -->
 				$temp_year = $scholar->year;
 			} ?>
 		<?php endif ?>
-
+	
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group floating-label">
@@ -122,11 +122,11 @@ echo Form::radio('gender', 'Female'); -->
 				 	<?php 
 					 	echo Form::select('year', Input::post('year', isset($student) ? $user->year : $temp_year), array(
 						    'Year' => array( 
-						        'I Year' => 'First',
-						        'II Year' => 'Second',
-						        'III Year' => 'Third',
-						        'IV Year' => 'Fourth',
-						        'V Year' => 'Fifth',
+						        '1st Year' => 'First',
+						        '2nd Year' => 'Second',
+						        '3rd Year' => 'Third',
+						        '4th Year' => 'Fourth',
+						        '5th Year' => 'Fifth',
 						    ),
 						));
 					?>

@@ -486,6 +486,8 @@ class Controller_Admin_Cashiers extends Controller_Admin
 	public function action_edit($id = null)
 	{
 		$student = Model_Student::find($id);
+		$studenthistory = DB::select('*')->from('studhistories')->where('studenthistory_id', '=', $student->id)->as_object()->execute();
+		// var_dump($studenthistory);die;
 		$val = Model_Student::validate('edit');
 
 		// $info['students'] = Model_Student::find('all', [
@@ -614,8 +616,10 @@ class Controller_Admin_Cashiers extends Controller_Admin
 				
 				Session::set_flash('error', $val->error());
 			}
-
+			
+			$this->template->set_global('studenthistory', $studenthistory, false);
 			$this->template->set_global('student', $student, false);
+
 		}
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/cashiers/edit');

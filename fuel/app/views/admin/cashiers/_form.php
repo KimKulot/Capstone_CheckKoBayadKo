@@ -58,9 +58,18 @@
 
 						<?php echo Form::input('misc', Input::post('misc', isset($student) ? $student->misc : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Miscellaneous', 'id' => 'misc', 'style' => 'display:none')); ?>
 				</div>
-
-				<!-- END MISCELLANOUS  -->
-				
+					<!-- <div class="col-sm-4">
+						<div class="form-group floating-label">
+						    <?php echo Form::label('Semester', 'semester', array('class'=>'control-label')); ?>
+						 	<select name="semester" class="col-md-4 form-control">
+						 		<option value="first semester">First Semester</option>
+						 		<option value="second semester">Second Semester</option>
+						 	</select>
+						</div>
+					</div>
+					<br><br>
+					<br>
+					<br> -->
 					<fieldset>
 						<div class="form-group floating-label">
 
@@ -135,8 +144,11 @@
 							<?php echo Form::label('', 'year', array('class'=>'control-label')); ?>
 
 								<?php echo Form::input('year', Input::post('year', isset($student) ? $student->year : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Year', 'type'=>'hidden')); ?>
-						</div> 
-						
+						</div>
+
+						<div>
+								
+						</div>
 
 
 						

@@ -1,5 +1,55 @@
 
 <?php 
+
+// // Create an instance
+// $email = Email::forge();
+
+// // Set the from address
+// $email->from('beverly.losoloso@jmc.edu.ph', 'Kim');
+
+// // Set the to address
+// $email->to('beverly.losoloso@jmc.edu.ph', 'Lowie');
+
+// // Set a subject
+// $email->subject('This is the subject');
+
+// // Set multiple to addresses
+
+// // $email->to(array(
+// //     'edzel.abliter@jmc.edu.ph',
+// //     'edzel.abliter@jmc.edu.ph' => 'With a Name',
+// // ));
+
+// // And set the body.
+// $email->body('I love HONEYs atchup  asdfasdf(LOve ni abliTer');
+// ?>
+ <br>
+ <br>
+ <br>
+ <br>
+ <br> <?php
+
+// try
+// {
+//     $email->send();
+// }
+// catch(\EmailValidationFailedException $e)
+// {
+//    echo $e;
+// }
+
+// catch(\EmailSendingFailedException $e)
+// {
+// 	   echo $e;
+//     // The driver could not send the email
+// }
+
+
+
+
+
+
+
 	if (!isset($current_user->role)) {
 		Response::redirect('/');
 	}
@@ -31,28 +81,71 @@
           <div class="section-body">
             <div class="card">
                 <div class="card-body">
-				<?php if ($users): ?>
-					
-				<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/users')); ?>
-						<fieldset>
-							<div class="form-group ">
-								<?php $search = ""; ?>
-									
-									<?php echo Form::input('search',  Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Search' ));  
-									?>
-							</div>
-							<!-- <div class="form-group">
-									<?php echo Html::anchor('admin/users/'. $search, '<span class="glyphicon glyphicon-search"></span> Search', array('class' => 'btn btn-primary btn-sm')); ?> 
-							</div> -->	
-						</fieldset>
+                <?php if ($users): ?>
 
-						<!-- <form action="admin/users/index_search" method="post">
-							search <input type="text" name="search" required>
-							<input type="submit">
-						</form> -->
-				<?php echo Form::open(array("class"=>"form-horizontal")); ?>
-					
-				<!-- <input type="submit" name="submit" value="submit" /> -->
+
+				
+				
+
+				
+					<!-- BEGIN ROLE PROCEED -->
+					<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/users')); ?>
+							<fieldset>
+								<div class="row">
+
+									<div class="col-sm-4">
+										<div class="form-group ">
+											<?php $search = ""; ?>
+												
+												<?php echo Form::input('search',  Input::post('search', isset($user) ? $search : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Search' ));  
+												?>
+										</div>
+									</div>
+
+									<div class="col-sm-2">
+										<div class="form-group">
+											<input type="submit" value="Submit">
+										</div>
+									</div>
+								</div>
+								
+							</fieldset>
+
+					<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+
+					<!-- BEGIN ROLE PROCEED -->
+					<?php echo Form::open(array("class"=>"form-horizontal", "action" => 'admin/users')); ?>
+							<fieldset>
+								<div class="row">
+
+									<div class="col-sm-3">
+										<div class="form-group">
+										<?php $user_type = ""; ?>
+										    <?php echo Form::label('User type', 'user_type', array('class'=>'control-label')); ?>
+										 	<?php 
+											 	echo Form::select('user_type', Input::post('user_type', isset($student) ? $user_type : ''), array(
+												    'Type' => array( 
+												    	'' => 'All',
+												        '8' => 'Student',
+												        '9' => 'Parent',
+												        '1' => 'Dean',
+												        '2' => 'Program Head',
+												    ),
+												));
+											?>
+										</div>
+									</div>
+									<div class="col-sm-2">
+										<div class="form-group">
+											<input type="submit" value="Submit">
+										</div>
+									</div>
+								</div>
+								
+							</fieldset>
+
+					<?php echo Form::open(array("class"=>"form-horizontal")); ?>
+
 				<div class="table-responsive">				
 				<table class="table no-margin">
 					<thead>
@@ -61,42 +154,42 @@
 							<th>Full Name</th>
 							<th>Mobile number</th>
 							<th>Email</th>
-							<th>Role</th>
+							<th>Action</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-					
-					<!-- 
-					<form class="form-inline">
-						<div class="form-group">
-							<label class="sr-only">Email</label>
-							<p class="form-control-static">email@example.com</p>
-						</div>
-						<div class="form-group">
-							<label for="inputPassword2" class="sr-only">Password</label>
-							<input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-						</div>
-						<button type="submit" class="btn btn-default">Confirm identity</button>
-					</form> -->
 
-							<!-- <input type="text" class="form-control" placeholder=".col-xs-3"> -->
-					
-					
+				<?php $role_length = count($roles); ?>
 
-				<?php foreach ($users as $item): ?>		<tr>
+				<?php foreach ($roles as $role): ?>
+					<?php $data['filtered_user'] = DB::select('*')->from('users')->where('role', $role->id)->as_object()->execute(); ?>
+				<?php endforeach ?>
+
+				
+
+				<?php	
+					$collection = \Arr::multisort($users, array(
+					    'lastname' => SORT_ASC,
+					), true);
+					//var_dump($collection);
+				?>
+				<?php $tmp_user = ""; ?>
+				<?php if ($role_length > 1){ ?>
+
+					<?php $tmp_user = $users; ?>
+
+				<?php }else{ ?>
+					<?php $tmp_user = $data['filtered_user']; ?>
+				<?php } ?>
+					<?php foreach ($tmp_user as $item){ ?>
+
+						<tr>
 							<td><?php echo $item->username; ?></td>
-							<td><?php echo $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename ?></td>
+							<td><?php echo ucwords($item->lastname) . ', ' . ucwords($item->firstname) . ' ' . ucwords($item->middlename) ?></td>
 							<td><?php echo $item->mobile_number; ?></td>
 							<td><?php echo $item->email; ?></td> 
-							<?php foreach ($roles as $role): ?>
-								<?php 
-									if ($item->role == $role->id) 
-									{
-										echo "<td>$role->role_description</td>"; 
-									} 
-								?>
-							<?php endforeach ?>
+							
 							<?php if ($current_user->role != 6): ?>
 								<td>
 									<!-- <?php //echo Html::anchor('admin/users/view/'.$item->id, 'View', array('class' => 'btn btn-primary btn-sm')); ?> | -->
@@ -153,7 +246,7 @@
 								</td>
 							<?php endif ?>
 						</tr>
-				<?php endforeach; ?>	</tbody>
+				<?php } ?>	</tbody>
 				</table>
 				</div>
 				<?php else: ?>

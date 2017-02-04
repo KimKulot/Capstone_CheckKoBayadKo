@@ -6,6 +6,7 @@ class Model_Student extends \Orm\Model_Soft
 		'id',
 		'program',
 		'year',
+		'semester',
 		'student_id',
 		'scholarship_id',
 		'total_assessment',
@@ -72,6 +73,7 @@ class Model_Student extends \Orm\Model_Soft
 		$val = Validation::forge($factory);
 		$val->add_field('program', 'Program', 'required|max_length[50]');
 		$val->add_field('year', 'Year', 'required|max_length[255]');
+		$val->add_field('semester', 'Semester', 'required|max_length[255]');
 		$val->add_field('student_id', 'Student_id',  'required|valid_string[numeric]');
 		$val->add_field('scholarship_id', 'Scholarship',  'required|valid_string[numeric]');
 		$val->add_field('total_assessment', 'Total Assessment', 'valid_string[float]');

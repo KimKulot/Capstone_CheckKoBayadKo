@@ -70,8 +70,19 @@
 		<div class="form-group floating-label">
 			<?php echo Form::label('Email', 'email', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email', 'required')); ?>
+				<?php echo Form::input('email', Input::post('email', isset($user) ? $user->email : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'Email', 'type' => 'email', 'required')); ?>
 
+		</div>
+
+		<div class="form-group floating-label">
+		    <?php echo Form::label('Gender: ', 'gender', array('class'=>'control-label')); ?>
+		    <br>
+		    
+		 	<?php echo Form::radio('gender', 'male', true); ?>
+		 	<?php echo Form::label('Male', 'gender'); ?>
+			
+		 	<?php echo Form::radio('gender', 'female', true); ?>
+		 	<?php echo Form::label('Female', 'gender'); ?>
 		</div>
 
 		<div class="form-group floating-label">
@@ -129,44 +140,6 @@
 
 
 
-		<!-- <div class="form-group floating-label">
-		    // <?php //echo Form::label('Program', 'year', array('class'=>'control-label')); ?>
-		 	<?php 
-			 	// echo Form::select('year', Input::post('year', isset($student) ? $user->year : 'First Year'), array(
-				 //    'Highschool' => array(
-				 //    	'First Year' => 'First Year',
-				 //    	'Second Year' => 'Second Year',
-				 //    	'Third Year' => 'Third Year',
-				 //    	'Fourth Year' => 'Fourth Year',
-				 //    ),
-				 //    'Gradeschool' => array(
-				 //    	'Grade one' => 'Grade one',
-				 //    	'Grade two' => 'Grade two',
-				 //    	'Grade three' => 'Grade three',
-				 //    	'Grade four' => 'Grade four',
-				 //    	'Grade five' => 'Grade five',
-				 //    	'Grade six' => 'Grade six',
-				 //    ),
-				 //   	'Preschool' => 'Preschool',
-				 //   	'Kinder one'   => 'Kinder one',
-				 //   	'Kinder two'   => 'Kinder two',
-				//));
-			?>
-		    <!-- <div class="input">
-		        <?php //echo Form::select('student_id', Input::post('student_id', isset($student) ? $student->student_id : $current_user->id), $students, array('class' => 'span6')); ?>
-		 
-		    </div> -->
-		<!-- </div> --> 		
-		
-		    <!-- <div class="input">
-		        <?php //echo Form::select('student_id', Input::post('student_id', isset($student) ? $student->student_id : $current_user->id), $students, array('class' => 'span6')); ?>
-		 
-		    </div> -->
-		<!-- </div>
-		 -->
-
-
-
 
 		<div class="form-group floating-label">
 			<label class='control-label'>&nbsp;</label>
@@ -190,17 +163,3 @@
 	</fieldset>
 
 <?php echo Form::close(); ?>
-
-
-<!-- 	<div class="btn-group">
-	  <button type="button" class="btn btn-primary">Apple</button>
-	  <button type="button" class="btn btn-primary">Samsung</button>
-	  <div class="btn-group">
-	    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-	    Sony <span class="caret"></span></button>
-	    <ul class="dropdown-menu" role="menu">
-	      <li><a href="#">Tablet</a></li>
-	      <li><a href="#">Smartphone</a></li>
-	    </ul>
-	  </div>
-	</div> -->

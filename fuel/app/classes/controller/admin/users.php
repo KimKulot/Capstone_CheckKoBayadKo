@@ -5,11 +5,12 @@ class Controller_Admin_Users extends Controller_Admin
 	public function action_index()
 	{
 		$search = "";
+		$user_type = "";
 		if (Input::method() == 'POST')
 		{
 			$search = Input::post('search');
-
-		} 
+			$user_type = Input::post('user_type');
+		}
 
 		$data['users'] = Model_User::find('all', [
 			'where' => [
@@ -19,7 +20,16 @@ class Controller_Admin_Users extends Controller_Admin
 		$data['students'] = Model_Student::find('all');
 		$data['programs'] = Model_Basicprogram::find('all');
 		$data['college_programs'] = Model_Program::find('all');
- 		$data['roles'] = Model_Role::find('all');
+		if ($user_type != "") {
+			$data['roles'] = Model_Role::find('all', [
+				'where' => [
+					['id', 'like', "$user_type"],
+				]
+			]);
+		}else{
+			$data['roles'] = Model_Role::find('all');
+		}
+ 		
 		$this->template->title = "Users";
 		$this->template->content = View::forge('admin/users/index', $data);
 	}
@@ -125,14 +135,14 @@ public function action_cron_message(){
 
 												  $total = $student->tuition_fee + $student->misc; 
 
-												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for college: " . $date->date_time;
+												  $messages = "Good day! From JMC " . $use->lastname . ", " .  $use->firstname . " The date of exam for college: " . $date->date_time;
 												  // for ($i=0; $i < count($arrlevel) ; $i++) { 
 												  // 	$messages .= $arrlevel[$i] . ": " . $arrdate[$i];
 												  // 	// echo $arrlevel[$i] . ": " . $arrdate[$i];
 												  // }
 
 												if($student->balance != 0){
-													$messages .= " Your student " . $user->firstname . " total assessment is: " . $total . " Payment made is: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
+													$messages .= " Your student " . $user->firstname . " total assessment is: Php " . number_format($total, 2) . " Payment made is: Php " . number_format($student->down_payment, 2) . " Outstanding Balance: Php " . number_format($student->balance, 2) ; 
 												}
 												array_push($arrmessage, $messages);
 												array_push($useNumber, $use->mobile_number);
@@ -146,13 +156,13 @@ public function action_cron_message(){
 									  $total = $student->total_assessment; 
 
 									
-									  $message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam will be on: " . $date->date_time;
+									  $message = "Good day! From JMC " .  $user->lastname . ", " . $user->firstname . " The date of exam will be on: " . $date->date_time;
 									   // for ($i=0; $i < count($arrlevel) ; $i++) { 
 										  // 	$message .= $arrlevel[$i] . ": " . $arrdate[$i];
 										  // 	// echo $arrlevel[$i] . ": " . $arrdate[$i];
 										  // }
 									if($student->balance != 0){
-										$message .= " Your total assessment is: " . $total . " Payment made is: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
+										$message .= " Your total assessment is: Php " . number_format($total, 2) . " Payment made is: Php " . number_format($student->down_payment, 2) . " Outstanding Balance: Php " . number_format($student->balance, 2); 
 
 									}
 									array_push($arruser_id, $user->id);
@@ -304,10 +314,10 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 
 												  $total = $student->tuition_fee + $student->misc; 
 
-												  $messages = "Good day! " . $use->lastname . ", " .  $use->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
+												  $messages = "Good day! From JMC " . $use->lastname . ", " .  $use->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
 													 
 												if($student->balance != 0){
-													$messages .= " Your student " . $user->firstname . " total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance ; 
+													$messages .= " Your student " . $user->firstname . " total payment is: Php " . number_format($total, 2) . " Payment: Php " . number_format($student->down_payment , 2) . " Outstanding Balance: Php" . number_format($student->balance, 2) ; 
 												}
 												array_push($arrmessage2, $messages);
 												array_push($useNumber2, $use->mobile_number);
@@ -321,10 +331,10 @@ for ($i=0; $i < count($arruser_id_success); $i++) {
 									$total = $student->total_assessment; 
 
 									
-									$message = "Good day! " .  $user->lastname . ", " . $user->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
+									$message = "Good day! From JMC " .  $user->lastname . ", " . $user->firstname . " The date of exam for basic education will be on " . $basic_date->date_time;
 										  
 									if($student->balance != 0){
-										$message .= " Your total payment is: " . $total . " Payment: " . $student->down_payment . " Outstanding Balance: " . $student->balance; 
+										$message .= " Your total payment is: Php " . number_format($total, 2) . " Payment: Php " . number_format($student->down_payment, 2) . " Outstanding Balance: Php " . number_format($student->balance, 2); 
 
 									}
 									array_push($arruser_id2, $user->id);
@@ -429,7 +439,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 	 echo json_encode($resultArray);	
 
 
-		 $this->template= null;
+		 $this->template= null;  		
 }
 
 //----------------------------------------------------------------------------------------
@@ -897,6 +907,7 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 					'group'=> Input::post('group'),
 					'send_at' => Input::post('send_at'),
 					'email'=> Input::post('email'),
+					'gender'=> Input::post('gender'),
 					'role'=> Input::post('role'),
 				));
 				$discount_balance = $amount - ($mdiscount/100) * $amount;
@@ -996,7 +1007,11 @@ for ($i=0; $i < count($arruser_id_success2); $i++) {
 				foreach ($program_result as $key) {
 						$amount += $key->amount; 
 				}
-
+				$m_numberLength = ob_get_length(Input::post('mobile_number'));
+				var_dump($m_numberLength);die;
+				if ($m_numberLength == 10) {
+					Response::redirect('admin/users/create_student');
+				}
 				$newuser = Model_User::forge(array(
 					'username'=> Input::post('username'),
 					'firstname' =>Input::post('firstname'),

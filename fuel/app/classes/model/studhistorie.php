@@ -66,6 +66,7 @@ class Model_Studhistorie extends \Orm\Model_Soft
 		$val->add_field('breakdown', 'Breakdown',  'valid_string[float]');
 		$val->add_field('balance', 'Balance',  'valid_string[float]');
 		$val->add_field('date_time', 'Date Time', 'required|max_length[255]');
+		
 		return $val;
 	}
 
